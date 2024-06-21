@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
     // let { data: first_data } = await supabase.from('page01').select('*')
 
 export default function Data() {
-    const [page01, setData] = useState(['hello']);
+    const [page01, setData] = useState(null);
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
 
@@ -56,7 +56,7 @@ export default function Data() {
     // 데이터 가져오기 이전까지 비어있는 시간 --> 오류 
     // 비어있는 시간을 채워주기 위한 코드
 
-    if (page01.length === 0) {
+    if (page01 === null) {
       return (
 
       <div className='bg-stone-700 w-full h-100'>
