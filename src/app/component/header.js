@@ -1,10 +1,10 @@
-import Data from "../data/page"
 
-export default function Home() {
+
+export default function Header() {
 
   return (
     <>
-    <Data/>
+    <div>header</div>
     </>
   );
 }

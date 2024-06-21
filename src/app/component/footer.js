@@ -1,11 +1,8 @@
-import Data from "../data/page"
 
 
-export default function Home() {
+export default function Footer() {
 
   return (
-    <>
-    <Data/>
-    </>
+    <div>FOOTER</div>
   );
 }
