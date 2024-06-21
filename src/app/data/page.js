@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
     // let { data: first_data } = await supabase.from('page01').select('*')
 
 export default function Data() {
-    const [page01, setData] = useState([]);
+    const [page01, setData] = useState(['hello']);
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
 
