@@ -44,7 +44,10 @@ export default function Data() {
  {page01.map(page01 => (
   <div key={page01[0]} className="lg:w-1/4 md:w-1/2 p-4 w-full">
           <a className="block relative h-48 rounded overflow-hidden">
-            <Image alt="ecommerce" className="object-cover object-center w-full h-full block" src="img_04.jpg"  width={300} height={300}/>
+            <Image alt="ecommerce"
+  className="object-cover object-center w-full h-full block"
+  src="/img/img04.jpg"
+   width={300} height={300}/>
           </a>
           <div className="mt-4">
             <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{page01.title}</h3>
