@@ -6,7 +6,7 @@ import Image from "next/image";
 const supabaseUrl = 'https://geoateqvsqtelzushdpi.supabase.co'
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
-    // let { data: first_data } = await supabase.from('page01').select('*')
+    // let { data: first_data } = await supabase.from(page02').select('*')
 
 export default function Data() {
     const [page02, setData] = useState([]);
@@ -17,7 +17,7 @@ export default function Data() {
       async function render() {
       //  전체를 불러오기
 
-      // data :page01 == > page01 에 data 를 할당 
+      // data page02 == >page02 에 data 를 할당 
         const { data: page02 } = await supabase.from('page02').select('*');
         setData(page02);
       }
