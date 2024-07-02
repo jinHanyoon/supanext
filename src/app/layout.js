@@ -3,6 +3,7 @@ import Image from "next/image";
 import Header from "./component/header";
 import Footer from "./component/footer";
 
+
 import css from "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
