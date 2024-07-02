@@ -48,6 +48,12 @@ export default function Data() {
 
     const handleDelete = async (title, body) => {
       try {
+
+        if (pro.length === 1) {
+         alert("삭제불가")
+          return;
+        }
+
         const {error} = await supabase.from('pro').delete().eq('title', title).eq('body', body);
       } catch (error) {
         console.log(error, '삭제 중 오류 발생')
@@ -76,9 +82,9 @@ export default function Data() {
 
     if (pro === null || pro.length === 0) {
       return <Loading />;
-    }else{
-
     }
+
+    
 
   return (
     <>
