@@ -12,6 +12,8 @@ export default function Data() {
     const [pro, setData] = useState([]);
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
+    const [showForm, setShowForm] = useState(false);
+
 
     useEffect(() => {
       async function render() {
@@ -35,6 +37,7 @@ export default function Data() {
         // 입력 필드 초기화
         setTitleValue('');
         setBodyValue('');
+        setShowForm(false)
       } 
       catch (error){
         console.log('데이터 추가 중 오류 발생',error)
@@ -50,6 +53,17 @@ export default function Data() {
 
       setData(pro => pro.filter(item => item.title !== title || item.body !== body));
     };
+
+
+    const toggleForm = () => {
+      setShowForm(true);
+  };
+
+  const CloseForm = () => {
+    setShowForm(false);
+};
+
+
 
     // use stage 비어져있음 --> 데이터 호출전 표시 
     // 데이터 가져 온 후 setData 호출 --> pro 할당 
@@ -80,6 +94,34 @@ export default function Data() {
 
   return (
     <>
+<div onClick={toggleForm} className= ' fixed z-50 right-10 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>글쓰기</div> 
+{showForm  && (
+        <div className='bg-neutral-500/50 w-full h-screen fixed z-50' >
+          <div className='w-9/12 h-full m-auto relative flex flex-col items-end'  >
+      <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose' onClick={CloseForm}>X</div>
+
+          <input
+            className="block  p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-12 "
+            placeholder="제목"
+            value={titleValue}
+            onChange={(e) => setTitleValue(e.target.value)}
+          />
+          <textarea
+            className="block p-2.5 h-96 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1"
+            placeholder="내용"
+            value={bodyValue}
+            onChange={(e) => setBodyValue(e.target.value)}
+          />
+          <div onClick={handleSubmit} className='text-white text-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-20 mt-3'>저장</div>
+          </div>
+        </div>
+      )}
+
+<div className="container px-5 py-24 mx-auto" >
+        <div className="flex flex-wrap -m-4">
+           
+
+{/* <ClickHad/> */}
 
     {/* pro title 불러오는 코드 */}
 
@@ -91,7 +133,7 @@ export default function Data() {
   className="object-cover object-center w-full h-full block"
   src="/img/img04.jpg"
    width={300} height={300}/>
-   <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose">X</p>
+   <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
           </a>
           <div className="mt-4">
             <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1">SupaBase</h2>
@@ -101,25 +143,13 @@ export default function Data() {
         </div>
 ))}
   
-
 {/* 데이터 저장 후 Data 함수 불러와줘야 함 */}
-<div className='bg-stone-700 w-full h-100'>
-      <h2>글쓰기</h2> 
-      <input
-        className="bg-slate-400"
-        placeholder="제목"
-        value={titleValue}
-        onChange={(e) => setTitleValue(e.target.value)}
-      />
-      <textarea
-        className="bg-blue-800"
-        placeholder="내용"
-        value={bodyValue}
-        onChange={(e) => setBodyValue(e.target.value)}
-      />
-      <button onClick={handleSubmit}>저장</button>
-  </div>
 
+
+
+
+</div>
+</div>
     </>
   );
 }
