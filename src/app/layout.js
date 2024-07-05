@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import Image from "next/image";
 import Header from "./component/header";
 import Footer from "./component/footer";
+import Writing from "./component/writing";
 
 
 import css from "./globals.css";
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
         <body>
       
       <Header/>
+      <Writing/>
 
   {children}
       

@@ -1,10 +1,11 @@
 
 import Image from "next/image";
+import Writing from "../component/writing";
 
-export default function Home() {
-
+export default function About({}) {
   return (
     <>
+    {/* <Writing/> */}
     <section className="text-gray-600 body-font h-100vh w-full">
     <div className="container px-5 py-24 mx-auto w-full" >
     <div className=" w-full flex flex-wrap gap-2 justify-center">
