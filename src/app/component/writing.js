@@ -42,7 +42,7 @@ export default function Writing({}) {
   <div onClick={toggleForm} className= ' fixed z-40 right-10 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>글쓰기</div> 
 {showForm  && (
         <div className='bg-neutral-500/50 w-full h-screen fixed z-50 top-0' >
-          <div className='w-9/12 h-full m-auto relative flex flex-col items-end'  >
+          <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end'  >
       <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose' onClick={CloseForm}>X</div>
 
           <input

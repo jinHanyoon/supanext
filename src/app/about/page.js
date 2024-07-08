@@ -1,10 +1,21 @@
 
+'use client'
 import Image from "next/image";
-import Writing from "../component/writing";
+import { useData } from '../hooks/page';
+import Loading from "../loading";
 
-export default function About({}) {
+export default function About() {
+    const  { pro, page02 } = useData();
+
+    console.log(page02, pro)
+
+    if (!pro || pro.length === 0) {
+        return <Loading/>
+      }
+
   return (
     <>
+    <h1>{pro[2].title}</h1>
     {/* <Writing/> */}
     <section className="text-gray-600 body-font h-100vh w-full">
     <div className="container px-5 py-24 mx-auto w-full" >

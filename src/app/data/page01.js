@@ -31,24 +31,6 @@ export default function Data() {
       render();
     },
     [pro]);
-    // useEffect 데이터를 새로 불러와야 하는데 현재 상태는 로딩 때 한번만 불러오는 상태 
-    // 다시 불러오기 위해 종속값 pro을 넣어줘야함
-
-    // const handleSubmit = async () => {
-    //   try {
-    //     const { data: error } =await supabase.from('pro').insert([{ title:titleValue, body:bodyValue },]);
-    //     setData([...pro]);
-    //   // 새로운 데이터가 추가된 후에 페이지 데이터에 반영
-    //     // 입력 필드 초기화
-    //     setTitleValue('');
-    //     setBodyValue('');
-    //     setShowForm(false)
-    //   } 
-    //   catch (error){
-    //     console.log('데이터 추가 중 오류 발생',error)
-    //   } 
-    // };
-
     const handleDelete = async (title, body) => {
       try {
 
