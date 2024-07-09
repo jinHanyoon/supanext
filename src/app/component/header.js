@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import supabase from '../api/supabaseclient';
+import supabase from '../api/supabaseaApi';
 import Image from "next/image";
 import Link from "next/link";
 export default function Header() {

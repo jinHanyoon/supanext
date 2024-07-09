@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '../api/supabaseclient';
+import supabase from '../api/supabaseaApi';
+
+
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
