@@ -10,7 +10,7 @@ export default function SignUpPage() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const router = useRouter();
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
