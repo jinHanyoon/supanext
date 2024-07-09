@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Data from "./data/page"
-import Singup from'./pages/signup'
+import Singup from'./signUp/signup'
 import Login from'./login/page'
 
 

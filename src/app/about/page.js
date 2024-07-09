@@ -1,17 +1,15 @@
-
-'use client'
-import Image from "next/image";
-import { useData } from '../hooks/page';
+'use client';
 import Loading from "../loading";
+import Image from "next/image";
+import { useData } from "../hooks/useData";
 
 export default function About() {
-    const  { pro, page02 } = useData();
-
-    console.log(page02, pro)
+    const { pro, page02 } = useData();
+    console.log(pro)
 
     if (!pro || pro.length === 0) {
-        return <Loading/>
-      }
+      return <Loading />;
+    }
 
   return (
     <>

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Header from "./component/header";
 import Footer from "./component/footer";
 import Writing from "./component/writing";
-import Singup from'./pages/signup'
+import Singup from'./signUp/signup'
 import Login from'./login/page'
 
 import css from "./globals.css";
