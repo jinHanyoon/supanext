@@ -2,16 +2,21 @@
 import Image from "next/image";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import LoginForm from "./loginForm";
 
 const supabaseUrl = 'https://vwaofeoshpnacnpicind.supabase.co'
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-export default function Writing({}) {
+export default function Writing() {
     const [pro, setData] = useState([]);
+    const [message, setMessage] = useState('');
+
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [loginFo, setLogin] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false);
   
 
     const handleSubmit = async () => {
@@ -29,6 +34,8 @@ export default function Writing({}) {
         } 
       };
 
+
+      
     const toggleForm = () => {
         setShowForm(true);
     };
@@ -37,9 +44,39 @@ export default function Writing({}) {
       setShowForm(false);
   };
 
+  const closeLoginForm = () => setLogin(false);
+
+
+  const handleLogin = async (email, password) => {
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (signInError) {
+      setMessage(signInError.message);
+      return { error: signInError.message };
+    }
+
+    setMessage('로그인 성공!');
+    setTimeout(() => {
+      setLogin(false);
+    }, 2000);
+
+    return { success: true };
+  };
+
+
+  const login = () => {
+    setLogin(true);
+      return(
+        <LoginForm/>
+      )
+};
+
     return (
     <>
   <div onClick={toggleForm} className= ' fixed z-40 right-10 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>글쓰기</div> 
+  <div onClick={login} className= ' fixed z-40 right-40 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>로그인</div> 
+     {loginFo && <LoginForm onLogin={handleLogin} onClose={closeLoginForm} />}
+
 {showForm  && (
         <div className='bg-neutral-500/50 w-full h-screen fixed z-50 top-0' >
           <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end'  >

@@ -4,7 +4,7 @@ import Header from "./component/header";
 import Footer from "./component/footer";
 import Writing from "./component/writing";
 import Singup from'./pages/signup'
-import Login from'./pages/login'
+import Login from'./login/page'
 
 import css from "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +20,6 @@ export default function RootLayout({ children }) {
         <body>
       
         {/* <Singup/> */}
-        {/* <Login/> */}
       <Header/>
       <Writing/>
 

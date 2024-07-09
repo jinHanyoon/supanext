@@ -15,7 +15,7 @@ export default function About() {
 
   return (
     <>
-    <h1>{pro[2].title}</h1>
+    {/* <h1>{pro[2].title}</h1> */}
     {/* <Writing/> */}
     <section className="text-gray-600 body-font h-100vh w-full">
     <div className="container px-5 py-24 mx-auto w-full" >
