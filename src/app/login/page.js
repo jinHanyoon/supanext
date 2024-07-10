@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../api/supabaseaApi';
@@ -16,6 +16,10 @@ export default function LoginPage() {
       setMessage(signInError.message);
       return;
     }
+
+    const handleLoginClose = () => {
+      setShowLoginForm(false);
+    };
 
     setMessage('로그인 성공!');
     setTimeout(() => {

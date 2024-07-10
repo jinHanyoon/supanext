@@ -22,7 +22,7 @@ export default function SignUpPage() {
     try {
       // Supabase로 사용자 등록
       const { error: signUpError } = await supabase.auth.signUp({
-        email,
+email,
         password,
       });
 

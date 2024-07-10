@@ -8,7 +8,7 @@ const supabaseUrl = 'https://vwaofeoshpnacnpicind.supabase.co'
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-export default function Writing() {
+export default function Writing({password}) {
     const [pro, setData] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -48,10 +48,22 @@ export default function Writing() {
 
 
   const handleLogin = async (email, password) => {
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    let signInError;
+    if (!email || !password) {
+      signInError = { message: '이메일과 비밀번호를 입력해주세요.' };
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      signInError = error;
+    }
+
 
     if (signInError) {
-      setMessage(signInError.message);
+      if (signInError.message === 'Invalid login credentials') {
+        return { error: password + "<br />" + "이거 맞아?" };
+      }
+      if (signInError.message === 'User not found') {
+        return { error: '이메일' };
+      }
       return { error: signInError.message };
     }
 
@@ -62,7 +74,6 @@ export default function Writing() {
 
     return { success: true };
   };
-
 
   const login = () => {
     setLogin(true);
