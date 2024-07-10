@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import supabase from '../api/supabaseaApi'; // 실제 경로로 수정하세요
 
 export default function AuthCallback() {
