@@ -7,15 +7,20 @@ import Link from "next/link";
 export default function Header() {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+
 
   useEffect(() => {
+
+
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         setLoggedIn(true);
+        const user = session.user;
+        setUserName(user.user_metadata?.name || user.user_metadata?.nickname || '익명');
       }
     };
-
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -27,7 +32,13 @@ export default function Header() {
         subscription.unsubscribe();
       }
     };
+
   }, []);
+
+
+
+
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -40,9 +51,12 @@ export default function Header() {
   <nav className="bg-gray-800">
   
   {loggedIn && (
+    <>
+    <div className='fixed bottom-10 right-40 z-50 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br  min-w-14 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium  text-sm  px-7 py-2.5 rounded text-center w-26 me-2 mb-2'>{userName}</div>
         <div onClick={handleLogout} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded absolute left-2/3 z-40 top-4 min-w-14">
           로그아웃
         </div>
+        </>
       )}
 
   <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
