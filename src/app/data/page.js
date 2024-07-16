@@ -5,6 +5,9 @@ import Image from "next/image";
 import About from '../about/page';
 import Loading from '../loading';
 import Writing from "../component/writing";
+import useUserSession from '../hooks/authdata'
+
+
 
 const supabaseUrl = 'https://vwaofeoshpnacnpicind.supabase.co'
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
@@ -12,13 +15,18 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 export default function Data() {
     const [pro, setData] = useState([]);
     const [dataShow, ShowData] = useState(false)
+    const {userName } = useUserSession();
 
 
     useEffect(() => {
       async function render() {
       //  전체를 불러오기
       // data pro == >pro 에 data 를 할당 
-        const { data: pro } = await supabase.from('pro').select('*');
+        const { data: pro } = await 
+        
+        
+        
+        supabase.from('pro').select('*');
         setData(pro);
 
       }
@@ -68,7 +76,7 @@ export default function Data() {
    <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
           </a>
           <div className="mt-4">
-            <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1">SupaBase</h2>
+            <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1">{userName}</h2>
             <h3 className="text-gray-900 title-font text-lg font-medium">{pro.title}</h3>
             <p  className="mt-1">{pro.body}</p>
           </div>

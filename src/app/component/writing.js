@@ -29,7 +29,6 @@ export default function Writing({password}) {
 
         } 
         catch (error){
-          console.log('데이터 추가 중 오류 발생',error)
         } 
       };
 

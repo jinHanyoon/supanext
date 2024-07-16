@@ -2,38 +2,44 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import supabase from '../api/supabaseaApi';
+import useUserSession from '../hooks/authdata'
 import Image from "next/image";
 import Link from "next/link";
+
+
 export default function Header() {
   const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('');
+  const { loggedIn, userName } = useUserSession();
+
+  // const router = useRouter();
+  // const [loggedIn, setLoggedIn] = useState(false);
+  // const [userName, setUserName] = useState('');
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setLoggedIn(true);
-        const user = session.user;
-        setUserName(user.user_metadata?.name || user.user_metadata?.nickname || '익명');
-      }
-    };
-    checkSession();
+  //   const checkSession = async () => {
+  //     const { data: { session } } = await supabase.auth.getSession();
+  //     if (session) {
+  //       setLoggedIn(true);
+  //       const user = session.user;
+  //       setUserName(user.user_metadata?.name || user.user_metadata?.nickname || '익명');
+  //     }
+  //   };
+  //   checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setLoggedIn(!!session);
-    });
+  //   const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+  //     setLoggedIn(!!session);
+  //   });
 
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
+  //   return () => {
+  //     if (subscription) {
+  //       subscription.unsubscribe();
+  //     }
+  //   };
 
-  }, []);
+  // }, []);
 
 
 
@@ -42,7 +48,6 @@ export default function Header() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setLoggedIn(false);
     router.push('/login');
   };
 
