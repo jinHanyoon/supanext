@@ -19,13 +19,14 @@ export default function Writing({password}) {
 
     const handleSubmit = async () => {
         try {
-          const { data: error } =await supabase.from('pro').insert([{ title:titleValue, body:bodyValue },]);
+          const { data: error } =await supabase.from('pro').insert([{ title:titleValue, body:bodyValue},]);
           setData([...pro]);
         // 새로운 데이터가 추가된 후에 페이지 데이터에 반영
           // 입력 필드 초기화
           setTitleValue('');
           setBodyValue('');
           setShowForm(false)
+
         } 
         catch (error){
           console.log('데이터 추가 중 오류 발생',error)
