@@ -5,13 +5,14 @@ import {login, logout} from "./actions"
 import { useRouter } from 'next/navigation'
 
 
-export default function LoginForm({onClose}) {
+export default function LoginForm({sideHidden}) {
   const router = useRouter()
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [email, setEmail] =useState('')
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,6 +22,10 @@ export default function LoginForm({onClose}) {
     } catch (error) {
     }
   };
+  
+
+
+
 
 
   return (
@@ -29,7 +34,7 @@ export default function LoginForm({onClose}) {
    
 
       <form onSubmit={handleSubmit} className='w-1/6 min-w-max m-auto mt-48  bg-white p-5 rounded-xl bg-opacity-60 backdrop-filter backdrop-blur-lg'>
-      <div className='ml-64 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose' onClick={onClose}>X</div>
+      <div className='ml-64 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose' onClick={sideHidden}>X</div>
         <div className="mb-4">
           <label htmlFor="username" className="block text-sm font-medium text-gray-700">이메일</label>
           <input
@@ -59,7 +64,7 @@ export default function LoginForm({onClose}) {
           )}
         </div>
         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">입장</button>
-        <Link href="/signUp" onClick={onClose} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">아이디가 없어요</Link>
+        <Link href="/signUp" onClick={sideHidden} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">아이디가 없어요</Link>
         
 
       </form>

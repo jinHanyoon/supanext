@@ -14,7 +14,6 @@ export default function Writing({password}) {
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
     const [showForm, setShowForm] = useState(false);
-    const [loginFo, setLogin] = useState(false);
 
     const writingSubmit = async () => {
         try {
@@ -44,24 +43,19 @@ export default function Writing({password}) {
   };
 
 
-  const login_show = () => {
-    setLogin(true);
-};
-const closeLoginForm = () => setLogin(false);
+//   const login_show = () => {
+//     setLogin(true);
+// };
+// const closeLoginForm = () => setLogin(false);
 
 
     return (
     <>
   
-  <div onClick={toggleForm} className= ' fixed z-40 right-10 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>글쓰기</div> 
  
-        <div onClick={login_show} className='fixed z-40 right-40 bottom-10 text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'>
-          로그인
-        </div>
-
+   
     
     
-     {loginFo && <LoginForm onClose={closeLoginForm} />}
 
      
 
