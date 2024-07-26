@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import Image from "next/image";
 import About from '../about/page';
 import Loading from '../loading';
-import Writing from "../component/writing";
+import Writing from "../component/writing/writing";
 import useUserSession from '../hooks/authdata'
 import supabase from '../api/supabaseaApi';
 

@@ -10,7 +10,6 @@ export default function Home() {
   
   return (
     <section className="text-gray-600 body-font h-100vh">
-      <Sidebar/>         
            <Data/>
 
     </section>
