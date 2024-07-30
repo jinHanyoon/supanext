@@ -4,10 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import LoginForm from "../../login/loginForm";
 import supabase from '../../api/supabaseaApi';
+import useUserSession from '../../hooks/authdata';
 
 
 
 export default function Writing({writing_hidden}) {
+  const { userName } = useUserSession();
     const [pro, setData] = useState([]);
     const [message, setMessage] = useState('');
     const [titleValue, setTitleValue] = useState('');
@@ -15,7 +17,7 @@ export default function Writing({writing_hidden}) {
 
     const writingSubmit = async () => {
         try {
-          const { data: error } =await supabase.from('pro').insert([{ title:titleValue, body:bodyValue},]);
+          const { data: error } =await supabase.from('pro').insert([{ title:titleValue, body:bodyValue, username:userName},]);
           setData([...pro]);
         // 새로운 데이터가 추가된 후에 페이지 데이터에 반영
           // 입력 필드 초기화
@@ -26,7 +28,6 @@ export default function Writing({writing_hidden}) {
         catch (error){
         } 
       };
-
 
 
 
