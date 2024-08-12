@@ -7,6 +7,11 @@ import Link from "next/link";
 
 const useUserSession = () => {
   const [userName, setUserName] = useState('');
+  const [userAvatar, setAvatar] = useState('');
+
+
+
+  const [userUUID, setUUID] = useState('')
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -15,40 +20,39 @@ const useUserSession = () => {
       if (session) {
         setLoggedIn(true);
         const user = session.user;
-        const { data, error } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-        if (data) {
-          setUserName(data.username || '익명');
-        } else {
-          setUserName('익명');
-        }
+        const { data, error } = await supabase.from('profiles').select('id, username, avatar_url').eq('id', user.id ).single();
+        setUserName(data.username);
+        setAvatar(data.avatar_url);
+
+
       } else {
         setLoggedIn(false);
         setUserName('');
+        setAvatar('');
+
       }
     };
 
     checkSession();
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
+      if (session) {  
         setLoggedIn(true);
         const user = session.user;
         const fetchUsername = async () => {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('username')
-            .eq('id', user.id)
-            .single();
-          if (data) {
-            setUserName(data.username || '익명');
-          } else {
-            setUserName('익명');
-          }
+          const { data, error } = await supabase.from('profiles').select('id, username, avatar_url').eq('id', user.id ).single();
+             setUserName(data.username);
+             setAvatar(data.avatar_url);
+
+            //  console.log('Fetched profile data:', data);
+
         };
         fetchUsername();
       } else {
         setLoggedIn(false);
         setUserName('');
+        setAvatar('');
+
       }
     });
 
@@ -59,7 +63,9 @@ const useUserSession = () => {
     };
   }, []);
 
-  return { loggedIn, userName };
+  return { loggedIn, userName, userUUID, userAvatar };
 };
 
-export default useUserSession;
+export default useUserSession
+
+

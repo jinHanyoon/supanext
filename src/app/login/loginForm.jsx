@@ -19,7 +19,9 @@ export default function LoginForm({sideHidden}) {
     try {
       await login(email, password);
       router.push('/')
+      sideHidden()
     } catch (error) {
+      alert('뭐가 틀렸는데?')
     }
   };
   

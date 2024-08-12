@@ -15,7 +15,6 @@ import supabase from '../api/supabaseaApi';
           const fetchData = async () => {
             const { data: proData } = await supabase.from('pro').select('*')
             const { data: page02Data } = await supabase.from('pro02').select('*');
-
             setPro(proData);
             setPage02(page02Data);
           };

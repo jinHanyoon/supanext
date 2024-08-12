@@ -11,10 +11,11 @@ import supabase from '../api/supabaseaApi';
 export default function Data() {
     const [pro, setData] = useState([]);
     const [dataShow, ShowData] = useState(false)
+    const { userName } = useUserSession();
 
-
+    const defaultAvatar = '/img/img04.jpg'; 
     useEffect(() => {
-      async function dbCome() {
+      async function dbCome() { 
       //  전체를 불러오기
       // data pro == >pro 에 data 를 할당 
         const { data: pro } = await 
@@ -69,7 +70,11 @@ export default function Data() {
    <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
           </a>
           <div className="mt-4">
-            <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1">{pro.username}</h2>
+            <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
+          <Image alt="ecommerce" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-12 h-10 rounded-full'/>
+             <p className='mt-6'>  {pro.username}
+             </p>               
+               </h2>
             <h3 className="text-gray-900 title-font text-lg font-medium">{pro.title}</h3>
             <p  className="mt-1">{pro.body}</p>
           </div>
