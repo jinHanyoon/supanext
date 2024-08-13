@@ -63,9 +63,9 @@ export default function Data() {
  {pro.map(pro => (
   <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full ">
           <a className="block relative h-48 rounded overflow-hidden">
-            <Image alt="ecommerce"
-  className="object-cover object-center w-full h-full block hover:opacity-50 "
-  src="/img/img04.jpg"
+            <Image alt="ecommerce" src={pro.imgUrl || defaultAvatar}
+  className=" object-center w-full h-full block hover:opacity-50 "
+
    width={300} height={300}/>
    <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
           </a>

@@ -17,15 +17,36 @@ export default function Writing({writing_hidden}) {
     const [message, setMessage] = useState('');
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
+    const [image, setImage] = useState(null); // 이미지 파일을 저장할 state
 
+    const handleFileChange = (e) => {
+      setImage(e.target.files[0]); // 선택한 파일을 state에 저장
+    };
 
-    console.log(userName)
     const writingSubmit = async () => {
       try {
+        let imgUrl = null;
+
+        // 이미지가 선택된 경우 업로드 처리
+        if (image) {
+          const fileExt = image.name.split('.').pop();
+          const fileName = `${userUUID}-${Date.now()}.${fileExt}`;
+          const filePath = `test_img/${userUUID}/${fileName}`
+          // 버킷 이름을 포함
+          const { data: imgData, error: imgError } = await supabase.storage
+            .from('test_img') // 버킷 이름이 정확한지 확인
+            .upload(filePath, image);
+          if (imgError) {
+            console.error("Error uploading image:", imgError);
+            alert('이미지 업로드에 실패했습니다.');
+            return; // 에러 발생 시 더 진행하지 않음
+          }
+    
+          imgUrl = supabase.storage.from('test_img').getPublicUrl(filePath).data.publicUrl;
+        }
+
         // Supabase로부터 응답을 받을 때, data와 error를 구분해서 받는다.
-        const { data, error } = await supabase
-          .from('pro')
-          .insert([{ title: titleValue, body: bodyValue, username:userName, avatar:userAvatar }]);
+        const { data, error } = await supabase.from('pro').insert([{ title: titleValue, body: bodyValue, username:userName, avatar:userAvatar, imgUrl: imgUrl, }]);
     
         // 에러가 발생한 경우 바로 콘솔에 출력하고 함수를 종료한다.
         if (error) {
@@ -72,9 +93,16 @@ export default function Writing({writing_hidden}) {
           <textarea
             className="block p-2.5 h-96 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1"
             placeholder="내용"
-            value={bodyValue}
+            value={bodyValue} 
             onChange={(e) => setBodyValue(e.target.value)}
           />
+
+<input
+  type="file"
+  onChange={handleFileChange}
+  className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300"
+/>
+
           <div onClick={writingSubmit} className='text-white text-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-20 mt-3'>저장</div>
           </div>
         </div>
