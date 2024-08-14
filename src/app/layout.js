@@ -48,8 +48,8 @@ export default function RootLayout({ children }) {
 
 
 {videoPlaying && (
-          <video autoPlay loop muted className="fixed inset-0 object-cover -z-10">
-            <source src="/img/bg.webm" type="video/mp4" />
+          <video autoPlay loop muted className="fixed inset-0 object-cover -z-10 top-0 left-0 w-full h-full">
+            <source src="/img/bg02.mp4" type="video/mp4" />
           </video>
         )}
 
