@@ -89,12 +89,12 @@ export default function Writing({writing_hidden}) {
   
      
 
-        <div className='bg-neutral-500/50 w-full h-screen fixed z-50 top-0 ' >
+        <div className='bg-slate-900/80 w-full h-screen fixed z-50 top-0 ' >
           <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end '  >
       <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
 
           <input
-            className="block  p-2.5 w-full text-sm text-white  dark:placeholder-gray-400 dark:text-white  mt-12 bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 focus:outline-none focus:ring-2  focus:ring-gray-400"
+            className="block  p-2.5 w-full text-sm text-white  dark:placeholder-gray-900 dark:text-white  mt-12 bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 focus:outline-none focus:ring-2  focus:ring-gray-400"
             placeholder="제목"
             value={titleValue}
             onChange={(e) => setTitleValue(e.target.value)}
@@ -111,8 +111,8 @@ export default function Writing({writing_hidden}) {
               <Image
                 src={imgPreview}
                 alt="Selected File"
-                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl"
-                width={250} height={100}
+                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl max-w-xs max-h-20"
+                width={100} height={50}
               />
             )}
 
