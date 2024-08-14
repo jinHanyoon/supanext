@@ -18,8 +18,10 @@ export default function RootLayout({ children }) {
     <title>Dev JinHan</title>
         <meta name="description" content="Yoon Jin Han" />
         <meta property="og:title" content="Space world" />
+        <meta property="og:description" content="Start" />
         <meta property="og:image" content="/main_img.jpg" />
         <meta property="og:url" content="https://ext005552.vercel.app/" />
+
         <link rel="icon" href="/favicon.ico" />
       </head>
 
