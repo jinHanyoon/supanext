@@ -103,7 +103,7 @@ export default function Writing({writing_hidden}) {
 
 
 
-        <div className="block h-96 w-full  text-sm text-white focus:outline-none focus:ring focus:ring-gray-400 dark:placeholder-gray-400 dark:text-white  mt-1  bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 overflow-scroll overflow-x-hidden overflow-y-hidden">
+        <div className=" relative  h-96 w-full  text-sm text-white focus:outline-none focus:ring focus:ring-gray-400 dark:placeholder-gray-400 dark:text-white  mt-1  bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 overflow-scroll overflow-x-hidden overflow-y-hidden">
         <input  onChange={handleFileChange} className="block w-14 text-sm text-gray-900 cursor-pointer pb-2.5 px-2 pt-1  h-8 box-border opacity-0 " type="file"/>
 <Image src={ImgIcon} width={30} height={30} alt="ImgIcon" className="block w-10 h-10  text-sm text-gray-900 cursor-pointer pointer-events-none  pb-2.5 px-2 pt-1  box-border absolute top-0 -z-10" />
        
