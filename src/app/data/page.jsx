@@ -70,13 +70,13 @@ export default function Data() {
    <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
           </a>
           <div className="mt-4">
-            <h2 className="text-gray-500 text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
-          <Image alt="ecommerce" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-12 h-10 rounded-full'/>
+            <h2 className="text-gray-100  text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
+          <Image alt="ecommerce" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"'/>
              <p className='mt-6'>  {pro.username}
              </p>               
                </h2>
-            <h3 className="text-gray-900 title-font text-lg font-medium">{pro.title}</h3>
-            <p  className="mt-1">{pro.body}</p>
+            <h3 className="text-gray-200 title-font text-lg font-extrabold">{pro.title}</h3>
+            <p  className="mt-1 text-gray-400  ">{pro.body}</p>
           </div>
         </div>
 ))}

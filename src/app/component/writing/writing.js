@@ -18,10 +18,19 @@ export default function Writing({writing_hidden}) {
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
     const [newImg, setNewImg] = useState(null); // 이미지 파일을 저장할 state
+      const [imgPreview, setImgPreview] = useState(''); // 이미지 미리보기를 위한 state
 
     const handleFileChange = (e) => {
-      setNewImg(e.target.files[0]); // 선택한 파일을 state에 저장
+      const file = e.target.files[0];
+      if (file) {
+        setNewImg(file);
+        const fileURL = URL.createObjectURL(file);
+        setImgPreview(fileURL); // 파일 URL을 상태에 저장
+      }
     };
+
+    const ImgIcon = '/img/img_icon.png'; 
+
 
     const writingSubmit = async () => {
       try {
@@ -80,28 +89,42 @@ export default function Writing({writing_hidden}) {
   
      
 
-        <div className='bg-neutral-500/50 w-full h-screen fixed z-50 top-0' >
-          <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end'  >
-      <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose' onClick={writing_hidden}>X</div>
+        <div className='bg-neutral-500/50 w-full h-screen fixed z-50 top-0 ' >
+          <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end '  >
+      <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
 
           <input
-            className="block  p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-12 "
+            className="block  p-2.5 w-full text-sm text-white  dark:placeholder-gray-400 dark:text-white  mt-12 bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 focus:outline-none focus:ring-2  focus:ring-gray-400"
             placeholder="제목"
             value={titleValue}
             onChange={(e) => setTitleValue(e.target.value)}
           />
-          <textarea
-            className="block p-2.5 h-96 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1"
+
+
+
+
+        <div className="block h-96 w-full  text-sm text-white focus:outline-none focus:ring focus:ring-gray-400 dark:placeholder-gray-400 dark:text-white  mt-1  bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 overflow-scroll overflow-x-hidden overflow-y-hidden">
+        <input  onChange={handleFileChange} className="block w-14 text-sm text-gray-900 cursor-pointer pb-2.5 px-2 pt-1  h-8 box-border opacity-0 " type="file"/>
+<Image src={ImgIcon} width={30} height={30} alt="ImgIcon" className="block w-10 h-10  text-sm text-gray-900 cursor-pointer pointer-events-none  pb-2.5 px-2 pt-1  box-border absolute top-0 -z-10" />
+       
+{imgPreview && (
+              <Image
+                src={imgPreview}
+                alt="Selected File"
+                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl"
+                width={250} height={100}
+              />
+            )}
+
+          <textarea className="w-full h-5/6 p-2.5  text-sm text-white focus:outline-none  dark:placeholder-gray-400 dark:text-white  mt-1  bg-transparent rounded-md"
             placeholder="내용"
             value={bodyValue} 
             onChange={(e) => setBodyValue(e.target.value)}
           />
 
-<input
-  type="file"
-  onChange={handleFileChange}
-  className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300"
-/>
+
+
+  </div>
 
           <div onClick={writingSubmit} className='text-white text-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-20 mt-3'>저장</div>
           </div>
