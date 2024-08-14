@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
 
 
 {videoPlaying && (
-          <video autoPlay loop muted className="fixed inset-0 object-cover -z-10 top-0 left-0 w-full h-full">
+          <video autoPlay loop muted playsInline className="fixed inset-0 object-cover -z-10 top-0 left-0 w-full h-full pointer-events-none">
             <source src="/img/bg02.mp4" type="video/mp4" />
           </video>
         )}
