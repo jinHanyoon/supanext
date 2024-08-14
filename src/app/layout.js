@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Yoon Jin Han" />
         <meta property="og:title" content="Space world" />
         <meta property="og:image" content="/main_img.jpg" />
-        <meta property="og:url" content="https://dash-rose-two.vercel.app/" />
+        <meta property="og:url" content="https://ext005552.vercel.app/" />
         <link rel="icon" href="/favicon.ico" />
       </head>
 
