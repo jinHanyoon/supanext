@@ -17,10 +17,10 @@ export default function Writing({writing_hidden}) {
     const [message, setMessage] = useState('');
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
-    const [image, setImage] = useState(null); // 이미지 파일을 저장할 state
+    const [newImg, setNewImg] = useState(null); // 이미지 파일을 저장할 state
 
     const handleFileChange = (e) => {
-      setImage(e.target.files[0]); // 선택한 파일을 state에 저장
+      setNewImg(e.target.files[0]); // 선택한 파일을 state에 저장
     };
 
     const writingSubmit = async () => {
@@ -28,14 +28,14 @@ export default function Writing({writing_hidden}) {
         let imgUrl = null;
 
         // 이미지가 선택된 경우 업로드 처리
-        if (image) {
-          const fileExt = image.name.split('.').pop();
+        if (newImg) {
+          const fileExt = newImg.name.split('.').pop();
           const fileName = `${userUUID}-${Date.now()}.${fileExt}`;
           const filePath = `test_img/${userUUID}/${fileName}`
           // 버킷 이름을 포함
           const { data: imgData, error: imgError } = await supabase.storage
             .from('test_img') // 버킷 이름이 정확한지 확인
-            .upload(filePath, image);
+            .upload(filePath, newImg);
           if (imgError) {
             console.error("Error uploading image:", imgError);
             alert('이미지 업로드에 실패했습니다.');
