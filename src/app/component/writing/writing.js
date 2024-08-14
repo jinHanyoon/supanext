@@ -111,7 +111,7 @@ export default function Writing({writing_hidden}) {
               <Image
                 src={imgPreview}
                 alt="Selected File"
-                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl max-w-xs max-h-20"
+                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl  max-h-48"
                 width={100} height={50}
               />
             )}
