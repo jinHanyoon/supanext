@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
       </head>
 
 
-        <body>
+        <body className="bg-black">
         {!videoPlaying && (
           <div className="fixed top-0 left-0 inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50 w-full h-full">
 <button onClick={handleConfirm} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">

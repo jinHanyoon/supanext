@@ -8,11 +8,8 @@ import Link from "next/link";
 const useUserSession = () => {
   const [userName, setUserName] = useState('');
   const [userAvatar, setAvatar] = useState('');
-
-
-
   const [userUUID, setUUID] = useState('')
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState('false');
 
   useEffect(() => {
     const checkSession = async () => {
@@ -23,8 +20,7 @@ const useUserSession = () => {
         const { data, error } = await supabase.from('profiles').select('id, username, avatar_url').eq('id', user.id ).single();
         setUserName(data.username);
         setAvatar(data.avatar_url);
-
-
+        setUUID(data.id)
       } else {
         setLoggedIn(false);
         setUserName('');
@@ -43,9 +39,7 @@ const useUserSession = () => {
           const { data, error } = await supabase.from('profiles').select('id, username, avatar_url').eq('id', user.id ).single();
              setUserName(data.username);
              setAvatar(data.avatar_url);
-
-            //  console.log('Fetched profile data:', data);
-
+              setUUID(data.id)
         };
         fetchUsername();
       } else {
