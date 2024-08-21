@@ -26,7 +26,7 @@ export default function Data() {
       }
       dbCome();
     },
-    [pro]);
+   );
 
 
 

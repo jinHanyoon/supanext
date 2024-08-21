@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import LoginForm from "../../login/loginForm";
 import supabase from '../../api/supabaseaApi';
 import useUserSession from '../../hooks/authdata';
+import Loading from '../../loading';
 
 
 
@@ -17,8 +18,12 @@ export default function Writing({writing_hidden}) {
     const [message, setMessage] = useState('');
     const [titleValue, setTitleValue] = useState('');
     const [bodyValue, setBodyValue] = useState('');
+
     const [newImg, setNewImg] = useState(null); // 이미지 파일을 저장할 state
       const [imgPreview, setImgPreview] = useState(''); // 이미지 미리보기를 위한 state
+      const [loading, setLoading] = useState(false);
+
+
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
@@ -33,6 +38,15 @@ export default function Writing({writing_hidden}) {
 
 
     const writingSubmit = async () => {
+    
+      const userConfirmed = window.confirm("올린다?");
+
+  if (!userConfirmed) {
+    // 사용자가 "아니오"를 선택하면 아무 작업도 하지 않음
+    return;
+  }
+  setLoading(true)
+
       try {
         let imgUrl = null;
 
@@ -72,6 +86,8 @@ export default function Writing({writing_hidden}) {
         setBodyValue('');
         writing_hidden();
         alert('생성완료');
+  setLoading(false)
+
       } catch (error) {
         // 그 외의 예상치 못한 에러를 처리한다.
         console.error("Unexpected error:", error.message);
@@ -87,6 +103,7 @@ export default function Writing({writing_hidden}) {
     return (
     <>
   
+  {loading &&<Loading />}
      
 
         <div className='bg-slate-900/80 w-full h-screen fixed z-50 top-0 ' >
