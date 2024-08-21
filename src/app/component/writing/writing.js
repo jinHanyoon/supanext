@@ -108,7 +108,7 @@ export default function Writing({writing_hidden}) {
 
         <div className='bg-slate-900/80 w-full h-screen fixed z-50 top-0 ' >
           <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end '  >
-      <div className='absolute top-14 right-2 w-8 h-1/10 bg-rose-400 hover:bg-rose-500 rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
+      <div className='absolute top-14 right-2 w-8 h-1/10 border-rose-700 border rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
 
           <input
             className="block  p-2.5 w-full text-sm text-white  dark:placeholder-gray-900 dark:text-white  mt-12 bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 focus:outline-none focus:ring-2  focus:ring-gray-400"
@@ -143,7 +143,7 @@ export default function Writing({writing_hidden}) {
 
   </div>
 
-          <div onClick={writingSubmit} className='text-white text-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-20 mt-3'>저장</div>
+          <div onClick={writingSubmit} className='text-emerald-400 text-center border border-cyan-500  w-20 mt-3 rounded-md h-10 py-2'>저장</div>
           </div>
         </div>
 

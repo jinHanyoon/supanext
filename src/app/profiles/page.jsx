@@ -94,7 +94,7 @@ export default function Profiles() {
        {loading &&<Loading />}
         <div className='w-full h-auto m-auto max-w-screen-2xl mx-auto p-4 md:py-8'>
 
-    <div className={`w-1/3 min-w-72 max-w-64 h-96 bg-transparent  backdrop-blur-sm border rounded-3xl flex-col flex items-center justify-center mx-auto ${newName ? 'border-cyan-500':'border-gray-500'}`}>
+    <div className={`w-1/3 min-w-72 max-w-64 h-96 bg-transparent  transition-all ease-in duration-100 backdrop-blur-sm border rounded-3xl flex-col flex items-center justify-center mx-auto ${newName ? 'border-cyan-500':'border-gray-500'}`}>
 
         <div className='w-full  h-1/3  mt-3'>
      <div className='translate-y-28 w-1/5 mx-auto opacity-0'>
@@ -105,7 +105,7 @@ export default function Profiles() {
       />
       </div>
       <div className='relative pointer-events-none'>
-        <Image src={NewPreview || userAvatar || '/img/img05.jpg'}  width={100} height={100} priority={true} alt="l" className={`w-28 h-28 p-1 rounded-full ring-2  mx-auto pointer-events-none ${newName ? 'ring-emerald-400 dark:ring-emerald-400':'ring-gray-500 dark:ring-gray-500'}`} />
+        <Image src={NewPreview || userAvatar || '/img/img05.jpg'}  width={100} height={100} priority={true} alt="l" className={`w-28 h-28 p-1 rounded-full ring-2 transition-all ease-in duration-100 mx-auto pointer-events-none ${newName ? 'ring-emerald-400 dark:ring-emerald-400':'ring-gray-500 dark:ring-gray-500'}`} />
 <Image src={ImgIcon} width={30} height={30} alt="ImgIcon" className="block w-12 h-12  mx-auto text-sm text-gray-900 cursor-pointer pointer-events-none  pb-2.5 px-2 pt-1 -translate-y-10  box-border " />
       </div>
 </div>
@@ -122,13 +122,13 @@ export default function Profiles() {
         value={newName}
         onChange={(e) => setNewName(e.target.value)}
         placeholder={userName || newName}
-        className={`text-center  inline-block bg-transparent border-b-2  text-white ${newName ? 'border-cyan-500':'border-gray-500 '}`}
+        className={`text-center  inline-block bg-transparent border-b-2  transition-all ease-in duration-100 text-white ${newName ? 'border-cyan-500':'border-gray-500 '}`}
       />
 </div>
 </div>
 
 <div className='w-full  h-1/3 text-center mt-4'>
-      <button className={`w-32 h-10 mx-auto rounded-lg border ${
+      <button className={`w-32 h-10 mx-auto rounded-lg border transition-all ease-in duration-100 ${
       newName ? 'border-cyan-500 text-emerald-400' : 'border-gray-300 text-gray-400'}`}
  onClick={handleUpdateProfile}>Update Profile</button>
       </div>

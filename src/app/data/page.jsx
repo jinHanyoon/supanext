@@ -15,20 +15,20 @@ export default function Data() {
 
     const defaultAvatar = '/img/img04.jpg'; 
     useEffect(() => {
-      async function dbCome() { 
-      //  전체를 불러오기
-      // data pro == >pro 에 data 를 할당 
-        const { data: pro } = await 
-        
-        supabase.from('pro').select('*');
-        setData(pro);
-
-      }
-      dbCome();
+ 
     },
    );
 
+   async function dbCome() { 
+    //  전체를 불러오기
+    // data pro == >pro 에 data 를 할당 
+      const { data: pro } = await 
+      
+      supabase.from('pro').select('*');
+      setData(pro);
 
+    }
+    dbCome();
 
     const handleDelete = async (title, body) => {
       try {
@@ -61,7 +61,7 @@ export default function Data() {
         <div className="flex flex-wrap -m-4">
 
  {pro.map(pro => (
-  <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full ">
+  <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 ">
           <a className="block relative h-48 rounded overflow-hidden">
             <Image alt="ecommerce" src={pro.imgUrl || defaultAvatar}
   className=" object-center w-full h-full block hover:opacity-50 "

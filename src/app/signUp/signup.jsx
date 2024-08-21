@@ -48,38 +48,37 @@ email,
 
 
   return (
-    <div className="w-1/6 min-w-max m-auto mt-28">
-      <h1 className="text-2xl font-bold mb-4">가입할래?</h1>
+    <div className="w-1/5 min-w-max m-auto mt-28  rounded-xl   ">
+      <h1 className="text-2xl font-medium mb-4 text-cyan-500">가입할래?</h1>
       <form onSubmit={handleSignUp}>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">이메일</label>
+        <div className="my-10">
+          <label htmlFor="email" className="block text-sm font-medium text-cyan-500">이메일</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 border-b bg-transparent border-cyan-500 text-emerald-400 shadow-sm focus:outline-none sm:text-sm"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">비밀번호 (두번 안 물어 봄)</label>
+        <div className="mt-14">
+          <label htmlFor="password" className="block text-sm font-medium text-cyan-500">비밀번호 (두번 안 물어 봄)</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 border-b bg-transparent border-cyan-500 text-emerald-400 focus:outline-none shadow-sm  sm:text-sm"
           />
         </div>
-        <button type="submit" disabled={isSubmitting} className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 bg-transparent rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
           {isSubmitting ? '회원가입 중...' : '어서와'}
         </button>
-        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-        {success && <p className="mt-2 text-sm text-green-600">{success}</p>}
+    
 
-        <div onClick={signInWithkakao} className=' w-16 h-16  mt-4 '>
+        <div onClick={signInWithkakao} className=' w-16 h-16  mt-10 '>
         <Image alt="ecommerce"
   className="w-16 h-16 object-cover object-center block hover:opacity-50"
   src="/img/kakao.png"
