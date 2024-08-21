@@ -122,7 +122,7 @@ export default function Profiles() {
         value={newName}
         onChange={(e) => setNewName(e.target.value)}
         placeholder={userName || newName}
-        className={`text-center  inline-block bg-transparent border-b-2  transition-all ease-in duration-100 text-white ${newName ? 'border-cyan-500':'border-gray-500 '}`}
+        className={`text-center outline-none inline-block bg-transparent border-b-2 rounded-none transition-all ease-in duration-100 text-white ${newName ? 'border-cyan-500':'border-gray-500 '}`}
       />
 </div>
 </div>

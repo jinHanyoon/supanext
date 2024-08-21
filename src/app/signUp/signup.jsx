@@ -59,11 +59,11 @@ email,
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="mt-1 block w-full px-3 py-2 border-b bg-transparent border-cyan-500 text-emerald-400 shadow-sm focus:outline-none sm:text-sm"
+            className="mt-1 block w-full px-3 py-2 rounded-none border-b bg-transparent border-cyan-500 text-emerald-400 shadow-sm focus:outline-none sm:text-sm"
           />
         </div>
         <div className="mt-14">
-          <label htmlFor="password" className="block text-sm font-medium text-cyan-500">비밀번호 (두번 안 물어 봄)</label>
+          <label htmlFor="password" className="block rounded-none text-sm font-medium text-cyan-500">비밀번호 (두번 안 물어 봄)</label>
           <input
             type="password"
             id="password"
