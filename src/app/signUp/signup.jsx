@@ -21,22 +21,23 @@ export default function SignUpPage() {
 
     setError(null);
     setSuccess(null);
-    setIsSubmitting(true);
 
     try {
       // Supabase로 사용자 등록
-      const { error: signUpError } = await supabase.auth.signUp({
-email,
-        password,
+      const { error: signUpError } = await supabase.auth.signUp({email,password,
       });
 
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        setSuccess('회원가입 성공! 이메일을 확인하여 인증을 완료하세요.');
+        alert('회원가입 성공! 이메일을 확인하여 인증을 완료하세요.');
+    setIsSubmitting(true);
+    router.push('/about');
+      
       }
     } catch (error) {
-      setError('서버 요청 중 오류가 발생했습니다.');
+      alert('서버 요청 중 오류가 발생했습니다.');
+      console.log(error)
     } finally {
       setIsSubmitting(false);
     }
@@ -74,7 +75,7 @@ email,
           />
         </div>
         <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 bg-transparent rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
-          {isSubmitting ? '회원가입 중...' : '어서와'}
+          {isSubmitting ? '회원가입 중...' : '메일확인해'}
         </button>
     
 
