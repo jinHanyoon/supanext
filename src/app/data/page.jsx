@@ -58,7 +58,7 @@ export default function Data() {
 
 
 <div className="container px-5 py-24 mx-auto" >
-        <div className="flex flex-wrap -m-4">
+        <div className="flex flex-wrap-m-4">
 
  {pro.map(pro => (
   <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 ">
