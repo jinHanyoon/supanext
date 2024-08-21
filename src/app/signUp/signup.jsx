@@ -30,13 +30,13 @@ export default function SignUpPage() {
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        alert('회원가입 성공! 이메일을 확인하여 인증을 완료하세요.');
+        alert('메일 보냈으니까 확인해');
     setIsSubmitting(true);
     router.push('/about');
       
       }
     } catch (error) {
-      alert('서버 요청 중 오류가 발생했습니다.');
+      alert('서버가 아프다.. 곧 수리해줄게');
       console.log(error)
     } finally {
       setIsSubmitting(false);
@@ -75,7 +75,7 @@ export default function SignUpPage() {
           />
         </div>
         <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 bg-transparent rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
-          {isSubmitting ? '회원가입 중...' : '메일확인해'}
+          {isSubmitting ? '회원가입 중...' : '끝'}
         </button>
     
 
