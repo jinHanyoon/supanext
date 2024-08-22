@@ -16,7 +16,7 @@ export const signInWithkakao =async() =>{
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "kakao",
     options: {
-      redirectTo: "https://ext005552.vercel.app/",
+      redirectTo: "https://devjinhan.vercel.app/",
     },
   });
 }
