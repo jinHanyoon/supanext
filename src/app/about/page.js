@@ -6,9 +6,9 @@ import { useData } from "../hooks/useData";
 export default function About() {
     const { pro, page02 } = useData();
 
-    if (!pro || pro.length === 0) {
-      return <Loading />;
-    }
+    // if (!pro || pro.length === 0) {
+    //   return <Loading />;
+    // }
 
   return (
     <>

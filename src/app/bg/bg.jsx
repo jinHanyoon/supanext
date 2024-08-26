@@ -10,7 +10,7 @@ export default function BackVideo() {
       setVideoPlaying(true);}
   
     return (
-        <>
+        <div>
     {!videoPlaying && (
         <div className="fixed top-0 left-0 inset-0 flex items-center justify-center bg-black bg-opacity-95 z-50 w-full h-full">
 <button onClick={handleConfirm} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-transparent">
@@ -27,7 +27,7 @@ Start Web
           <source src="/img/bg02.mp4" type="video/mp4" />
         </video>
       )}
-  </>
+  </div>
 
   )
 }

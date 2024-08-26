@@ -1,16 +1,27 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,jsx,ts,tsx}', // Adjust the path according to your project structure
+    './public/index.html',
   ],
   theme: {
     extend: {
+      keyframes: {
+        wave: {
+          '0%': { backgroundPosition: '100% 100%' },
+          '100%': { backgroundPosition: '0% 0%' },
+        },
+      },
+      animation: {
+        wave: 'wave 2s linear infinite',
+      },
+      backgroundSize: {
+        'wave-background': '50% 50%',
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        // 배경색을 더 어둡게, 웨이브를 더 밝게 조정
+        'skeleton-gradient': 'linear-gradient(135deg, #1c1f26 35%, #707d93 50%, #1c1f26 65%)',
       },
     },
   },

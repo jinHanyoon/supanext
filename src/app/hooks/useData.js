@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import supabase from '../api/supabaseaApi';
 
-// const supabaseUrl = 'https://vwaofeoshpnacnpicind.supabase.co'
-// const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
-// const supabase = createClient(supabaseUrl, supabaseKey)
-    // let { data: first_data } = await supabase.from(page02').select('*')
 
     export const useData = () => {
         const [pro, setPro] = useState([]);

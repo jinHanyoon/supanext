@@ -7,36 +7,47 @@ import Loading from '../loading';
 import Writing from "../component/writing/writing";
 import useUserSession from '../hooks/authdata'
 import supabase from '../api/supabaseaApi';
+import SkeletonCard from '../component/Skeleton/page';
 
 export default function Data() {
     const [pro, setData] = useState([]);
     const [dataShow, ShowData] = useState(false)
     const { userName } = useUserSession();
+    const [Load, setLoad] = useState(true)
 
     const defaultAvatar = '/img/img04.jpg'; 
     useEffect(() => {
- 
+      async function dbCome() { 
+        //  전체를 불러오기
+        // data pro == >pro 에 data 를 할당 
+          const { data: pro } = await 
+          supabase.from('pro').select('*');
+          setData(pro);
+          setTimeout(() => {
+            setLoad(false);
+        }, 2000); // 2000ms = 2초
+        }
+        dbCome();
     },
    );
 
-   async function dbCome() { 
-    //  전체를 불러오기
-    // data pro == >pro 에 data 를 할당 
-      const { data: pro } = await 
-      
-      supabase.from('pro').select('*');
-      setData(pro);
-
-    }
-    dbCome();
+  //  async function dbCome() { 
+  //   //  전체를 불러오기
+  //   // data pro == >pro 에 data 를 할당 
+  //     const { data: pro } = await 
+  //     supabase.from('pro').select('*');
+  //     setData(pro);
+  //     setLoad(false)
+  //   }
+  //   dbCome();
 
     const handleDelete = async (title, body) => {
       try {
 
-        if (pro.length === 1) {
-         alert("삭제불가")
-          return;
-        }
+        // if (pro.length === 1) {
+        //  alert("삭제불가")
+        //   return;
+        // }
 
         const {error} = await supabase.from('pro').delete().eq('title', title).eq('body', body);
       } catch (error) {
@@ -47,23 +58,34 @@ export default function Data() {
     };
 
 
-    if (pro === null || pro.length === 0) {
-      return <Loading />;
-    }
-
+    // if (Load) {
+    //   return (
+        
+    //   );
+    // }
     
 
   return (
     <>
+    {Load && 
+    <>
+    <div className="container px-5 py-24 mx-auto">
+    <div className="flex flex-wrap gap-10">
+      {[...Array(pro.length)].map((_, index) => (
+        <SkeletonCard key={index} />
+      ))}
+    </div>
+  </div>
+  </>
+    }    
 
-
+{!Load && 
 <div className="container px-5 py-24 mx-auto" >
-        <div className="flex flex-wrap gap-6">
-
+        <div className="flex flex-wrap gap-10">
  {pro.map(pro => (
   <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 ">
           <a className="block relative h-48 rounded overflow-hidden">
-            <Image alt="ecommerce" src={pro.imgUrl || defaultAvatar}
+            <Image alt="DataImg" src={pro.imgUrl || defaultAvatar}
   className=" object-center w-full h-full block hover:opacity-50 "
 
    width={300} height={300}/>
@@ -71,7 +93,7 @@ export default function Data() {
           </a>
           <div className="mt-4">
             <h2 className="text-gray-100  text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
-          <Image alt="ecommerce" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"'/>
+          <Image alt="avatar" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"'/>
              <p className='mt-6'>  {pro.username}
              </p>               
                </h2>
@@ -84,6 +106,8 @@ export default function Data() {
 
 </div>
 </div>
+}
+
     </>
 
   );
