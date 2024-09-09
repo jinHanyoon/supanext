@@ -88,13 +88,13 @@ export default function DetailsPage() {
 
     <div className="container px-5 py-24 mx-auto">
       <div className="w-9/12 mx-auto">
-      <div className='flex justify-between mx-auto w-full max-w-5xl  min-w-80 border-b-gray-400  border-b-4 border-double '>
+      <div className='flex justify-between mx-auto w-full max-w-5xl   border-b-gray-400  border-b-4 border-double '>
       <h1 className='h-11 text-4xl  text-white'>{TargetData.title ||UndefineText }</h1>
     {fixComplete &&(
       <div onClick={() => handleDelete(TargetData.title, TargetData.body)} className="text-white text-3xl font-bold ">x</div>
     )}
       </div>
-      <div className='w-full max-w-5xl mt-16 text-center min-w-80 mx-auto' >
+      <div className='w-full max-w-5xl mt-16 text-center  mx-auto' >
       <Image 
       alt="DataImg" 
       src={TargetData.imgUrl || defaultAvatar}
