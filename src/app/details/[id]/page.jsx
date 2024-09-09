@@ -16,7 +16,15 @@ export default function DetailsPage() {
   const UndefineText = "-"
   const router = useRouter()
   const {userUUID} =UserUUID()
+  const [Modal, setModal] = useState(false);
 
+  const handleImageClick = () => {
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
 
   // url 에서 게시물 id 가져올 때 사용
@@ -80,19 +88,20 @@ export default function DetailsPage() {
 
     <div className="container px-5 py-24 mx-auto">
       <div className="w-9/12 mx-auto">
-      <div className='flex justify-between max-w-5xl  min-w-80 border-b-gray-400  border-b-4 border-double '>
+      <div className='flex justify-between mx-auto w-full max-w-5xl  min-w-80 border-b-gray-400  border-b-4 border-double '>
       <h1 className='h-11 text-4xl  text-white'>{TargetData.title ||UndefineText }</h1>
     {fixComplete &&(
       <div onClick={() => handleDelete(TargetData.title, TargetData.body)} className="text-white text-3xl font-bold ">x</div>
     )}
       </div>
-      <div className='w-2/3 max-w-96 mt-16 min-w-80 text-center mx-auto' >
+      <div className='w-full max-w-5xl mt-16 text-center min-w-80 mx-auto' >
       <Image 
       alt="DataImg" 
       src={TargetData.imgUrl || defaultAvatar}
       className="object-center w-full h-full block"
-      width={300} 
-      height={300}
+      width={700} 
+      height={600}
+      onClick={handleImageClick}
     />
     <div className='text-white mt-10'>
       {TargetData.body}
@@ -101,6 +110,26 @@ export default function DetailsPage() {
 
     </div>
     </div>
+
+
+    {Modal && (
+        <div 
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70"
+          onClick={closeModal}
+        >
+          <div className="relative">
+            <Image 
+              src={TargetData.imgUrl || defaultAvatar} 
+              alt="Enlarged Image" 
+              className="max-w-full max-h-full"
+              width={1600} 
+              height={700}
+            />
+          </div>
+        </div>
+      )}
+
+
     </>
   );
 }
