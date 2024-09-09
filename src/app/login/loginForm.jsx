@@ -69,7 +69,7 @@ export default function LoginForm({sideHidden}) {
         <button type="submit" className={`w-full flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white border-cyan-300  border mt-8 duration-1000  ${isFormComplete ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-transparent text-white border-cyan-300'}`} >입장</button>
 
         {/* <button type="submit" className="w-full flex justify-center bg-transparent py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white border-cyan-300  border mt-8" >입장</button> */}
-        <Link href="/signUp" onClick={sideHidden} className="w-full flex justify-center  py-2 px-4 border border-rose-800 rounded-md shadow-sm text-sm font-medium text-white  mt-4">아이디가 없어요</Link>
+        <Link href="/signUp" onClick={sideHidden} className={`w-full flex justify-center  py-2 px-4 border border-rose-800 rounded-md shadow-sm text-sm font-medium text-white  mt-4  duration-1000 ${isFormComplete ? 'bg-transparent' : 'bg-rose-800'}`}>아이디가 없어요</Link>
         
 
       </form>
