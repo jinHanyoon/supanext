@@ -1,13 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import Image from "next/image";
-import About from '../about/page';
-import Loading from '../loading';
-import Writing from "../component/writing/writing";
 import useUserSession from '../hooks/authdata'
 import supabase from '../api/supabaseaApi';
 import SkeletonCard from '../component/Skeleton/page';
+import Link from 'next/link';
 
 export default function Data() {
     const [pro, setData] = useState([]);
@@ -41,21 +38,15 @@ export default function Data() {
   //   }
   //   dbCome();
 
-    const handleDelete = async (title, body) => {
-      try {
+    // const handleDelete = async (title, body) => {
+    //   try {
+    //     const {error} = await supabase.from('pro').delete().eq('title', title).eq('body', body);
+    //   } catch (error) {
+    //     console.log(error, '삭제 중 오류 발생')
+    //   }
 
-        // if (pro.length === 1) {
-        //  alert("삭제불가")
-        //   return;
-        // }
-
-        const {error} = await supabase.from('pro').delete().eq('title', title).eq('body', body);
-      } catch (error) {
-        console.log(error, '삭제 중 오류 발생')
-      }
-
-      setData(pro => pro.filter(item => item.title !== title || item.body !== body));
-    };
+    //   setData(pro => pro.filter(item => item.title !== title || item.body !== body));
+    // };
 
 
     // if (Load) {
@@ -84,13 +75,18 @@ export default function Data() {
         <div className="flex flex-wrap gap-10">
  {pro.map(pro => (
   <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 ">
-          <a className="block relative h-48 rounded overflow-hidden">
-            <Image alt="DataImg" src={pro.imgUrl || defaultAvatar}
-  className=" object-center w-full h-full block hover:opacity-50 "
+<Link href={`/details/${pro.id}`}>
+  <div className="block relative h-48 rounded overflow-hidden">
+    <Image 
+      alt="DataImg" 
+      src={pro.imgUrl || defaultAvatar}
+      className="object-center w-full h-full block hover:opacity-50"
+      width={300} 
+      height={300}
+    />
 
-   width={300} height={300}/>
-   <p onClick={() => handleDelete(pro.title, pro.body)} className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full text-center font-bold text-white leading-loose hover:bg-blue-800">X</p>
-          </a>
+  </div>
+</Link>
           <div className="mt-4">
             <h2 className="text-gray-100  text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
           <Image alt="avatar" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"'/>

@@ -46,7 +46,6 @@ export default function Writing({writing_hidden}) {
     return;
   }
   setLoading(true)
-
       try {
         let imgUrl = null;
 
@@ -64,23 +63,18 @@ export default function Writing({writing_hidden}) {
             alert('이미지 업로드에 실패했습니다.');
             return; // 에러 발생 시 더 진행하지 않음
           }
-    
           imgUrl = supabase.storage.from('test_img').getPublicUrl(filePath).data.publicUrl;
         }
-
         // Supabase로부터 응답을 받을 때, data와 error를 구분해서 받는다.
         const { data, error } = await supabase.from('pro').insert([{ title: titleValue, body: bodyValue, username:userName, avatar:userAvatar, imgUrl: imgUrl, }]);
-    
         // 에러가 발생한 경우 바로 콘솔에 출력하고 함수를 종료한다.
         if (error) {
           console.error("Error inserting data:", error.message);
           alert('오류가 발생했습니다. 다시 시도해주세요.');
           return;  // 더 이상 진행하지 않고 함수를 종료한다.
         }
-    
         // 데이터가 성공적으로 삽입된 경우, 새로운 데이터를 state에 반영한다.
         setData((prevData) => [...prevData, ...data]);
-    
         // 입력 필드 초기화
         setTitleValue('');
         setBodyValue('');
@@ -94,15 +88,8 @@ export default function Writing({writing_hidden}) {
         alert('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
       }
     };
-
-
-
-
-
-
     return (
     <>
-  
   {loading &&<Loading />}
      
 
