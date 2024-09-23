@@ -7,6 +7,7 @@ import Image from "next/image";
 import Loading from '../../loading'
 import supabase from '@/app/api/supabaseaApi';
 import UserUUID from '../../hooks/authdata'
+import Comment from '@/app/component/commnet/page';
 
 export default function DetailsPage() {
   const [TargetData, setProData] = useState([])
@@ -109,8 +110,11 @@ export default function DetailsPage() {
     </div>
 
     </div>
-    </div>
 
+<Comment/>
+  
+
+    </div>
 
     {Modal && (
         <div 

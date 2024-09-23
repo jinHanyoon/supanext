@@ -6,6 +6,9 @@ import supabase from '../api/supabaseaApi';
 import SkeletonCard from '../component/Skeleton/page';
 import Link from 'next/link';
 
+
+
+
 export default function Data() {
     const [pro, setData] = useState([]);
     const [dataShow, ShowData] = useState(false)
@@ -18,14 +21,20 @@ export default function Data() {
         //  전체를 불러오기
         // data pro == >pro 에 data 를 할당 
           const { data: pro } = await 
-          supabase.from('pro').select('*');
-          setData(pro);
+          supabase.from('pro').select('*').order('create_at',{ascending:false});
+          const proWithKoreanTime = pro.map(item => ({
+            ...item,
+            create_at: new Date(item.create_at).toLocaleString('ko-KR', {
+              timeZone: 'Asia/Seoul',
+            }),
+          }));
+          setData(proWithKoreanTime);
           setTimeout(() => {
             setLoad(false);
         }, 2000); // 2000ms = 2초
         }
         dbCome();
-    },
+    },[pro]
    );
 
   //  async function dbCome() { 
@@ -74,7 +83,7 @@ export default function Data() {
 <div className="container px-5 py-24 mx-auto" >
         <div className="flex flex-wrap gap-10">
  {pro.map(pro => (
-  <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 ">
+  <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 relative">
 <Link href={`/details/${pro.id}`}>
   <div className="block relative h-48 rounded overflow-hidden">
     <Image 
@@ -95,6 +104,8 @@ export default function Data() {
                </h2>
             <h3 className="text-gray-200 title-font text-lg font-extrabold">{pro.title}</h3>
             <p  className="mt-1 text-gray-400  ">{pro.body}</p>
+            <p  className="mt-1 text-gray-400  absolute bottom-2 text-sm">{pro.create_at}</p>
+
           </div>
         </div>
 ))}
