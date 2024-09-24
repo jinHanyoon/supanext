@@ -28,7 +28,14 @@ const handleLogout = async () => {
   await logoutAction();
   setIsMenuOpen(false); // 로그아웃 시 모바일 메뉴 닫기
 }
-
+const handleMyPageClick = (e) => {
+  if (!loggedIn) {
+    e.preventDefault();
+    alert('로그인 후 이용해 주세요.\n\n임시 아이디:\nID: admin@123.com\nPW: 123');
+  } else {
+    closeMenu(); // 로그인한 경우에만 메뉴를 닫습니다.
+};
+}
   return (
 <>
   <nav className="fixed z-50 w-full top-3">
@@ -63,7 +70,7 @@ const handleLogout = async () => {
           <div className="flex space-x-4 items-center justify-between w-full">
             <div className="flex space-x-4">
               <Link href="/" className="rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Main</Link>
-              <Link href="/profiles" className="rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">MY Page</Link>
+              <Link href="/profiles" onClick={handleMyPageClick} className="rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">MY Page</Link>
               <Link href="/about" className="rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Project</Link>
               <Link href="/" className="rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Calendar</Link>
             </div>
@@ -106,7 +113,7 @@ const handleLogout = async () => {
       <div className="md:hidden" id="mobile-menu">
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <Link href="/" onClick={closeMenu} className="block rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Main</Link>
-          <Link href="/profiles" onClick={closeMenu} className="block rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">MY Page</Link>
+          <Link href="/profiles" onClick={handleMyPageClick} className="block rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">MY Page</Link>
           <Link href="/about" onClick={closeMenu} className="block rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Project</Link>
           <Link href="/" onClick={closeMenu} className="block rounded-md px-3 py-2 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition duration-300">Calendar</Link>
           {loggedIn && (
