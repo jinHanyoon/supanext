@@ -4,6 +4,7 @@ import supabase from '../api/supabaseaApi';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import {signInWithkakao} from '../login/actions'
+import Loading from '../../loading';
 
 
 export default function SignUpPage() {
@@ -21,6 +22,7 @@ export default function SignUpPage() {
 
     setError(null);
     setSuccess(null);
+    setIsSubmitting(true);
 
     try {
       // Supabase로 사용자 등록
@@ -31,8 +33,7 @@ export default function SignUpPage() {
         setError(signUpError.message);
       } else {
         alert('메일 보냈으니까 확인해');
-    setIsSubmitting(true);
-    router.push('/about');
+    router.push('/');
       
       }
     } catch (error) {
@@ -49,6 +50,10 @@ export default function SignUpPage() {
 
 
   return (
+    <>
+      {isSubmitting && (
+          <Loading />
+      )}
     <div className="w-1/5 min-w-max m-auto mt-28  rounded-xl   ">
       <h1 className="text-2xl font-medium mb-4 text-cyan-500">가입할래?</h1>
       <form onSubmit={handleSignUp}>
@@ -74,7 +79,7 @@ export default function SignUpPage() {
             className="mt-1 block w-full px-3 py-2 border-b bg-transparent border-cyan-500 text-emerald-400 focus:outline-none shadow-sm  sm:text-sm"
           />
         </div>
-        <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 bg-transparent rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
+        <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
           {isSubmitting ? '회원가입 중...' : '끝'}
         </button>
     
@@ -89,6 +94,7 @@ export default function SignUpPage() {
 
       </form>
     </div>
+    </>
   );
 }
 
