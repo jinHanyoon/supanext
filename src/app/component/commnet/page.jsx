@@ -37,6 +37,10 @@ useEffect(()=> {
 
 const CommentHandle = async (e) =>{
   e.preventDefault();
+  if (!userName) {
+    alert('로그인 후 이용해 주세요.');
+    return;
+  }
 try{
   const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName})
   setBody('')
