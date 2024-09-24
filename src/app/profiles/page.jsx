@@ -90,9 +90,9 @@ export default function Profiles() {
     
 
   return (
-    <section className="text-gray-600 body-font h-full">
+    <section className="text-gray-600 body-font h-full ">
        {loading &&<Loading />}
-        <div className='w-full h-auto m-auto max-w-screen-2xl mx-auto p-4 md:py-8'>
+        <div className='w-full h-auto m-auto max-w-screen-2xl mx-auto p-4 md:py-8 mt-32'>
 
     <div className={`w-1/3 min-w-72 max-w-64 h-96 bg-transparent  transition-all ease-in duration-100 backdrop-blur-sm border rounded-3xl flex-col flex items-center justify-center mx-auto ${newName ? 'border-cyan-500':'border-gray-500'}`}>
 

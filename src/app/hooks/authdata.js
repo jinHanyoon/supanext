@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import supabase from '../api/supabaseaApi';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 
 const useUserSession = () => {
@@ -10,6 +11,7 @@ const useUserSession = () => {
   const [userAvatar, setAvatar] = useState('');
   const [userUUID, setUUID] = useState('')
   const [loggedIn, setLoggedIn] = useState('false');
+  const router=useRouter()
 
   useEffect(() => {
     const checkSession = async () => {
@@ -46,6 +48,7 @@ const useUserSession = () => {
         setLoggedIn(false);
         setUserName('');
         setAvatar('');
+        // router.push('/')
 
       }
     });

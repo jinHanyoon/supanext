@@ -93,7 +93,7 @@ export default function Writing({writing_hidden}) {
   {loading &&<Loading />}
      
 
-        <div className='bg-slate-900/80 w-full h-screen fixed z-50 top-0 ' >
+        <div className='bg-slate-900/80 w-full h-screen fixed z-40 top-32 ' >
           <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end '  >
       <div className='absolute top-14 right-2 w-8 h-1/10 border-rose-700 border rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
 

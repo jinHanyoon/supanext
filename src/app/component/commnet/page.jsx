@@ -62,39 +62,52 @@ const CommentDelete = async(id) =>{
 
 
 return (
-  <div className="container px-5 py-24 mx-auto">
- <div className="w-full md:w-9/12 mx-auto">
+<div className="w-full mx-auto max-w-4xl">
+  <div className="space-y-6">
     {Comment.map((commentValue) => (
-        <div key={commentValue.id} className="backdrop-blur-sm rounded-lg p-3 mb-4 relative border-2 border-gray-500 duration-500 hover:border-cyan-600 min-h-[80px]">
-          <div className="absolute top-0 right-2 cursor-pointer text-gray-500 hover:text-gray-700">
-            <span className="text-xl font-bold" onClick={() => CommentDelete(commentValue.id)}>X</span>
-          </div>
-          <div className="flex flex-col justify-between h-full">
-            <div>
-              <h2 className="text-gray-100 text-xs tracking-widest title-font mb-2 flex items-center gap-1 border-b pb-1">
-                <p>{commentValue.user_name}</p>
-              </h2>
-              <h3 className="text-gray-200 title-font text-sm md:text-base font-semibold break-words">{commentValue.body}</h3>
-            </div>
-            <p className="mt-2 text-gray-400 text-xs">{commentValue.create_at}</p>
-          </div>
+      <div key={commentValue.id} className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600 p-4 relative">
+        <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-red-400 transition-colors duration-200">
+          <span className="text-xl font-bold" onClick={() => CommentDelete(commentValue.id)}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
         </div>
-      ))}
-    </div>
-
-    <form onSubmit={CommentHandle} className="mt-6 w-full md:w-9/12 mx-auto">
-      <div className="p-3 backdrop-blur-sm rounded-lg border-2 border-gray-500 duration-500 hover:border-cyan-600 relative">
-        <textarea 
-          value={bodyValue}
-          onChange={(e) => setBody(e.target.value)}
-          className="w-full p-2 mb-10 bg-transparent text-gray-200 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600 resize-none"
-          rows="3"
-          placeholder="댓글을 입력하세요..."
-        ></textarea>
-           <button type="submit" className={`absolute bottom-3 right-3 flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white border-cyan-300 border duration-1000 ${bodyValue.trim() ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-transparent text-white border-cyan-300'}`}>작성</button>
+        <div className="flex flex-col justify-between h-full">
+          <div>
+            <h2 className="text-gray-300 text-sm tracking-wider mb-2 flex items-center gap-1 border-b border-gray-600 pb-2">
+              {commentValue.user_name}
+            </h2>
+            <h3 className="text-gray-200 text-base font-medium break-words">{commentValue.body}</h3>
+          </div>
+          <p className="mt-3 text-gray-400 text-xs">{commentValue.create_at}</p>
+        </div>
       </div>
-    </form>
+    ))}
   </div>
+
+  <form onSubmit={CommentHandle} className="mt-8">
+    <div className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600 p-4 relative">
+      <textarea 
+        value={bodyValue}
+        onChange={(e) => setBody(e.target.value)}
+        className="w-full p-3 mb-16 bg-transparent text-gray-200 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent resize-none"
+        rows="3"
+        placeholder="댓글을 입력하세요..."
+      ></textarea>
+      <button 
+        type="submit" 
+        className={`absolute bottom-4 right-4 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white border transition-all duration-300 ${
+          bodyValue.trim() 
+            ? 'bg-cyan-600 border-cyan-600 hover:bg-cyan-700' 
+            : 'bg-transparent border-gray-600 hover:border-cyan-600'
+        }`}
+      >
+        작성
+      </button>
+    </div>
+  </form>
+</div>
 )
 
 };

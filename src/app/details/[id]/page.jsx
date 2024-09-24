@@ -84,56 +84,76 @@ export default function DetailsPage() {
   
 
   return (
-    <>
-    {loading && <Loading/>}
+<>
+  {loading && <Loading />}
 
-    <div className="container px-5 py-24 mx-auto">
-      <div className="w-9/12 mx-auto">
-      <div className='flex justify-between mx-auto w-full max-w-5xl   border-b-gray-400  border-b-4 border-double '>
-      <h1 className='h-11 text-4xl  text-white'>{TargetData.title ||UndefineText }</h1>
-    {fixComplete &&(
-      <div onClick={() => handleDelete(TargetData.title, TargetData.body)} className="text-white text-3xl font-bold ">x</div>
-    )}
-      </div>
-      <div className='w-full max-w-5xl mt-16 text-center  mx-auto' >
-      <Image 
-      alt="DataImg" 
-      src={TargetData.imgUrl || defaultAvatar}
-      className="object-center w-full h-full block"
-      width={700} 
-      height={600}
-      onClick={handleImageClick}
-    />
-    <div className='text-white mt-10'>
-      {TargetData.body}
-    </div>
-    </div>
-
-    </div>
-
-<Comment/>
-  
-
-    </div>
-
-    {Modal && (
-        <div 
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70"
-          onClick={closeModal}
-        >
-          <div className="relative">
+  <div className="container px-4 pt-32 pb-24 mx-auto max-w-4xl relative z-10">
+    <div className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600">
+      <div className="p-8">
+        <div className='flex justify-between items-center border-b border-gray-600 pb-4 mb-8'>
+          <h1 className='text-2xl font-bold text-white'>{TargetData.title || UndefineText}</h1>
+          {fixComplete && (
+            <button 
+              onClick={() => handleDelete(TargetData.title, TargetData.body)} 
+              className="text-red-400 hover:text-red-300 transition-colors duration-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        <div className='space-y-8'>
+          <div>
             <Image 
-              src={TargetData.imgUrl || defaultAvatar} 
-              alt="Enlarged Image" 
-              className="max-w-full max-h-full"
-              width={1600} 
-              height={700}
+              alt="DataImg" 
+              src={TargetData.imgUrl || defaultAvatar}
+              className="w-full h-auto rounded-lg shadow-md"
+              width={600} 
+              height={400}
+              onClick={handleImageClick}
             />
           </div>
+          <div className='text-gray-200 text-base leading-relaxed'>
+            {TargetData.body}
+          </div>
         </div>
-      )}
+      </div>
+    </div>
 
+    <div className="mt-12">
+      <Comment />
+    </div>
+  </div>
 
-    </>
+  {Modal && (
+  <div 
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-95 z-50"
+    onClick={closeModal}
+  >
+    <div className="relative w-[95vw] h-[95vh] flex items-center justify-center">
+      <Image 
+        src={TargetData.imgUrl || defaultAvatar} 
+        alt="Enlarged Image" 
+        className="object-contain w-full h-full rounded-lg shadow-2xl"
+        layout="fill"
+        quality={100}
+      />
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          closeModal();
+        }}
+        className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors duration-200 bg-black bg-opacity-50 rounded-full p-2 sm:p-3 z-10"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+)}
+
+</>
   );
 }

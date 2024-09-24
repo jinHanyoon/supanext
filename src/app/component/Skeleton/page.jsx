@@ -8,7 +8,6 @@ const SkeletonCard = () => (
   <div className="lg:w-1/4 md:w-1/2 p-4 w-full h-96 backdrop-blur-sm rounded-2xl border-2 border-gray-500 duration-500">
     <div className="block relative h-48 rounded overflow-hidden">
       <Skeleton className="w-full h-full" />
-      <div className="absolute top-2 right-2 w-1/12 h-1/6 bg-sky-300/50 rounded-full"></div>
     </div>
     <div className="mt-4">
       <div className="flex items-center gap-4 h-14 border-b">

@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
 
   
   return (
-    <html lang="en">
+    <html lang="en" >
     <head>
     <title>Dev JinHan</title>
         <meta name="description" content="Yoon Jin Han" />
@@ -29,19 +29,14 @@ export default function RootLayout({ children }) {
       </head>
 
 
-        <body>
-  <BackVideo/>      
-
- 
-
+        <body className={inter.className}>
+  {/* <BackVideo/>       */}
       <Header/>
-
-
       <Sidebar/>         
 
   {children}
       
-      <Footer/>
+      {/* <Footer/> */}
 
       </body>
     </html>
