@@ -4,7 +4,7 @@ import supabase from '../api/supabaseaApi';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import {signInWithkakao} from '../login/actions'
-import Loading from '../../loading';
+import Loading from '../loading';
 
 
 export default function SignUpPage() {
