@@ -79,41 +79,42 @@ export default function Data() {
   </>
     }    
 
-{!Load && 
-<div className="container px-5 py-24 mx-auto" >
-        <div className="flex flex-wrap gap-10">
- {pro.map(pro => (
-  <div key={pro.id} className="lg:w-1/4 md:w-1/2 p-4 w-full h-96  backdrop-blur-sm  rounded-2xl border-2 border-gray-500 duration-500 hover:border-cyan-600 relative">
-<Link href={`/details/${pro.id}`}>
-  <div className="block relative h-48 rounded overflow-hidden">
-    <Image 
-      alt="DataImg" 
-      src={pro.imgUrl || defaultAvatar}
-      className="object-center w-full h-full block hover:opacity-50"
-      width={300} 
-      height={300}
-    />
-
-  </div>
-</Link>
-          <div className="mt-4">
-            <h2 className="text-gray-100  text-xs tracking-widest title-font mb-1 flex items-center gap-4 h-14 border-b">
-          <Image alt="avatar" src={pro.avatar || defaultAvatar}  width={40} height={30}  className='w-10 h-10 p-1 rounded-full ring-2 ring-gray-500 dark:ring-gray-500"'/>
-             <p className='mt-6'>  {pro.username}
-             </p>               
-               </h2>
-            <h3 className="text-gray-200 title-font text-lg font-extrabold">{pro.title}</h3>
-            <p  className="mt-1 text-gray-400  ">{pro.body}</p>
-            <p  className="mt-1 text-gray-400  absolute bottom-2 text-sm">{pro.create_at}</p>
-
+{!Load && (
+        <div className="container px-5 py-24 mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {pro.map(pro => (
+              <div key={pro.id} className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                <Link href={`/details/${pro.id}`}>
+                  <div className="relative w-full h-48">
+                    <Image 
+                      alt="DataImg" 
+                      src={pro.imgUrl || defaultAvatar}
+                      fill
+                      className="object-cover p-2"
+                    />
+                  </div>
+                </Link>
+                <div className="p-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{pro.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{pro.body}</p>
+                  <div className="flex items-center">
+                    <div className="w-6 h-6 relative mr-2">
+                      <Image 
+                        alt="avatar" 
+                        src={pro.avatar || defaultAvatar}  
+                        fill
+                        className="rounded-full object-cover"
+                      />
+                    </div>
+                    <span className="text-gray-700 text-sm">{pro.username}</span>
+                  </div>
+                  <p className="text-gray-500 text-xs mt-2">{pro.create_at}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-))}
-  
-
-</div>
-</div>
-}
+      )}
 
     </>
 

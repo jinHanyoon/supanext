@@ -69,8 +69,8 @@ return (
 <div className="w-full mx-auto max-w-4xl">
   <div className="space-y-6">
     {Comment.map((commentValue) => (
-      <div key={commentValue.id} className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600 p-4 relative">
-        <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-red-400 transition-colors duration-200">
+      <div key={commentValue.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative">
+        <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-red-500 transition-colors duration-200">
           <span className="text-xl font-bold" onClick={() => CommentDelete(commentValue.id)}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -79,33 +79,34 @@ return (
         </div>
         <div className="flex flex-col justify-between h-full">
           <div>
-            <h2 className="text-gray-300 text-sm tracking-wider mb-2 flex items-center gap-1 border-b border-gray-600 pb-2">
+            <h2 className="text-gray-700 text-sm font-semibold tracking-wider mb-2 flex items-center gap-1 border-b border-gray-200 pb-2">
               {commentValue.user_name}
             </h2>
-            <h3 className="text-gray-200 text-base font-medium break-words">{commentValue.body}</h3>
+            <h3 className="text-gray-800 text-base font-medium break-words">{commentValue.body}</h3>
           </div>
-          <p className="mt-3 text-gray-400 text-xs">{commentValue.create_at}</p>
+          <p className="mt-3 text-gray-500 text-xs">{commentValue.create_at}</p>
         </div>
       </div>
     ))}
   </div>
 
   <form onSubmit={CommentHandle} className="mt-8">
-    <div className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600 p-4 relative">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative">
       <textarea 
         value={bodyValue}
         onChange={(e) => setBody(e.target.value)}
-        className="w-full p-3 mb-16 bg-transparent text-gray-200 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent resize-none"
+        className="w-full p-3 mb-16 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
         rows="3"
         placeholder="댓글을 입력하세요..."
       ></textarea>
       <button 
         type="submit" 
-        className={`absolute bottom-4 right-4 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white border transition-all duration-300 ${
+        className={`absolute bottom-4 right-4 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white transition-all duration-300 ${
           bodyValue.trim() 
-            ? 'bg-cyan-600 border-cyan-600 hover:bg-cyan-700' 
-            : 'bg-transparent border-gray-600 hover:border-cyan-600'
+            ? 'bg-cyan-600 hover:bg-cyan-700' 
+            : 'bg-gray-400 cursor-not-allowed'
         }`}
+        disabled={!bodyValue.trim()}
       >
         작성
       </button>

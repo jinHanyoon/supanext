@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       </head>
 
 
-        <body className={inter.className}>
+        <body  className=" bg-stone-100">
   {/* <BackVideo/>       */}
       <Header/>
       <Sidebar/>         

@@ -87,23 +87,23 @@ export default function DetailsPage() {
 <>
   {loading && <Loading />}
 
-  <div className="container px-4 pt-32 pb-24 mx-auto max-w-4xl relative z-10">
-    <div className="backdrop-filter backdrop-blur-lg bg-opacity-30 bg-gray-900 rounded-xl shadow-xl overflow-hidden border border-gray-600">
-      <div className="p-8">
-        <div className='flex justify-between items-center border-b border-gray-600 pb-4 mb-8'>
-          <h1 className='text-2xl font-bold text-white'>{TargetData.title || UndefineText}</h1>
+  <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
+    <div className=" rounded-xl shadow-lg overflow-hidden border border-gray-200">
+      <div className="p-6 md:p-8">
+        <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
+          <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{TargetData.title || UndefineText}</h1>
           {fixComplete && (
             <button 
               onClick={() => handleDelete(TargetData.title, TargetData.body)} 
-              className="text-red-400 hover:text-red-300 transition-colors duration-200"
+              className="text-red-500 hover:text-red-600 transition-colors duration-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           )}
         </div>
-        <div className='space-y-8'>
+        <div className='space-y-6'>
           <div>
             <Image 
               alt="DataImg" 
@@ -114,21 +114,21 @@ export default function DetailsPage() {
               onClick={handleImageClick}
             />
           </div>
-          <div className='text-gray-200 text-base leading-relaxed'>
+          <div className='text-gray-700 text-lg leading-relaxed'>
             {TargetData.body}
           </div>
         </div>
       </div>
     </div>
 
-    <div className="mt-12">
+    <div className="mt-10">
       <Comment />
     </div>
   </div>
 
   {Modal && (
   <div 
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-95 z-50"
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50"
     onClick={closeModal}
   >
     <div className="relative w-[95vw] h-[95vh] flex items-center justify-center">
@@ -153,7 +153,6 @@ export default function DetailsPage() {
     </div>
   </div>
 )}
-
 </>
   );
 }
