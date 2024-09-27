@@ -31,49 +31,78 @@ export default function LoginForm({sideHidden}) {
 
 
   return (
-     
-    <div className="bg-black/90 w-full h-screen fixed z-50 top-0">
-   
-
-      <form onSubmit={handleSubmit} className={`w-1/6 min-w-max m-auto mt-48  bg-transparent p-5 rounded-xl backdrop-filter border backdrop-blur-lg duration-300 ${password ? 'border-cyan-800': 'border-gray-500'}`}>
-      <div className='ml-64 w-8 h-1/10 border border-rose-800  rounded-full text-center font-bold text-white leading-loose' onClick={sideHidden}>X</div>
-        <div className="mb-4">
-          <label htmlFor="username" className='block text-sm font-medium  text-cyan-500'>이메일</label>
+<div className="fixed inset-0 backdrop-blur-xl flex items-center justify-center p-4 z-50">
+  <div className="w-full max-w-md bg-gray-300/80 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden">
+    <div className="p-8">
+      <div className="flex justify-end">
+        <button onClick={sideHidden} className="text-gray-600 hover:text-gray-800 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">로그인</h2>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-medium text-gray-700">이메일</label>
           <input
-            type="text"
-            id="username"
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            className="w-full px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+            placeholder="admin@123.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            className='mt-1 block w-full px-3 py-2 border-b rounded-none border-cyan-500  text-emerald-400 bg-transparent outline-none shadow-sm  sm:text-sm '
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-cyan-500">비밀번호</label>
+        <div className="space-y-2">
+          <label htmlFor="password" className="text-sm font-medium text-gray-700">비밀번호</label>
           <input
-            type="password"
             id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            className="w-full px-4 py-3 rounded-lg bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+            placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            className='mt-1 block w-full px-3 py-2 text-emerald-400 border-b rounded-none shadow-sm outline-none sm:text-sm bg-transparent border-cyan-500'
           />
-        {error && (
-            <p
-              className="mt-2 text-sm text-red-600 text-center"
-              dangerouslySetInnerHTML={{ __html: error }}
-            />
-          )}
         </div>
-      
-        <button type="submit" className={`w-full flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white border-cyan-300  border mt-8 duration-1000  ${isFormComplete ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-transparent text-white border-cyan-300'}`} >입장</button>
 
-        {/* <button type="submit" className="w-full flex justify-center bg-transparent py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white border-cyan-300  border mt-8" >입장</button> */}
-        <Link href="/signUp" onClick={sideHidden} className={`w-full flex justify-center  py-2 px-4 border border-rose-800 rounded-md shadow-sm text-sm font-medium text-white  mt-4  duration-1000 ${isFormComplete ? 'bg-transparent' : 'bg-rose-800'}`}>아이디가 없어요</Link>
-        
+        {error && (
+          <p className="text-sm text-red-600 text-center">{error}</p>
+        )}
 
+        <button
+          type="submit"
+          className={`w-full py-3 px-4 rounded-lg text-sm font-semibold text-center text-white transition duration-200 ease-in-out ${
+            isFormComplete 
+              ? 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50' 
+              : 'bg-gray-400 cursor-not-allowed'
+          }`}
+          disabled={!isFormComplete}
+        >
+          로그인
+        </button>
       </form>
+      
+      <div className="mt-6 text-center">
+        <Link 
+          href="/signUp" 
+          onClick={sideHidden} 
+          className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
+        >
+          계정이 없으신가요? 회원가입
+        </Link>
+      </div>
     </div>
+  </div>
+</div>
   );
 }
 

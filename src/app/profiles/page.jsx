@@ -6,18 +6,21 @@ import { useEffect, useState } from 'react';
 import supabase from '../api/supabaseaApi';
 import useUserSession from '../hooks/authdata'
 import Loading from '../loading';
+import Link from 'next/link';
 
 export default function Profiles() {
  const router = useRouter()
  const {userUUID, loggedIn, userName, userAvatar} = useUserSession();
- 
+ const [MyWrite, setMyWrite] =useState([])
+ const [MyComment, setComment] =useState([])
  const [newName, setNewName] = useState(userName);
  const [newAvatarUrl, setNewAvatarUrl] = useState(userAvatar)
   const [NewPreview, setNewPreview] =useState('')
   const [loading, setLoading] = useState(false);
 
 
- 
+console.log(userUUID)
+
  useEffect(() => {
     if (!loggedIn) {
       router.push('/'); // 로그인되지 않았으면 홈 페이지로 리다이렉트
@@ -25,9 +28,28 @@ export default function Profiles() {
     } 
 
 
-  },[loggedIn, router,userName, userAvatar]);
+    if(userUUID){
+    const MyData = async() =>{
+      const {data,error} =await supabase.from('pro').select('*').eq('user_id',userUUID)
+      setMyWrite(data||[])
+      }
+      MyData()
 
-  const handleProfileChange = (e) => {
+      const MyCommentAdd = async() =>{
+        const {data,error} =await supabase.from('comment').select('body,page_num').eq('user_id',userUUID)
+        setComment(data||[])
+
+        }
+        MyCommentAdd()
+    }
+
+
+// userUUID 를 받고 있으니 의존성 배열에 추가
+  },[loggedIn, router,userName, userAvatar, userUUID]);
+
+
+
+   const handleProfileChange = (e) => {
     const Profiles_file = e.target.files[0];
     if (Profiles_file) {
         setNewAvatarUrl(Profiles_file);
@@ -90,59 +112,87 @@ export default function Profiles() {
     
 
   return (
-<section className="bg-white min-h-screen py-12">
+<section className="bg-gray-50 min-h-screen py-8 sm:py-16">
   {loading && <Loading />}
-  <div className='container mx-auto px-4 sm:px-6 lg:px-8 mt-16'>
-    <div className="max-w-md mx-auto bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
-      <div className="p-6">
-        <div className="mb-8">
+  <div className='container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl pt-12 md:pt-4'>
+    <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 mb-8 sm:mb-12">
+      <div className="p-6 sm:p-12 flex flex-col sm:flex-row items-center sm:items-start sm:justify-between">
+        <div className="w-full sm:w-1/3 mb-6 sm:mb-0">
           <input
             type="file"
             onChange={handleProfileChange}
             className="hidden"
             id="profile-upload"
           />
-          <label htmlFor="profile-upload" className="cursor-pointer block relative w-32 h-32 mx-auto">
+          <label htmlFor="profile-upload" className="cursor-pointer block relative w-32 h-32 sm:w-48 sm:h-48 mx-auto">
             <Image 
               src={NewPreview || userAvatar || '/img/img05.jpg'}  
-              width={128} 
-              height={128} 
+              width={192} 
+              height={192} 
               priority={true} 
               alt="Profile" 
-              className="w-full h-full rounded-full object-cover border-2 border-gray-200" 
+              className="w-full h-full rounded-full object-cover border-4 sm:border-6 border-emerald-400" 
             />
-            <div className="absolute bottom-0 right-0 bg-emerald-400 rounded-full p-2 shadow-sm">
-              <Image src={ImgIcon} width={16} height={16} alt="Upload" className="text-white" />
+            <div className="absolute bottom-0 right-0 bg-emerald-400 rounded-full p-2 sm:p-3 shadow-md">
+              <Image src={ImgIcon} width={20} height={20} alt="Upload" className="text-white" />
             </div>
           </label>
         </div>
-        <p className={`text-center text-lg font-medium mb-4 ${
-          newName ? 'text-gray-700' : 'text-emerald-600'
-        }`}>
-          새로운 닉네임을 설정하세요.
-        </p>
-        <div className="mb-6">
+        <div className="w-full sm:w-2/3 sm:pl-12">
+          <p className={`text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center sm:text-left ${
+            newName ? 'text-gray-800' : 'text-emerald-600'
+          }`}>
+            새로운 닉네임을 설정하세요.
+          </p>
           <input
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             placeholder={userName || newName}
-            className={`w-full text-center py-2 px-3 border-b bg-transparent text-gray-700 focus:outline-none focus:border-emerald-400 transition-all duration-300 ${
+            className={`w-full py-3 sm:py-4 px-4 sm:px-6 text-base sm:text-lg rounded-lg sm:rounded-xl bg-gray-50 text-gray-800 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-emerald-400 ${
               newName ? 'border-emerald-400' : 'border-gray-300'
             }`}
           />
+          <button 
+            className={`w-full mt-4 sm:mt-6 py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg ${
+              newName 
+                ? 'bg-emerald-500 text-white hover:bg-emerald-600' 
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+            onClick={handleUpdateProfile}
+            disabled={!newName}
+          >
+            Update Profile
+          </button>
         </div>
-        <button 
-          className={`w-full py-2 px-4 rounded-md font-medium transition-all duration-300 ${
-            newName 
-              ? 'bg-emerald-400 text-white hover:bg-emerald-500' 
-              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          }`}
-          onClick={handleUpdateProfile}
-          disabled={!newName}
-        >
-          Update Profile
-        </button>
+      </div>
+    </div>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+      <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">내가 쓴 글</h3>
+        <div className="h-[300px] sm:h-[400px] overflow-y-auto space-y-3 sm:space-y-4">
+          {MyWrite.map(Write => (
+            <div key={Write.id} className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+              <Link href={`/details/${Write.id}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
+                {Write.title}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">내가 쓴 댓글</h3>
+        <div className="h-[300px] sm:h-[400px] overflow-y-auto space-y-3 sm:space-y-4">
+          {MyComment.map(Comment => (
+            <div key={Comment.id} className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+              <Link href={`/details/${Comment.page_num}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
+                {Comment.body}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>

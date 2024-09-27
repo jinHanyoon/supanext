@@ -38,7 +38,7 @@ export default function DetailsPage() {
           .select('*')
           .eq('id', id)  // id에 해당하는 데이터를 가져옴
           .single();
-        setProData(proData)
+        setProData(proData ||[])
       };
       fetchData();
     }
@@ -112,7 +112,7 @@ export default function DetailsPage() {
               onClick={handleImageClick}
             />
           </div>
-          <div className='text-gray-700 text-lg leading-relaxed'>
+          <div className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap'>
             {TargetData.body}
           </div>
         </div>

@@ -32,7 +32,7 @@ export default function SignUpPage() {
       if (signUpError) {
         setError(signUpError.message);
       } else {
-        alert('메일 보냈으니까 확인해');
+        alert('인증메일이 성공적으로 전송되었습니다. ');
     router.push('/');
       
       }
@@ -50,51 +50,68 @@ export default function SignUpPage() {
 
 
   return (
-    <>
-      {isSubmitting && (
-          <Loading />
-      )}
-    <div className="w-1/5 min-w-max m-auto mt-28  rounded-xl   ">
-      <h1 className="text-2xl font-medium mb-4 text-cyan-500">가입할래?</h1>
-      <form onSubmit={handleSignUp}>
-        <div className="my-10">
-          <label htmlFor="email" className="block text-sm font-medium text-cyan-500">이메일</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mt-1 block w-full px-3 py-2 rounded-none border-b bg-transparent border-cyan-500 text-emerald-400 shadow-sm focus:outline-none sm:text-sm"
-          />
+<>
+  {isSubmitting && <Loading />}
+  <div className="fixed inset-0 backdrop-blur-xl flex items-center justify-center p-4 z-50">
+    <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <div className="p-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">회원가입</h1>
+        <form onSubmit={handleSignUp} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">이메일</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              placeholder="your@email.com"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">비밀번호 (6자리 이상)</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-1 block w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              placeholder="••••••"
+            />
+          </div>
+          <button 
+            type="submit" 
+            disabled={isSubmitting} 
+            className={`w-full flex justify-center py-3 px-4 rounded-lg text-sm font-semibold text-white transition duration-200 ease-in-out ${
+              password.length >= 6 ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+            }`}
+          >
+            {isSubmitting ? '회원가입 중...' : '가입하기'}
+          </button>
+        </form>
+        
+        <div className="mt-8">
+          <p className="text-center text-sm text-gray-600 mb-4">또는</p>
+          <button 
+            onClick={signInWithkakao} 
+            className="w-full flex items-center justify-center py-3 px-4 rounded-lg bg-yellow-400 hover:bg-yellow-500 transition duration-200"
+          >
+            <Image 
+              alt="kakao" 
+              src="/img/kakao.png" 
+              width={24} 
+              height={24} 
+              className="mr-2"
+            />
+            <span className="text-sm font-semibold text-gray-900">카카오로 시작하기</span>
+          </button>
         </div>
-        <div className="mt-14">
-          <label htmlFor="password" className="block rounded-none text-sm font-medium text-cyan-500">비밀번호 (두번 안 물어 봄)</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mt-1 block w-full px-3 py-2 border-b bg-transparent border-cyan-500 text-emerald-400 focus:outline-none shadow-sm  sm:text-sm"
-          />
-        </div>
-        <button type="submit" disabled={isSubmitting} className={`w-full flex  justify-center mt-9 py-2 px-4 border border-emerald-400 rounded-md shadow-sm text-sm font-medium text-white  duration-1000 ${password ? 'bg-emerald-400' : 'bg-transparent'}`}>
-          {isSubmitting ? '회원가입 중...' : '끝'}
-        </button>
-    
-
-        <div onClick={signInWithkakao} className=' w-16 h-16  mt-10 '>
-        <Image alt="ecommerce"
-  className="w-16 h-16 object-cover object-center block hover:opacity-50"
-  src="/img/kakao.png"
-   width={300} height={300}/>
-   <p className='text-center text-gray-500 font-700'>KaKao</p>
-        </div>
-
-      </form>
+      </div>
     </div>
-    </>
+  </div>
+</>
   );
 }
 

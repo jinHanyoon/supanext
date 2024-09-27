@@ -14,7 +14,7 @@ module.exports = {
         },
       },
       animation: {
-        wave: 'wave 2s linear infinite',
+        wave: 'wave 4s linear infinite',
       },
       backgroundSize: {
         'wave-background': '200% 200%',

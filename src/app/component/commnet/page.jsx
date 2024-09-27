@@ -14,7 +14,7 @@ import useUserSession from '../../hooks/authdata';
 export default function Comment() {
 const [bodyValue, setBody]=useState('')
 const [Comment, setComment] =useState([])
-const {userName} =  useUserSession();
+const {userName, userUUID} =  useUserSession();
 
 const params = useParams()
 const postId = params.id;
@@ -71,18 +71,22 @@ return (
     {Comment.map((commentValue) => (
       <div key={commentValue.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative">
         <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-red-500 transition-colors duration-200">
+        
+      {commentValue.user_id == userUUID &&(
           <span className="text-xl font-bold" onClick={() => CommentDelete(commentValue.id)}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </span>
+          )}
         </div>
         <div className="flex flex-col justify-between h-full">
           <div>
+            
             <h2 className="text-gray-700 text-sm font-semibold tracking-wider mb-2 flex items-center gap-1 border-b border-gray-200 pb-2">
               {commentValue.user_name}
             </h2>
-            <h3 className="text-gray-800 text-base font-medium break-words">{commentValue.body}</h3>
+            <h3 className="text-gray-800 text-base font-medium break-words whitespace-pre-wrap">{commentValue.body}</h3>
           </div>
           <p className="mt-3 text-gray-500 text-xs">{commentValue.create_at}</p>
         </div>
@@ -95,7 +99,7 @@ return (
       <textarea 
         value={bodyValue}
         onChange={(e) => setBody(e.target.value)}
-        className="w-full p-3 mb-16 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
+        className="  w-full p-3 mb-16 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none  "
         rows="3"
         placeholder="댓글을 입력하세요..."
       ></textarea>
