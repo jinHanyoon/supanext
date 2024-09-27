@@ -90,52 +90,62 @@ export default function Profiles() {
     
 
   return (
-    <section className="text-gray-600 body-font h-full ">
-       {loading &&<Loading />}
-        <div className='w-full h-auto m-auto max-w-screen-2xl mx-auto p-4 md:py-8 mt-32'>
-
-    <div className={`w-1/3 min-w-72 max-w-64 h-96 bg-transparent  transition-all ease-in duration-100 backdrop-blur-sm border rounded-3xl flex-col flex items-center justify-center mx-auto ${newName ? 'border-cyan-500':'border-gray-500'}`}>
-
-        <div className='w-full  h-1/3  mt-3'>
-     <div className='translate-y-28 w-1/5 mx-auto opacity-0'>
-      <input
-        type="file"
-        onChange={handleProfileChange}
-        className='opacity-1'
-      />
+<section className="bg-white min-h-screen py-12">
+  {loading && <Loading />}
+  <div className='container mx-auto px-4 sm:px-6 lg:px-8 mt-16'>
+    <div className="max-w-md mx-auto bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
+      <div className="p-6">
+        <div className="mb-8">
+          <input
+            type="file"
+            onChange={handleProfileChange}
+            className="hidden"
+            id="profile-upload"
+          />
+          <label htmlFor="profile-upload" className="cursor-pointer block relative w-32 h-32 mx-auto">
+            <Image 
+              src={NewPreview || userAvatar || '/img/img05.jpg'}  
+              width={128} 
+              height={128} 
+              priority={true} 
+              alt="Profile" 
+              className="w-full h-full rounded-full object-cover border-2 border-gray-200" 
+            />
+            <div className="absolute bottom-0 right-0 bg-emerald-400 rounded-full p-2 shadow-sm">
+              <Image src={ImgIcon} width={16} height={16} alt="Upload" className="text-white" />
+            </div>
+          </label>
+        </div>
+        <p className={`text-center text-lg font-medium mb-4 ${
+          newName ? 'text-gray-700' : 'text-emerald-600'
+        }`}>
+          새로운 닉네임을 설정하세요.
+        </p>
+        <div className="mb-6">
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder={userName || newName}
+            className={`w-full text-center py-2 px-3 border-b bg-transparent text-gray-700 focus:outline-none focus:border-emerald-400 transition-all duration-300 ${
+              newName ? 'border-emerald-400' : 'border-gray-300'
+            }`}
+          />
+        </div>
+        <button 
+          className={`w-full py-2 px-4 rounded-md font-medium transition-all duration-300 ${
+            newName 
+              ? 'bg-emerald-400 text-white hover:bg-emerald-500' 
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          }`}
+          onClick={handleUpdateProfile}
+          disabled={!newName}
+        >
+          Update Profile
+        </button>
       </div>
-      <div className='relative pointer-events-none'>
-        <Image src={NewPreview || userAvatar || '/img/img05.jpg'}  width={100} height={100} priority={true} alt="l" className={`w-28 h-28 p-1 rounded-full ring-2 transition-all ease-in duration-100 mx-auto pointer-events-none ${newName ? 'ring-emerald-400 dark:ring-emerald-400':'ring-gray-500 dark:ring-gray-500'}`} />
-<Image src={ImgIcon} width={30} height={30} alt="ImgIcon" className="block w-12 h-12  mx-auto text-sm text-gray-900 cursor-pointer pointer-events-none  pb-2.5 px-2 pt-1 -translate-y-10  box-border " />
-      </div>
-</div>
-
-
-<div className='w-full h-1/3 flex flex-col justify-center items-center gap-4'>
-    <p className={`text-center mt-5 font-medium ${
-      newName ? 'text-gray-400 ' :  'text-cyan-500 '}`}
-   >새로운 닉네임을 설정하세요.</p>
-  
-  <div>
-  <input
-        type="text"
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-        placeholder={userName || newName}
-        className={`text-center outline-none inline-block bg-transparent border-b-2 rounded-none transition-all ease-in duration-100 text-white ${newName ? 'border-cyan-500':'border-gray-500 '}`}
-      />
-</div>
-</div>
-
-<div className='w-full  h-1/3 text-center mt-4'>
-      <button className={`w-32 h-10 mx-auto rounded-lg border transition-all ease-in duration-100 ${
-      newName ? 'border-cyan-500 text-emerald-400' : 'border-gray-300 text-gray-400'}`}
- onClick={handleUpdateProfile}>Update Profile</button>
-      </div>
-
-      </div>
-
+    </div>
   </div>
-  </section>
+</section>
   )
 }

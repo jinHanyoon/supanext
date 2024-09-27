@@ -39,7 +39,7 @@ export default function Writing({writing_hidden}) {
 
     const writingSubmit = async () => {
     
-      const userConfirmed = window.confirm("올린다?");
+      const userConfirmed = window.confirm("게시글을 올리겠습니까?");
 
   if (!userConfirmed) {
     // 사용자가 "아니오"를 선택하면 아무 작업도 하지 않음
@@ -89,53 +89,75 @@ export default function Writing({writing_hidden}) {
       }
     };
     return (
-    <>
-  {loading &&<Loading />}
-     
-
-        <div className='bg-slate-900/80 w-full h-screen fixed z-40 top-32 ' >
-          <div className='w-9/12 max-w-md h-full m-auto relative flex flex-col items-end '  >
-      <div className='absolute top-14 right-2 w-8 h-1/10 border-rose-700 border rounded-full text-center font-bold text-white leading-loose z-10' onClick={writing_hidden}>X</div>
-
-          <input
-            className="block  p-2.5 w-full text-sm text-white  dark:placeholder-gray-900 dark:text-white  mt-12 bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 focus:outline-none focus:ring-2  focus:ring-gray-400"
-            placeholder="제목"
-            value={titleValue}
-            onChange={(e) => setTitleValue(e.target.value)}
-          />
-
-
-
-
-        <div className=" relative  h-96 w-full  text-sm text-white focus:outline-none focus:ring focus:ring-gray-400 dark:placeholder-gray-400 dark:text-white  mt-1  bg-blue-100 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 overflow-scroll overflow-x-hidden overflow-y-hidden">
-        <input  onChange={handleFileChange} className="block w-14 text-sm text-gray-900 cursor-pointer pb-2.5 px-2 pt-1  h-8 box-border opacity-0 " type="file"/>
-<Image src={ImgIcon} width={30} height={30} alt="ImgIcon" className="block w-10 h-10  text-sm text-gray-900 cursor-pointer pointer-events-none  pb-2.5 px-2 pt-1  box-border absolute top-0 -z-10" />
-       
-{imgPreview && (
-              <Image
-                src={imgPreview}
-                alt="Selected File"
-                className="mt-2 w-10/12 h-auto object-contain m-auto rounded-xl  max-h-48"
-                width={100} height={50}
+      <>
+      {loading && <Loading />}
+      
+      <div className='fixed  inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full z-40'>
+        <div className='container max-w-2xl mx-auto px-4 py-16 pt-36'>
+          <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden'>
+            <div className='p-8'>
+              <h3 className='text-2xl font-semibold text-gray-900 dark:text-white mb-6'>새 글 작성</h3>
+              
+              <input
+                className="w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
+                placeholder="제목"
+                value={titleValue}
+                onChange={(e) => setTitleValue(e.target.value)}
               />
-            )}
-
-          <textarea className="w-full h-5/6 p-2.5  text-sm text-white focus:outline-none  dark:placeholder-gray-400 dark:text-white  mt-1  bg-transparent rounded-md"
-            placeholder="내용"
-            value={bodyValue} 
-            onChange={(e) => setBodyValue(e.target.value)}
-          />
-
-
-
-  </div>
-
-          <div onClick={writingSubmit} className='text-emerald-400 text-center border border-cyan-500  w-20 mt-3 rounded-md h-10 py-2'>저장</div>
+              
+              <div className="mb-6">
+                <input 
+                  onChange={handleFileChange} 
+                  className="hidden" 
+                  id="file-upload" 
+                  type="file" 
+                />
+                <label 
+                  htmlFor="file-upload"
+                  className="cursor-pointer inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
+                >
+                  <Image src={ImgIcon} width={20} height={20} alt="ImgIcon" className="mr-2" />
+                  이미지 업로드
+                </label>
+              </div>
+              
+              {imgPreview && (
+                <div className="mb-6">
+                  <Image
+                    src={imgPreview}
+                    alt="Selected File"
+                    className="w-full h-64 object-cover rounded-lg"
+                    width={100} height={100}
+                  />
+                </div>
+              )}
+  
+              <textarea 
+                className="w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
+                placeholder="내용"
+                rows="6"
+                value={bodyValue} 
+                onChange={(e) => setBodyValue(e.target.value)}
+              />
+  
+              <div className='flex justify-end space-x-4'>
+                <button
+                  onClick={writing_hidden}
+                  className='px-6 py-3 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300'
+                >
+                  취소
+                </button>
+                <button
+                  onClick={writingSubmit}
+                  className='px-6 py-3 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition duration-300'
+                >
+                  저장
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-
+      </div>
     </>
-
-
   );
 }

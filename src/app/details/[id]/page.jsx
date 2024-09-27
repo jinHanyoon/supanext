@@ -57,7 +57,7 @@ export default function DetailsPage() {
   }, [TargetData, userUUID]);
 
   const handleDelete = async (title, body) => {
-    const userConfirmed = window.confirm("삭제할꺼야?");
+    const userConfirmed = window.confirm("삭제하시겠습니까?");
   if (!userConfirmed) {
     return;
   }
@@ -74,8 +74,6 @@ export default function DetailsPage() {
       setLoading(false);
     }
 
-
-
   };
 
 
@@ -84,10 +82,10 @@ export default function DetailsPage() {
   
 
   return (
-<>
+< >
   {loading && <Loading />}
 
-  <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
+  <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10 ">
     <div className=" rounded-xl shadow-lg overflow-hidden border border-gray-200">
       <div className="p-6 md:p-8">
         <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>

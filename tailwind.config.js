@@ -17,15 +17,10 @@ module.exports = {
         wave: 'wave 2s linear infinite',
       },
       backgroundSize: {
-        'wave-background': '50% 50%',
+        'wave-background': '200% 200%',
       },
       backgroundImage: {
-        // 배경색을 더 어둡게, 웨이브를 더 밝게 조정
-        'skeleton-gradient': 'linear-gradient(135deg, #1c1f26 35%, #707d93 50%, #1c1f26 65%)',
-      },
-
-      colors: {
-        'custom-bg': '#d6d5c9',// 이 색상 값은 예시입니다. 실제 이미지의 색상과 일치하도록 조정해야 합니다.
+        'skeleton-gradient': 'linear-gradient(135deg, #d1d5db 25%, #9ca3af 50%, #d1d5db 75%)',
       },
     },
   },
