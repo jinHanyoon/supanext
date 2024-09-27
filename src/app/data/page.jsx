@@ -82,7 +82,7 @@ export default function Data() {
     <div key={pro.id} className={`bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ${
       isGridView ? 'flex flex-col' : 'flex flex-row h-full'
     }`}>
-      <Link href={`/details/${pro.id}`} className={isGridView ? 'block w-full relative group' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
+      <Link href={`/details/${pro.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
         <div className={`relative ${
           isGridView 
             ? 'aspect-[4/3]' 
@@ -94,18 +94,16 @@ export default function Data() {
             fill
             className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
           />
-          {isGridView && (
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-              <div className="p-4 w-full">
-                <h3 className="text-white text-lg font-semibold line-clamp-2">{pro.title}</h3>
-              </div>
-            </div>
-          )}
         </div>
       </Link>
       <div className={`p-4 sm:p-5 ${isGridView ? 'flex-grow' : 'flex-grow w-2/3 sm:w-3/4 flex flex-col justify-between'}`}>
-        {!isGridView && (
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{pro.title}</h3>
+        {isGridView ? (
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2">{pro.title}</h3>
+        ) : (
+          <>
+            <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{pro.title}</h3>
+            <p className="text-gray-600 mb-2 line-clamp-2">{pro.body}</p>
+          </>
         )}
         <div className={`flex items-center ${isGridView ? 'mt-2' : 'mt-auto'}`}>
           <div className="w-8 h-8 relative mr-3">
