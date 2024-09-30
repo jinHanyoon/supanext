@@ -86,13 +86,17 @@ export default function Data() {
         <div className={`relative ${
           isGridView 
             ? 'aspect-[4/3]' 
-            : 'w-full pt-[75%]'
+            : 'w-full pt-[100%]'
         }`}>
           <Image 
             alt="DataImg" 
             src={pro.imgUrl || defaultAvatar}
             fill
-            className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
+            sizes={isGridView 
+              ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              : "100vw"
+            }
+            className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl '}`}
           />
         </div>
       </Link>
@@ -111,6 +115,7 @@ export default function Data() {
               alt="avatar" 
               src={pro.avatar || defaultAvatar}  
               fill
+              sizes="150px"
               className="rounded-full object-cover border-2 border-emerald-400"
             />
           </div>
