@@ -33,7 +33,7 @@ useEffect(()=> {
     }
 
   CommentGet() 
-})
+},[postId])
 
 const CommentHandle = async (e) =>{
   e.preventDefault();
@@ -42,9 +42,10 @@ const CommentHandle = async (e) =>{
     return;
   }
 try{
-  const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName})
-  setBody('')
-  setComment([...Comment]) 
+  const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName}).select();
+  const newComment = {...data[0]};
+  setBody('');
+  setComment([newComment, ...Comment]) 
   alert('댓글 작성 완료')
 }
 catch(error){
@@ -54,7 +55,8 @@ catch(error){
 
 const CommentDelete = async(id) =>{
   try{
-    const { error } = await supabase.from('comment').delete().eq('id', id);
+    const { data } = await supabase.from('comment').delete().eq('id', id);
+    setComment(Comment.filter(comment => comment.id !== id));
   }catch(error){
     alert('삭제실패')
   }finally{

@@ -63,7 +63,7 @@ export default function DetailsPage() {
   }
   setLoading(true)
     try {
-      const {error} = await supabase.from('pro').delete().eq('title', title).eq('body', body);
+      const {error} = await supabase.from('pro').delete().eq('id', pro.id)
 
     } catch (error) {
       console.log(error, '삭제 중 오류 발생')
