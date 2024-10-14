@@ -31,7 +31,7 @@ export default function Data() {
         }, 2000); // 2000ms = 2초
         }
         dbCome();
-    },[pro]);
+    },[]);
 
   return (
     <>

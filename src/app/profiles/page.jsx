@@ -26,7 +26,9 @@ export default function Profiles() {
       return;
     } 
 // userUUID 를 받고 있으니 의존성 배열에 추가
-  },[loggedIn, router,userName, userAvatar, userUUID]);
+  },[router, loggedIn]);
+  console.log(userUUID, "profiles")
+
 
 
 
@@ -80,17 +82,12 @@ export default function Profiles() {
       }
       setNewPreview(imgUrl || userAvatar);
       setNewAvatarUrl(imgUrl || userAvatar);
-      setNewName(newName);
+      // setNewName(newName);
       setLoading(false);
       alert(`${newName} 어서와 `);
     } 
 
 
-
-
-
-
-    
 
   return (
 <section className="bg-gray-50 min-h-screen py-8 sm:py-16">

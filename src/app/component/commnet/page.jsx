@@ -45,7 +45,7 @@ try{
   const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName}).select();
   const newComment = {...data[0]};
   setBody('');
-  setComment([newComment, ...Comment]) 
+  setComment([...newComment, Comment]) 
   alert('댓글 작성 완료')
 }
 catch(error){
