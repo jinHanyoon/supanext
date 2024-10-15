@@ -8,6 +8,7 @@ import useUserSession from '../hooks/authdata'
 import Loading from '../loading';
 import Link from 'next/link';
 import MyList from './mylist/page'
+import MyComment from './mycomment/page'
 
 export default function Profiles() {
  const router = useRouter()
@@ -27,7 +28,6 @@ export default function Profiles() {
     } 
 // userUUID 를 받고 있으니 의존성 배열에 추가
   },[router, loggedIn]);
-  console.log(userUUID, "profiles")
 
 
 
@@ -46,7 +46,7 @@ export default function Profiles() {
     
   // 사용자에게 확인을 요청
   const userConfirmed = window.confirm( 
-   `닉네임이 ${newName || userName} ㅋㅋ`
+   ` ${newName || userName} 로 변경하시겠습니까?`
   );
 
   if (!userConfirmed) {
@@ -86,6 +86,8 @@ export default function Profiles() {
       setLoading(false);
       alert(`${newName} 어서와 `);
     } 
+
+
 
 
 
@@ -145,8 +147,11 @@ export default function Profiles() {
         </div>
       </div>
     </div>
-    <MyList userUUID={userUUID}/>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
 
+    <MyList userUUID={userUUID}/>
+    <MyComment userUUID={userUUID}/>
+            </div>
   </div>
 </section>
   )

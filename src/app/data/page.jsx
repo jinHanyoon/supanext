@@ -15,23 +15,22 @@ export default function Data() {
 
     const defaultAvatar = '/img/img04.jpg'; 
 
+    // {new Date(commentValue.create_at).toLocaleString('ko-KR', {
+      // timeZone: 'Asia/Seoul',
+    // })}
     useEffect(() => {
       async function dbCome() { 
-          const { data: pro } = await 
+          const { data,error } = await 
           supabase.from('pro').select('*').order('create_at',{ascending:false});
-          const proWithKoreanTime = pro.map(item => ({
-            ...item,
-            create_at: new Date(item.create_at).toLocaleString('ko-KR', {
-              timeZone: 'Asia/Seoul',
-            }),
-          }));
-          setData(proWithKoreanTime);
+          setData(data);
           setTimeout(() => {
             setLoad(false);
         }, 2000); // 2000ms = 2초
         }
         dbCome();
     },[]);
+
+
 
   return (
     <>
@@ -122,10 +121,8 @@ export default function Data() {
           <div>
             <span className="text-gray-800 text-sm font-medium">{pro.username}</span>
             <p className="text-gray-500 text-sm mt-1">
-            {pro.create_at.split(' ').slice(0, 3).join(' ').replace(/\./g, '')
-    .replace(/(\d{4}) (\d{1,2}) (\d{1,2})/, (match, year, month, day) => 
-      `${year} ${month.padStart(2, '0')}.${day.padStart(2, '0')}`
-    )}
+         {new Date(pro.create_at).toLocaleString('ko-KR', {timeZone: 'Asia/Seoul',})}
+
             </p>
           </div>
         </div>

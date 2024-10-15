@@ -63,7 +63,7 @@ export default function DetailsPage() {
   }
   setLoading(true)
     try {
-      const {error} = await supabase.from('pro').delete().eq('id', pro.id)
+      const {error} = await supabase.from('pro').delete().eq('id', TargetData.id)
 
     } catch (error) {
       console.log(error, '삭제 중 오류 발생')
@@ -76,11 +76,6 @@ export default function DetailsPage() {
 
   };
 
-
-
- 
-  
-
   return (
 < >
   {loading && <Loading />}
@@ -91,14 +86,26 @@ export default function DetailsPage() {
         <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
           <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{TargetData.title || UndefineText}</h1>
           {fixComplete && (
+            <>
+            <div className="flex space-x-4">
             <button 
-              onClick={() => handleDelete(TargetData.title, TargetData.body)} 
-              className="text-red-500 hover:text-red-600 transition-colors duration-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+    onClick={() => router.push(`/details/${id}/Edit`)} 
+    className="px-4 py-2 bg-gray-200 text-gray-900 font-semibold rounded"
+  >
+    수정
+  </button>
+    <button 
+    onClick={() => handleDelete(TargetData.title, TargetData.body)} 
+    className="text-red-500 hover:text-red-600 transition-colors duration-200"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+
+  </div>
+</>
           )}
         </div>
         <div className='space-y-6'>

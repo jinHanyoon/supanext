@@ -10,9 +10,7 @@ import Loading from '../../loading';
 
 
 export default function Writing({writing_hidden}) {
-  const { userName } = useUserSession();
-  const { userUUID } = useUserSession();
-  const { userAvatar } = useUserSession();
+  const { userName, userUUID, userAvatar } = useUserSession();
 
     const [pro, setData] = useState([]);
     const [message, setMessage] = useState('');
@@ -38,14 +36,11 @@ export default function Writing({writing_hidden}) {
 
 
     const writingSubmit = async () => {
-    
-      const userConfirmed = window.confirm("게시글을 올리겠습니까?");
+      // 사용자 확인
+      if (!window.confirm("게시글을 올리겠습니까?")) return;
 
-  if (!userConfirmed) {
-    // 사용자가 "아니오"를 선택하면 아무 작업도 하지 않음
-    return;
-  }
-  setLoading(true)
+      setLoading(true);
+
       try {
         let imgUrl = null;
 
@@ -53,39 +48,48 @@ export default function Writing({writing_hidden}) {
         if (newImg) {
           const fileExt = newImg.name.split('.').pop();
           const fileName = `${userUUID}-${Date.now()}.${fileExt}`;
-          const filePath = `test_img/${userUUID}/${fileName}`
-          // 버킷 이름을 포함
-          const { data: imgData, error: imgError } = await supabase.storage
-            .from('test_img') // 버킷 이름이 정확한지 확인
+          const filePath = `test_img/${userUUID}/${fileName}`;
+
+          const { error: imgError } = await supabase.storage
+            .from('test_img')
             .upload(filePath, newImg);
+
           if (imgError) {
-            console.error("Error uploading image:", imgError);
+            console.error("이미지 업로드 오류:", imgError);
             alert('이미지 업로드에 실패했습니다.');
-            return; // 에러 발생 시 더 진행하지 않음
+            return;
           }
-          imgUrl = supabase.storage.from('test_img').getPublicUrl(filePath).data.publicUrl;
+
+          const { publicUrl } = supabase.storage.from('test_img').getPublicUrl(filePath).data;
+          imgUrl = publicUrl;
         }
-        // Supabase로부터 응답을 받을 때, data와 error를 구분해서 받는다.
-        const { data, error } = await supabase.from('pro').insert([{ title: titleValue, body: bodyValue, username:userName, avatar:userAvatar, imgUrl: imgUrl, }]);
-        // 에러가 발생한 경우 바로 콘솔에 출력하고 함수를 종료한다.
+
+        // 게시글 데이터 삽입
+        const { data, error } = await supabase.from('pro').insert({
+          title: titleValue,
+          body: bodyValue,
+          username: userName,
+          avatar: userAvatar,
+          imgUrl,
+        });
+
         if (error) {
-          console.error("Error inserting data:", error.message);
+          console.error("데이터 삽입 오류:", error.message);
           alert('오류가 발생했습니다. 다시 시도해주세요.');
-          return;  // 더 이상 진행하지 않고 함수를 종료한다.
+          return;
         }
-        // 데이터가 성공적으로 삽입된 경우, 새로운 데이터를 state에 반영한다.
-        setData((prevData) => [...prevData, ...data]);
-        // 입력 필드 초기화
+
+        // 상태 업데이트 및 초기화
+        setData(prevData => [...prevData, ...data]);
         setTitleValue('');
         setBodyValue('');
         writing_hidden();
         alert('생성완료');
-  setLoading(false)
-
       } catch (error) {
-        // 그 외의 예상치 못한 에러를 처리한다.
-        console.error("Unexpected error:", error.message);
+        console.error("예상치 못한 오류:", error.message);
         alert('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
+      } finally {
+        setLoading(false);
       }
     };
     return (

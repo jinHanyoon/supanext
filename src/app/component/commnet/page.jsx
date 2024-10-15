@@ -21,19 +21,20 @@ const postId = params.id;
 
 useEffect(()=> {
   async function CommentGet() {
-      const {data,error}  = await supabase.from('comment').select('*').eq('page_num', postId)
-      const proWithKoreanTime = data.map(item => ({
-        ...item,
-        create_at: new Date(item.create_at).toLocaleString('ko-KR', {
-          timeZone: 'Asia/Seoul',
-        }),
-      }));
-     
-      setComment(proWithKoreanTime)
+    const { data, error } = await supabase
+      .from('comment')
+      .select('*')
+      .eq('page_num', postId)
+    
+    if (error) {
+      console.error('댓글 가져오기 오류:', error)
+      return
     }
+    setComment(data)
+  }
 
-  CommentGet() 
-},[postId])
+  CommentGet()
+}, [postId])
 
 const CommentHandle = async (e) =>{
   e.preventDefault();
@@ -45,7 +46,7 @@ try{
   const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName}).select();
   const newComment = {...data[0]};
   setBody('');
-  setComment([...newComment, Comment]) 
+  setComment([...Comment, newComment]) 
   alert('댓글 작성 완료')
 }
 catch(error){
@@ -90,7 +91,11 @@ return (
             </h2>
             <h3 className="text-gray-800 text-base font-medium break-words whitespace-pre-wrap">{commentValue.body}</h3>
           </div>
-          <p className="mt-3 text-gray-500 text-xs">{commentValue.create_at}</p>
+          <p className="mt-3 text-gray-500 text-xs">
+          {new Date(commentValue.create_at).toLocaleString('ko-KR', {
+                  timeZone: 'Asia/Seoul',
+                })}
+          </p>
         </div>
       </div>
     ))}
