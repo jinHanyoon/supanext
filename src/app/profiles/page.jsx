@@ -27,7 +27,8 @@ export default function Profiles() {
       return;
     } 
 // userUUID 를 받고 있으니 의존성 배열에 추가
-  },[router, loggedIn]);
+  },[router, loggedIn, userUUID, newAvatarUrl,userName]);
+
 
 
 

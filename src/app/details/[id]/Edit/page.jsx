@@ -70,7 +70,7 @@ return (
                     />
                 </div>
                 <textarea
-                  className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap bg-gray-100 focus:outline-none rounded resize-none overflow-hidden p-2 h-32'
+                  className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap bg-gray-100 focus:outline-none rounded resize-none overflow-hidden w-full p-2 h-32'
                     value={EditBody || UndefineText}
                     onChange={(e) => setEditBody(e.target.value)}
                 ></textarea>

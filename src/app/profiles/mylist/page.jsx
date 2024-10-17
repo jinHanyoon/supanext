@@ -10,10 +10,9 @@ export default function MyList({userUUID}) {
     const [MyWrite, setMyWrite] =useState([])
     const [MyComment, setComment] =useState([])
     const [isDataLoaded, setIsDataLoaded] =useState(false)
-// const {userUUID} = useUserSession();
 
-    useEffect(() => {
-        if(userUUID && !isDataLoaded){
+
+      if(userUUID && !isDataLoaded){
         const MyData = async() =>{
           const {data,error} =await supabase.from('pro').select('*').eq('user_id',userUUID)
           setMyWrite(data||[])
@@ -21,9 +20,7 @@ export default function MyList({userUUID}) {
           MyData()
             setIsDataLoaded(true);
           }
-    
-    
-      },[userUUID, isDataLoaded,MyComment,MyWrite]);
+
 
 
   return (

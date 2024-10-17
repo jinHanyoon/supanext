@@ -30,6 +30,8 @@ export default function Data() {
         dbCome();
     },[]);
 
+    // 구독기능 사용 예정
+
 
 
   return (

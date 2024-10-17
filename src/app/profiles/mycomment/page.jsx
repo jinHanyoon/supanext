@@ -10,18 +10,15 @@ const [isDataLoaded, setIsDataLoaded] =useState(false)
 
 
 
-useEffect(() =>{
-    if(userUUID && !isDataLoaded){
-    const MyCommentGet = async() =>{
-        const {data, error} =await supabase.from('comment').select('body, page_num, id').eq('user_id', userUUID)
-        setMyWrite(data||[])
-    }
-    MyCommentGet()
-    setIsDataLoaded(true);
+
+if(userUUID && !isDataLoaded){
+  const MyCommentGet = async() =>{
+      const {data, error} =await supabase.from('comment').select('body, page_num, id').eq('user_id', userUUID)
+      setMyWrite(data||[])
+  }
+  MyCommentGet()
+  setIsDataLoaded(true);
 }
-},[userUUID, isDataLoaded])
-
-
 
   return (
     <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg">
