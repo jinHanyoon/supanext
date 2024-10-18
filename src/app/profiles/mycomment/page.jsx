@@ -10,7 +10,6 @@ const [isDataLoaded, setIsDataLoaded] =useState(false)
 
 
 
-
 if(userUUID && !isDataLoaded){
   const MyCommentGet = async() =>{
       const {data, error} =await supabase.from('comment').select('body, page_num, id').eq('user_id', userUUID)
@@ -19,7 +18,6 @@ if(userUUID && !isDataLoaded){
   MyCommentGet()
   setIsDataLoaded(true);
 }
-
   return (
     <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg">
     <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">내가 쓴 댓글</h3>

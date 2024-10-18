@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useUserSession from '../../hooks/authdata'
 import {logout as logoutAction} from "../../login/actions"
@@ -14,6 +14,11 @@ const [loginShow, setLoginShow] = useState(false)
 const closeMenu = () => {
   setIsMenuOpen(false);
 };
+
+useEffect(()=>{
+
+},[userAvatar, userName])
+
 const defaultAvatar = '/img/img04.jpg'; 
 
   const side_show  = () => {

@@ -7,14 +7,12 @@ import useUserSession from '../../hooks/authdata'
 
 export default function SideContents() {
   // 로그인 버튼
-const { loggedIn,userName } = useUserSession();
+const { loggedIn } = useUserSession();
 // 로그인 창 호출 및 제거
 const [loginShow, setLoginShow] = useState(false)
 const [WritingShow, setWritingShow] = useState(false)
 
 
-useEffect(() => {
-}, [userName]);
 
 
 

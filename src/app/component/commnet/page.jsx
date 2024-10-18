@@ -34,7 +34,7 @@ useEffect(()=> {
   }
 
   CommentGet()
-}, [postId])
+}, [postId,userName,userUUID])
 
 const CommentHandle = async (e) =>{
   e.preventDefault();
