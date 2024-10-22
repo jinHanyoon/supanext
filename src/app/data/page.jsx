@@ -15,9 +15,7 @@ export default function Data() {
 
     const defaultAvatar = '/img/img04.jpg'; 
 
-    // {new Date(commentValue.create_at).toLocaleString('ko-KR', {
-      // timeZone: 'Asia/Seoul',
-    // })}
+   
     useEffect(() => {
       async function dbCome() { 
           const { data,error } = await 
@@ -28,9 +26,24 @@ export default function Data() {
         }, 2000); // 2000ms = 2초
         }
         dbCome();
+        
+        const channel = supabase.channel('pro')
+        .on('postgres_changes',{event: 'INSERT', schema: 'public', table: 'pro'},payload =>{
+          setData(prevData=>[ payload.new ,...prevData, ])
+        })
+        .on('postgres_changes', {event:'UPDATE',schema:'public',table:'pro'},payload=>{
+          setData(prevData => prevData.map(item => item.id ===payload.new.id ? payload.new : item))
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'pro' }, payload => {
+          setData(prevData => prevData.filter(item => item.id !== payload.old.id));
+      })
+.subscribe()
+return () => {
+  supabase.removeChannel(channel);
+};
+
     },[]);
 
-    // 구독기능 사용 예정
 
 
 

@@ -76,14 +76,15 @@ export default function Writing({writing_hidden}) {
           imgUrl,
         });
 
+        // 상태 업데이트 및 초기화
+        setData([...pro]);
+    
         if (error) {
           console.error("데이터 삽입 오류:", error.message);
           alert('오류가 발생했습니다. 다시 시도해주세요.');
           return;
         }
 
-        // 상태 업데이트 및 초기화
-        setData(prevData => [...prevData, ...data]);
         setTitleValue('');
         setBodyValue('');
         writing_hidden();

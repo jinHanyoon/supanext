@@ -17,7 +17,7 @@ const closeMenu = () => {
 
 useEffect(()=>{
 
-},[userAvatar, userName])
+},[userAvatar, userName,loggedIn])
 
 const defaultAvatar = '/img/img04.jpg'; 
 

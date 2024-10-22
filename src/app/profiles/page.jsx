@@ -22,14 +22,9 @@ export default function Profiles() {
 
 
  useEffect(() => {
-    if (!loggedIn) {
-      router.push('/'); // 로그인되지 않았으면 홈 페이지로 리다이렉트
-      return;
-    } 
+
 // userUUID 를 받고 있으니 의존성 배열에 추가
-  },[router, loggedIn, userUUID, newAvatarUrl,userName,userAvatar,newName,newAvatarUrl]);
-
-
+  },[loggedIn,userUUID,userAvatar,userName]);
 
 
 

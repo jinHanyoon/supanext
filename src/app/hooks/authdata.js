@@ -62,13 +62,14 @@ const useUserSession = () => {
       }
     });
 
+
     return () => {
-      // subscription이 존재할 경우에만 해제 시도
-      if (subscription?.unsubscribe) {
+      if (subscription) {
         subscription.unsubscribe();
       }
     };
-  }, [router]); // router 의존성 추가
+  }, [router]);
+
 
   return { loggedIn, userName, userUUID, userAvatar };
 };
