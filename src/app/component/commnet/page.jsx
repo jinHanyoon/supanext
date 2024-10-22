@@ -25,15 +25,31 @@ useEffect(()=> {
       .from('comment')
       .select('*')
       .eq('page_num', postId)
-    
-    if (error) {
-      console.error('댓글 가져오기 오류:', error)
-      return
-    }
-    setComment(data)
-  }
+      setComment(data)
 
-  CommentGet()
+      if (error) {
+        console.error('댓글 가져오기 오류:', error)
+        return
+      }
+    }
+    CommentGet()
+ 
+      const channel = supabase.channel('comment-db')
+      .on('postgres_changes',{event: 'INSERT', schema: 'public', table: 'comment'},payload =>{
+        setComment(prevComment=>[ ...prevComment, payload.new  ])
+      })
+      .on('postgres_changes', {event:'UPDATE',schema:'public',table:'comment'},payload=>{
+        setComment(prevComment => prevComment.map(item => item.id ===payload.new.id ? payload.new : item))
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'comment' }, payload => {
+        setComment(prevComment => prevComment.filter(item => item.id !== payload.old.id));
+    })
+    .subscribe()
+    return () => {
+      supabase.removeChannel(channel);
+    };
+
+ 
 }, [postId,userName,userUUID])
 
 const CommentHandle = async (e) =>{
@@ -44,9 +60,11 @@ const CommentHandle = async (e) =>{
   }
 try{
   const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName}).select();
-  const newComment = {...data[0]};
+  // const newComment = {...data[0]};
+  // 구독 안할시 새로추가 된 데이터는 기존 데이터 보다 아래쪽에 배치 
+  // setComment([...Comment, ...newComment])
   setBody('');
-  setComment([...Comment, newComment]) 
+  setComment([...Comment]) 
   alert('댓글 작성 완료')
 }
 catch(error){
