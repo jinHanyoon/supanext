@@ -39,7 +39,7 @@ export async function GET(request) {
         // API에 요청을 보냄
         // const response = await fetch(url);
          // 재시도 로직 추가
-         const maxRetries = 3;
+         const maxRetries = 5;
          let retries = 0;
          let response;
  

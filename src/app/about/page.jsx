@@ -153,7 +153,7 @@ const getTemperatureMessage02 = (temperature) => {
 </div>
         <div className="bg-gray-50 rounded-xl p-4 min-h-[200px] flex items-center justify-center">
             {error ? (
-                <p className="text-red-500 text-center font-medium">{error}</p>
+                <p className="text-red-500 text-center font-medium" >잠시 후 다시 시도해주세요!</p>
             ) : loading ? (
                 <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
