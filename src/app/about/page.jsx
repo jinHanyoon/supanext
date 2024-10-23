@@ -50,12 +50,16 @@ const getTemperatureMessage = (temperature) => {
     if (temperature > 23) return '쪄죽을수도있는 날씨야...';
     if (temperature > 22) return '더워... 더워...';
     if (temperature > 21) return '특별히 쪼금 시원하게 입는걸 허용하겠다!';
-    if (temperature > 20) return '슈잉 쪼금 더울수도있어..';
-    if (temperature > 17) return '가을날씨 너무 좋다 우리 산책하자!';
-    if (temperature > 15) return '슈잉 날씨 좋다 우리 같이 걷기 좋은 날씨야';
-    if (temperature > 10) return '슈잉.. 이제부터 시작이야 안에 두어겹 입어';
-    if (temperature > 5) return '슈잉 추워... 너 따시게입어야혀';
-    if (temperature > 0) return '슈잉 꽁꽁 얼어 붙어 단단히 입어';
+    if (temperature > 20) return '슈잉 쪼금 더울수도있어..(삐질..)';
+    if (temperature > 17) return '슈잉!날씨 너무 좋다 우리 산책하자!!';
+    if (temperature > 15) return '슈잉!  날씨 좋다 안아주기 좋은 날씨야 히히';
+    if (temperature > 14) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
+    if (temperature > 13) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
+    if (temperature > 12) return '어..조금 쌀쌀해진거같은데?';
+    if (temperature > 11) return '어어.. 추워진다... 추워져...!';
+    if (temperature > 10) return '슈잉..! 이제부터 시작이야... 안에 두어겹 입어';
+    if (temperature > 5) return '슈잉.. 추워... 너 따시게입어야혀';
+    if (temperature > 0) return '슈잉.. 꽁꽁 얼어 붙어 단단히 입어!';
 
     return '슈잉... 난 얼었셔';
 };
@@ -88,7 +92,7 @@ const getTemperatureMessage02 = (temperature) => {
             <>
             {/* 지정 된 사람만 나오는 메시지 */}
             {userUUID == vip &&(
-                <p className="text-m font-semibold text-indigo-700 bg-gradient-to-r from-pink-100 to-purple-100 p-4 rounded-2xl shadow-md border border-gray-100 mb-6 text-center transition-all duration-300 hover:shadow-lg hover:scale-105">
+                <p className="text-m font-black text-indigo-700 bg-gradient-to-r from-pink-100 to-purple-100 p-4 rounded-2xl border border-gray-100 mb-6 text-center transition-all duration-300  ">
     {getTemperatureMessage(weatherData.temperature)}
 </p>
    )}
@@ -150,6 +154,25 @@ const getTemperatureMessage02 = (temperature) => {
     >
         남포동
     </button>
+
+    <button
+        onClick={() => setCity('서울')}
+        className={`px-3 py-2 rounded-lg ${
+            city === '서울' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
+        } focus:outline-none transition duration-300 text-sm font-medium`}
+    >
+        서울
+    </button>
+
+    <button
+        onClick={() => setCity('강원도')}
+        className={`px-3 py-2 rounded-lg ${
+            city === '강원도' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
+        } focus:outline-none transition duration-300 text-sm font-medium`}
+    >
+        강원도
+    </button>
+
 </div>
         <div className="bg-gray-50 rounded-xl p-4 min-h-[200px] flex items-center justify-center">
             {error ? (

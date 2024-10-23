@@ -27,7 +27,9 @@ export async function GET(request) {
         명지: { nx: 97, ny: 74 },
         연산동: { nx: 99, ny: 75 }, // 부산 연산동의 정확한 좌표
         서면: { nx: 97, ny: 75 },
-        남포동: { nx: 97, ny: 74 }
+        남포동: { nx: 97, ny: 74 },
+        서울: { nx: 60, ny: 127 }, // 서울 좌표 추가
+        강원도: { nx: 73, ny: 134 } // 강원도 좌표 추가 (춘천 기준)
     };
     // 선택한 도시의 좌표를 가져오고, 없으면 기본값으로 부산의 좌표 사용
     const { nx, ny } = coordinates[city] || coordinates['부산'];
