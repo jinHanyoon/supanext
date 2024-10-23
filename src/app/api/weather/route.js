@@ -37,11 +37,21 @@ export async function GET(request) {
 
     try {
         // API에 요청을 보냄
-        const response = await fetch(url);
-       
+        // const response = await fetch(url);
+         // 재시도 로직 추가
+         const maxRetries = 3;
+         let retries = 0;
+         let response;
+ 
+         while (retries < maxRetries) {
+             response = await fetch(url);
+             if (response.ok) break;
+             retries++;
+             await new Promise(resolve => setTimeout(resolve, 1000 * retries)); // 재시도 전 대기
+         }
+ 
          // JSON 형식으로 응답을 파싱
          const jsonResponse = await response.json();
-    console.log('API 응답:', jsonResponse);
        
          // 응답이 성공적이지 않으면 오류 발생
         if (!response.ok) throw new Error('API 요청 실패');
@@ -54,7 +64,11 @@ export async function GET(request) {
         //   습도
             humidity: jsonResponse.response.body.items.item.find(i => i.category === 'REH')?.obsrValue,
         //    강수량
-            precipitation: jsonResponse.response.body.items.item.find(i => i.category === 'RN1')?.obsrValue
+            precipitation: jsonResponse.response.body.items.item.find(i => i.category === 'RN1')?.obsrValue,
+        //    풍속
+            windSpeed: jsonResponse.response.body.items.item.find(i => i.category === 'WSD')?.obsrValue
+
+       
         };
         // 날씨 데이터를 JSON 형식으로 반환
         return NextResponse.json(weatherData);

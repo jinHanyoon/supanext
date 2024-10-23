@@ -58,7 +58,7 @@ const useUserSession = () => {
         setLoggedIn(false);
         setUserName('');
         setAvatar('');
-        router.push('/'); // 로그인 상태가 아니면 리다이렉트
+        // router.push('/'); // 로그인 상태가 아니면 리다이렉트
       }
     });
 
