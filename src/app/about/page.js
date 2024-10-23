@@ -25,7 +25,8 @@ export default function About() {
                 if (data.error) {
                     throw new Error(data.error);
                 }
-                setWeatherData(data);
+                setWeatherData(data.weatherData);
+
             })
             .catch(err => {
                 setError(err.message);
@@ -33,6 +34,7 @@ export default function About() {
             .finally(() => {
                 setLoading(false);
             });
+
     };
 
     return (
@@ -42,18 +44,30 @@ export default function About() {
 
                 <h1 className="text-4xl font-bold mb-6 text-gray-800 text-center">기상청 날씨 데이터</h1>
                 <div className="flex justify-center space-x-4 mb-6">
-                    <button 
-                        onClick={() => setCity('부산')}
-                        className={`px-4 py-2 rounded-full ${city === '부산' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
-                    >
-                        부산
-                    </button>
-                    <button 
-                        onClick={() => setCity('서울')}
-                        className={`px-4 py-2 rounded-full ${city === '서울' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
-                    >
-                        서울
-                    </button>
+                <button 
+                            onClick={() => setCity('부산')}
+                            className={`px-4 py-2 rounded-full ${city === '부산' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
+                        >
+                            부산
+                        </button>
+                        <button 
+                            onClick={() => setCity('창원')}
+                            className={`px-4 py-2 rounded-full ${city === '창원' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
+                        >
+                            창원
+                        </button>
+                        <button 
+                            onClick={() => setCity('기장')}
+                            className={`px-4 py-2 rounded-full ${city === '기장' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
+                        >
+                            기장
+                        </button>
+                        <button 
+                            onClick={() => setCity('서울')}
+                            className={`px-4 py-2 rounded-full ${city === '서울' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'} focus:outline-none transition duration-300`}
+                        >
+                            서울
+                        </button>
                 </div>
                 <div className="space-y-4 min-h-[16rem]">
                     {error ? (

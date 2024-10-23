@@ -26,7 +26,9 @@ export async function GET(request) {
     // 도시별 좌표를 설정
     const coordinates = {
         부산: { nx: 98, ny: 76 },
-        서울: { nx: 60, ny: 127 }
+        서울: { nx: 60, ny: 127 },
+        창원: { nx: 90, ny: 90 },   // 창원의 좌표 추가
+        기장: { nx: 98, ny: 76 } 
     };
 
     // 선택한 도시의 좌표를 가져오고, 없으면 기본값으로 부산의 좌표 사용
@@ -52,11 +54,11 @@ export async function GET(request) {
         //    강수량
             precipitation: jsonResponse.response.body.items.item.find(i => i.category === 'RN1')?.obsrValue
         };
-
         // 날씨 데이터를 JSON 형식으로 반환
-        return NextResponse.json(weatherData);
+        return NextResponse.json({ weatherData, message: '데이터가 성공적으로 로드되었습니다.' });
     } catch (error) {
         // 오류가 발생하면 오류 메시지를 JSON 형식으로 반환
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
 }
