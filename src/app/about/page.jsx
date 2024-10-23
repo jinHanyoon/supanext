@@ -8,6 +8,7 @@ export default function About() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const {userUUID} =  useUserSession()
+  const [cachedWeatherData, setCachedWeatherData] = useState({});
     const [vip] =useState('87136bc1-763b-4aae-b250-10f214d3c885')
 
     useEffect(() => {
@@ -21,17 +22,25 @@ export default function About() {
 
 
     const fetchWeather = async (selectedCity) => {
+        if (cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000) { // 10분 이내의 데이터
+            setWeatherData(cachedWeatherData[selectedCity].data);
+            return;
+        }
+    
         setLoading(true);
         setError(null);
         try {
             const response = await axios.get(`/api/weather?city=${selectedCity}`);
-            setWeatherData(response.data); // 응답 데이터에서 날씨 데이터 설정
+            setWeatherData(response.data);
+            setCachedWeatherData(prev => ({
+                ...prev,
+                [selectedCity]: { data: response.data, timestamp: Date.now() }
+            }));
         } catch (err) {
-            setError(err.message, "서버 응답오류"); // 에러 메시지 설정
+            setError(err.message, "서버 응답오류");
         } finally {
-            setLoading(false); // 로딩 상태 종료
+            setLoading(false);
         }
-
     };
     
 
