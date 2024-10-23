@@ -66,20 +66,17 @@ export default function About() {
                         <>
                             <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4">
                                 <span className="text-lg font-semibold text-gray-700">온도</span>
-                                <span className="text-2xl font-bold text-gray-900">{weatherData.온도}°C</span>
+                                <span className="text-2xl font-bold text-gray-900">{weatherData.temperature}°C</span>
                             </div>
                             <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4">
                                 <span className="text-lg font-semibold text-gray-700">습도</span>
-                                <span className="text-2xl font-bold text-gray-900">{weatherData.습도}%</span>
+                                <span className="text-2xl font-bold text-gray-900">{weatherData.humidity}%</span>
                             </div>
                             <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4">
                                 <span className="text-lg font-semibold text-gray-700">강수량</span>
-                                <span className="text-2xl font-bold text-gray-900">{weatherData.강수량}mm</span>
+                                <span className="text-2xl font-bold text-gray-900">{weatherData.precipitation}mm</span>
                             </div>
-                            <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-4">
-                                <span className="text-lg font-semibold text-gray-700">풍속</span>
-                                <span className="text-2xl font-bold text-gray-900">{weatherData.풍속}m/s</span>
-                            </div>
+                   
                         </>
                     ) : null}
                 </div>
