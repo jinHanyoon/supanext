@@ -121,75 +121,71 @@ const getTemperatureMessage02 = (temperature) => {
        </>
    
     )}
-      <div className="grid grid-cols-2 gap-2 mb-6">
-
+<div className="grid grid-cols-2 gap-2 mb-6">
     <button
         onClick={() => setCity('부산')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '부산' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '부산' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         부산
     </button>
     <button
         onClick={() => setCity('창원')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '창원' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '창원' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         창원
     </button>
     <button
-        onClick={() => setCity('연산동')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '연산동' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        onClick={() => setCity('연산')}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '연산' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
-        연산동
+        연산
     </button>
     <button
         onClick={() => setCity('서면')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '서면' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '서면' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         서면
     </button>
     <button
         onClick={() => setCity('명지')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '명지' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '명지' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         명지
     </button>
     <button
         onClick={() => setCity('남포동')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '남포동' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '남포동' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         남포동
     </button>
-
     <button
         onClick={() => setCity('서울')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '서울' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '서울' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         서울
     </button>
-
     <button
         onClick={() => setCity('강원도')}
-        className={`px-3 py-2 rounded-lg ${
-            city === '강원도' ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-700'
-        } focus:outline-none transition duration-300 text-sm font-medium`}
+        className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
+            city === '강원도' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+        }`}
     >
         강원도
     </button>
-
 </div>
         <div className="bg-gray-50 rounded-xl p-4 min-h-[200px] flex items-center justify-center transition-all duration-1000">
 
