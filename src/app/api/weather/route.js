@@ -1,5 +1,32 @@
 import { NextResponse } from 'next/server';
 // GET 요청을 처리하는 함수
+
+function getBaseDateTime() {
+    const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" });
+    const koreaTime = new Date(now);
+    let hours = koreaTime.getHours();
+    let minutes = koreaTime.getMinutes();
+
+  
+
+    if (minutes < 10) {
+        minutes = "00";
+    } else {
+        minutes = "10";
+    }
+
+    // base_time을 'HHMM' 형식으로 포맷
+    const formattedBaseTime = `${String(hours).padStart(2, '0')}${String(minutes).padStart(2, '0')}`;
+
+    // base_date는 'YYYYMMDD' 형식
+    const formattedBaseDate = koreaTime.toISOString().slice(0, 10).replace(/-/g, '');
+
+    return {
+        baseDate: formattedBaseDate,
+        baseTime: formattedBaseTime
+    };
+}
+
 export async function GET(request) {
     // 요청 URL에서 쿼리 파라미터를 가져옴
     const { searchParams } = new URL(request.url);
@@ -13,21 +40,21 @@ export async function GET(request) {
         throw new Error('API 설정 오류');
     }
     // 현재 날짜와 시간을 가져옴
-    const now = new Date();
+    // const now = new Date();
     // 날짜를 'YYYYMMDD' 형식으로 포맷
-    const formattedDate = now.toISOString().slice(0, 10).replace(/-/g, '');
+    // const formattedDate = now.toISOString().slice(0, 10).replace(/-/g, '');
     // 시간을 'HH00' 형식으로 포맷
-    const formattedTime = `${String(now.getHours()).padStart(2, '0')}00`;
+    // const formattedTime = `${String(now.getHours()).padStart(2, '0')}00`;
 
-    
+    const { baseDate, baseTime } = getBaseDateTime();
     // 도시별 좌표를 설정
     const coordinates = {
         부산: { nx: 98, ny: 76 },
         창원: { nx: 90, ny: 77 },
         명지: { nx: 97, ny: 74 },
-        연산동: { nx: 99, ny: 75 }, // 부산 연산동의 정확한 좌표
+        연산: { nx: 99, ny: 75 }, // 부산 연산동의 정확한 좌표
         서면: { nx: 97, ny: 75 },
-        남포동: { nx: 97, ny: 74 },
+        남포: { nx: 97, ny: 74 },
         서울: { nx: 60, ny: 127 }, // 서울 좌표 추가
         강원도: { nx: 73, ny: 134 } // 강원도 좌표 추가 (춘천 기준)
     };
@@ -35,7 +62,7 @@ export async function GET(request) {
     const { nx, ny } = coordinates[city] || coordinates['부산'];
 
     // API 요청 URL을 생성
-    const url = `${apiUrl}/getUltraSrtNcst?serviceKey=${encodeURIComponent(apiKey)}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${formattedDate}&base_time=${formattedTime}&nx=${nx}&ny=${ny}`;
+    const url = `${apiUrl}/getUltraSrtNcst?serviceKey=${encodeURIComponent(apiKey)}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${nx}&ny=${ny}`;
 
     try {
         // API에 요청을 보냄
@@ -46,7 +73,8 @@ export async function GET(request) {
          let response;
  
          while (retries < maxRetries) {
-             response = await fetch(url);
+                //최신데이터 받아오기  
+            response = await fetch(url, { cache: 'no-store' });
              if (response.ok) break;
              retries++;
              await new Promise(resolve => setTimeout(resolve, 1000 * retries)); // 재시도 전 대기
@@ -68,9 +96,10 @@ export async function GET(request) {
         //    강수량
             precipitation: jsonResponse.response.body.items.item.find(i => i.category === 'RN1')?.obsrValue,
         //    풍속
-            windSpeed: jsonResponse.response.body.items.item.find(i => i.category === 'WSD')?.obsrValue
+            windSpeed: jsonResponse.response.body.items.item.find(i => i.category === 'WSD')?.obsrValue,
 
-       
+            baseDate: baseDate, // API 응답에서 가져온 baseDate
+            baseTime: baseTime  // API 응답에서 가져온 baseTime
         };
         // 날씨 데이터를 JSON 형식으로 반환
         return NextResponse.json(weatherData);

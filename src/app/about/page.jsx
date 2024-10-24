@@ -43,7 +43,20 @@ export default function About() {
         }
     };
     
+    const formatDateTime = (baseDate, baseTime) => {
+        if (!baseDate || !baseTime) return '';
 
+        const year = baseDate.slice(0, 4);
+        const month = baseDate.slice(4, 6);
+        const day = baseDate.slice(6, 8);
+        const hour = baseTime.slice(0, 2);
+        const minute = baseTime.slice(2, 4);
+
+        const date = new Date(year, month - 1, day, hour, minute);
+        const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
+        return `${month}.${day}.(${weekdays[date.getDay()]}) ${hour}:${minute} 기준`;
+    };
 
 // 온도에 따른 메시지를 반환하는 함수
 const getTemperatureMessage = (temperature) => {
@@ -85,6 +98,8 @@ const getTemperatureMessage02 = (temperature) => {
     return (
 <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
     <div className="bg-white rounded-3xl p-6 md:p-8 shadow-2xl w-full max-w-md">
+
+   
     {userUUID !== vip &&(
         <h1 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800 text-center">기상청 날씨 데이터</h1>
     )}       
@@ -106,6 +121,7 @@ const getTemperatureMessage02 = (temperature) => {
    
     )}
       <div className="grid grid-cols-2 gap-2 mb-6">
+
     <button
         onClick={() => setCity('부산')}
         className={`px-3 py-2 rounded-lg ${
@@ -175,6 +191,7 @@ const getTemperatureMessage02 = (temperature) => {
 
 </div>
         <div className="bg-gray-50 rounded-xl p-4 min-h-[200px] flex items-center justify-center">
+
             {error ? (
                 <p className="text-red-500 text-center font-medium" >잠시 후 다시 시도해주세요!</p>
             ) : loading ? (
@@ -183,6 +200,7 @@ const getTemperatureMessage02 = (temperature) => {
             </div>
             ) : weatherData ? (
                 <div className="w-full space-y-4">
+                    <p>{formatDateTime(weatherData.baseDate, weatherData.baseTime)}</p>
                 <div className="flex items-center justify-between">
                     <span className="text-base font-semibold text-gray-700 flex items-center">
                         <svg className="w-5 h-5 mr-2 text-red-500" viewBox="0 0 20 20" fill="currentColor">
@@ -218,6 +236,7 @@ const getTemperatureMessage02 = (temperature) => {
                         풍속
                     </span>
                     <span className="text-lg font-bold text-indigo-600">{weatherData.windSpeed}m/s</span>
+               
                 </div>
             </div>
             ) : (
