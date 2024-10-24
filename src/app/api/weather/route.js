@@ -7,12 +7,11 @@ function getBaseDateTime() {
     let hours = koreaTime.getHours();
     let minutes = koreaTime.getMinutes();
 
-  
 
-    if (minutes < 10) {
+    if (minutes < 35) {
         minutes = "00";
     } else {
-        minutes = "10";
+        minutes = "35";
     }
 
     // base_time을 'HHMM' 형식으로 포맷
@@ -69,16 +68,17 @@ export async function GET(request) {
         // const response = await fetch(url);
          // 재시도 로직 추가
          const maxRetries = 5;
-         let retries = 0;
          let response;
  
-         while (retries < maxRetries) {
-                //최신데이터 받아오기  
+         for (let i = 0; i < maxRetries; i++) {
+            // 최신 데이터 받아오기
             response = await fetch(url, { cache: 'no-store' });
-             if (response.ok) break;
-             retries++;
-             await new Promise(resolve => setTimeout(resolve, 1000 * retries)); // 재시도 전 대기
-         }
+            if (response.ok) break;
+            // 마지막 시도가 아니라면 대기
+            if (i < maxRetries - 1) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
  
          // JSON 형식으로 응답을 파싱
          const jsonResponse = await response.json();
