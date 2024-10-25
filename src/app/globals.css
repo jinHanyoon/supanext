@@ -15,17 +15,13 @@ html, body {
     animation: fadeIn 1s forwards; /* 애니메이션 적용 */
 }
 .fade-out {
-  opacity: 0.5;
-  transition: opacity 5s ease-out;
+  opacity: 1;
+  animation: fadeOut 0.5s linear; /* 애니메이션 적용 */
 }
-@keyframes fadeIn {
-    to {
-    filter:blur(0px);
-        opacity: 1; /* 최종 상태 */
-    }
-  }
-
-
+.load{
+  opacity: 1;
+  animation: load 0.5s linear; /* 애니메이션 적용 */
+}
     .insert-in {
       animation: fadeIn 2s linear; /* 애니메이션 적용 */
   }
@@ -40,5 +36,23 @@ html, body {
         filter: blur(0px);
 
       }
+}
 
+@keyframes fadeOut {
+  from {
+        opacity: 1; /* 최종 상태 */
+    }
+    to{
+        opacity: 0.5; /* 최종 상태 */
+
+    }
+}
+@keyframes load {
+  from {
+    opacity: 0; /* 시작 */
+}
+to{
+    opacity: 1; /* 최종 상태 */
+
+}
 }
