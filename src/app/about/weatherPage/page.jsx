@@ -9,40 +9,95 @@ export default function WeatherPage() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const {userUUID} =  useUserSession()
-  const [cachedWeatherData, setCachedWeatherData] = useState({});
+    const [cachedWeatherData, setCachedWeatherData] = useState({});
     const [vip] =useState('87136bc1-763b-4aae-b250-10f214d3c885')
 
+
     useEffect(() => {
-        fetchWeather(city);
-    }, [city, userUUID,vip]);
-    //    매개변수 city ->selectedCity
+        let isMounted = true; // 컴포넌트 마운트 상태 추적
+    
+    
+        //    매개변수 city ->selectedCity
     //     city 의 값을 selectedCity 에 넣음
     //     api 에 호출 city 이름이 selectedCity 를 가진 데이터를 호출
     //     예)city 서울 => selectedCity == (서울), weather 에서 서울 이름을 가진 데이터를 가져옴
     //     호출하는 코드
+        const fetchWeather = async (selectedCity) => {
+            if (
+                cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000 // 10분 이내의 데이터
+            ) {
+                if (isMounted) {
+                    setWeatherData(cachedWeatherData[selectedCity].data);
+                }
+                return;
+            }
+
+            if (isMounted) {
+                setLoading(true);
+                setError(null);
+            }
+
+            try {
+                const response = await axios.get(`/api/weather?city=${selectedCity}`);
+                if (isMounted) {
+                    setWeatherData(response.data);
+                    setCachedWeatherData((prev) => ({...prev,
+                        [selectedCity]: { data: response.data, timestamp: Date.now() },
+                    }));
+                }
+            } catch (err) {
+                if (isMounted) {
+                    setError(err.message || '서버 응답 오류');
+                }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
 
 
-    const fetchWeather = async (selectedCity) => {
-        if (cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000) { // 10분 이내의 데이터
-            setWeatherData(cachedWeatherData[selectedCity].data);
-            return;
-        }
+        fetchWeather(city);
+
+        return () => {
+            isMounted = false; // 클린업 시 마운트 상태 업데이트
+        };
+    }, [city, cachedWeatherData]); // 필요한 의존성만 포함
+
+
+
+
+    useEffect(() => {
+    }, [userUUID,vip]);
+
+
+
+    // useEffect(() => {
+    //     fetchWeather(city);
+    // }, [city,]);
+
+
+    // const fetchWeather = async (selectedCity) => {
+    //     if (cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000) { // 10분 이내의 데이터
+    //         setWeatherData(cachedWeatherData[selectedCity].data);
+    //         return;
+    //     }
     
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await axios.get(`/api/weather?city=${selectedCity}`,);
-            setWeatherData(response.data);
-            setCachedWeatherData(prev => ({
-                ...prev,
-                [selectedCity]: { data: response.data, timestamp: Date.now() }
-            }));
-        } catch (err) {
-            setError(err.message, "서버 응답오류");
-        } finally {
-            setLoading(false);
-        }
-    };
+    //     setLoading(true);
+    //     setError(null);
+    //     try {
+    //         const response = await axios.get(`/api/weather?city=${selectedCity}`,);
+    //         setWeatherData(response.data);
+    //         setCachedWeatherData(prev => ({
+    //             ...prev,
+    //             [selectedCity]: { data: response.data, timestamp: Date.now() }
+    //         }));
+    //     } catch (err) {
+    //         setError(err.message, "서버 응답오류");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
     
     const formatDateTime = (baseDate, baseTime) => {
         if (!baseDate || !baseTime) return '';
@@ -93,7 +148,6 @@ const getTemperatureMessage02 = (temperature) => {
 };
 
 
-// 87136bc1-763b-4aae-b250-10f214d3c885
    
 
     return (
@@ -163,12 +217,12 @@ const getTemperatureMessage02 = (temperature) => {
         명지
     </button>
     <button
-        onClick={() => setCity('남포동')}
+        onClick={() => setCity('남포')}
         className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
-            city === '남포동' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
+            city === '남포' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105' : 'bg-white text-gray-800 border border-gray-300 hover:bg-gray-100'
         }`}
     >
-        남포동
+        남포
     </button>
     <button
         onClick={() => setCity('서울')}
