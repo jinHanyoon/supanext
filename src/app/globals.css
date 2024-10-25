@@ -9,3 +9,36 @@ html, body {
   body {
     background-attachment: fixed;
   }
+  .fade-in {
+    opacity: 0;
+    filter:blur(15px);
+    animation: fadeIn 1s forwards; /* 애니메이션 적용 */
+}
+.fade-out {
+  opacity: 0.5;
+  transition: opacity 5s ease-out;
+}
+@keyframes fadeIn {
+    to {
+    filter:blur(0px);
+        opacity: 1; /* 최종 상태 */
+    }
+  }
+
+
+    .insert-in {
+      animation: fadeIn 2s linear; /* 애니메이션 적용 */
+  }
+  
+  @keyframes fadeIn {
+    from {
+          opacity: 0; /* 최종 상태 */
+          filter: blur(10px);
+      }
+      to{
+          opacity: 1; /* 최종 상태 */
+        filter: blur(0px);
+
+      }
+
+}

@@ -22,14 +22,18 @@ export default function WeatherPage() {
     //     api 에 호출 city 이름이 selectedCity 를 가진 데이터를 호출
     //     예)city 서울 => selectedCity == (서울), weather 에서 서울 이름을 가진 데이터를 가져옴
     //     호출하는 코드
+
+    
+        // 날씨 데이터를 가져오는 비동기 함수
         const fetchWeather = async (selectedCity) => {
+       // 캐시된 데이터가 있는지 확인하고, 유효한 경우 상태 업데이트
             if (
                 cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000 // 10분 이내의 데이터
             ) {
                 if (isMounted) {
                     setWeatherData(cachedWeatherData[selectedCity].data);
                 }
-                return;
+                return;// 캐시된 데이터가 유효하면 함수 종료
             }
 
             if (isMounted) {
@@ -38,9 +42,12 @@ export default function WeatherPage() {
             }
 
             try {
+            // API 호출하여 날씨 데이터 가져오기
                 const response = await axios.get(`/api/weather?city=${selectedCity}`);
                 if (isMounted) {
+            // 응답 데이터 상태 업데이트
                     setWeatherData(response.data);
+           // 캐시 업데이트
                     setCachedWeatherData((prev) => ({...prev,
                         [selectedCity]: { data: response.data, timestamp: Date.now() },
                     }));
@@ -57,13 +64,21 @@ export default function WeatherPage() {
         };
 
 
+        // 선택된 도시의 날씨 데이터 가져오기
+        // fetchWeather (city) 의미 
+        // fetchWeather 함수에 city 를 매개변수로 넣겠다 라는 의미
+        // fetchWeather 에있는 selectedCity == city
+       
         fetchWeather(city);
 
         return () => {
             isMounted = false; // 클린업 시 마운트 상태 업데이트
         };
     }, [city, cachedWeatherData]); // 필요한 의존성만 포함
-
+// city 의 값이나 날씨 캐시 데이터가 변경 시 
+// useEffect 함수를 실행 
+// ex) 이용자가 버튼을 클릭할때 city 의 값이 변경되기 때문에 
+// 새로운 데이터를 받아 오는형태  fetchWeather 에있는 selectedCity == city
 
 
 

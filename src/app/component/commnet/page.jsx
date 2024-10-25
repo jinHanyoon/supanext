@@ -4,7 +4,7 @@ import React from 'react'
 import { useState,useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import useUserSession from '../../hooks/authdata';
-
+import '../../globals.css'; // CSS 파일을 임포트합니다.
 // 게시물 url 불러오기 
 // 게시물 url id값으로 사용 
 // 게시물 url num && id 값으로 댓글추가 
@@ -36,7 +36,7 @@ useEffect(()=> {
  
       const channel = supabase.channel('comment-db')
       .on('postgres_changes',{event: 'INSERT', schema: 'public', table: 'comment'},payload =>{
-        setComment(prevComment=>[ ...prevComment, payload.new  ])
+        setComment(prevComment => [...prevComment, { ...payload.new, animate: true }]);
       })
       .on('postgres_changes', {event:'UPDATE',schema:'public',table:'comment'},payload=>{
         setComment(prevComment => prevComment.map(item => item.id ===payload.new.id ? payload.new : item))
@@ -90,7 +90,8 @@ return (
 <div className="w-full mx-auto max-w-4xl">
   <div className="space-y-6">
     {Comment.map((commentValue) => (
-      <div key={commentValue.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative">
+            <div key={commentValue.id} className={`bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative ${commentValue.animate ? 'fade-in' : ''}`}>
+      {/* <div key={commentValue.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 p-4 relative"> */}
         <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-red-500 transition-colors duration-200">
         
       {commentValue.user_id == userUUID &&(

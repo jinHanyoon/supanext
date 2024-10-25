@@ -5,6 +5,8 @@ import useUserSession from '../hooks/authdata'
 import supabase from '../api/supabaseaApi';
 import SkeletonCard from '../component/Skeleton/page';
 import Link from 'next/link';
+import '../globals.css'; // CSS 파일을 임포트합니다.
+
 
 export default function Data() {
     const [pro, setData] = useState([]);
@@ -12,15 +14,17 @@ export default function Data() {
     const { userName } = useUserSession();
     const [Load, setLoad] = useState(true)
     const [isGridView, setIsGridView] = useState(true);
-
+    const [fadeOut, setFadeOut] = useState(false);  // 여기에 fadeOut 상태를 추가
     const defaultAvatar = '/img/img04.jpg'; 
 
    
     useEffect(() => {
       async function dbCome() { 
           const { data,error } = await 
-          supabase.from('pro').select('*').order('create_at',{ascending:false});
+          supabase.from('pro').select('*').order('create_at',{ascending:false,});
           setData(data);
+            setFadeOut(true);  // 데이터 로드 완료 시 페이드 아웃 시작
+
           setTimeout(() => {
             setLoad(false);
         }, 2000); // 2000ms = 2초
@@ -29,7 +33,8 @@ export default function Data() {
         
         const channel = supabase.channel('pro')
         .on('postgres_changes',{event: 'INSERT', schema: 'public', table: 'pro'},payload =>{
-          setData(prevData=>[ payload.new ,...prevData, ])
+          // setData(prevData=>[ payload.new ,...prevData, ])
+          setData(prevData=>[ { ...payload.new, animate: true }, ...prevData ])
         })
         .on('postgres_changes', {event:'UPDATE',schema:'public',table:'pro'},payload=>{
           setData(prevData => prevData.map(item => item.id ===payload.new.id ? payload.new : item))
@@ -74,11 +79,11 @@ return () => {
           </div>
         </div>
         {Load ? (
-  <div className={`grid ${
-    isGridView 
-      ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-      : 'grid-cols-1'
-  } gap-4 sm:gap-6 md:gap-8`}>
+     <div className={`grid ${
+      isGridView 
+        ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+        : 'grid-cols-1'
+    } gap-4 sm:gap-6 md:gap-8 ${fadeOut ? 'fade-out' : ''}`}>
     {[...Array(8)].map((_, index) => (
       <SkeletonCard key={index} isGridView={isGridView} />
     ))}
@@ -90,9 +95,12 @@ return () => {
     : 'grid-cols-1'
 } gap-4 sm:gap-6 md:gap-8`}>
   {pro.map(pro => (
+    // <div key={pro.id} className={`bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ${
+    //   isGridView ? 'flex flex-col' : 'flex flex-row h-full'
+    // }`}>
     <div key={pro.id} className={`bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ${
       isGridView ? 'flex flex-col' : 'flex flex-row h-full'
-    }`}>
+    } ${pro.animate ? 'insert-in' : ''}`}>
       <Link href={`/details/${pro.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
         <div className={`relative ${
           isGridView 
