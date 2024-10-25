@@ -105,7 +105,7 @@ export default function Data() {
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
               : 'grid-cols-1'
           } gap-4 sm:gap-6 md:gap-8 ${fadeOut ? 'fade-out' : ''}`}>
-            {[...Array(8)].map((_, index) => (
+            {[...Array(pro.length)].map((_, index) => (
               <SkeletonCard key={index} isGridView={isGridView} />
             ))}
           </div>
