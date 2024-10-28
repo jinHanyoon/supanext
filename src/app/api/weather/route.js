@@ -6,8 +6,7 @@ function getBaseDateTime() {
     const koreaTime = new Date(now);
     let hours = koreaTime.getHours();
     let minutes = koreaTime.getMinutes();
-
-
+    
     if (minutes < 35) {
         minutes = "00";
     } else {

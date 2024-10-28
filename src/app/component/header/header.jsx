@@ -60,7 +60,7 @@ const handleMyPageClick = (e) => {
               MY Page
             </Link>
             <Link href="/about" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
-              Project
+              Weather
             </Link>
             <Link href="/" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               Calendar
