@@ -6,13 +6,9 @@ import supabase from '../api/supabaseaApi';
 import SkeletonCard from '../component/Skeleton/page';
 import Link from 'next/link';
 import '../globals.css'; // CSS 파일을 임포트합니다.
-
+import { useRouter } from 'next/navigation';
 /**
  * Data 컴포넌트: 프로젝트 데이터를 표시하는 메인 페이지
- * 
- * 
- * 
-
 
  * @returns {JSX.Element} 렌더링된 Data 컴포넌트
  */
@@ -24,7 +20,8 @@ export default function Data() {
     const [isGridView, setIsGridView] = useState(true); // 그리드 뷰 여부를 결정하는 상태
     const [fadeOut, setFadeOut] = useState(false); // 페이드 아웃 애니메이션 상태
     const defaultAvatar = '/img/img04.jpg'; // 기본 아바타 이미지 경로
-
+    const [loading, setLoading] = useState(false); // 로딩 상태 추가
+    const router = useRouter(); // useRouter 훅 사
     useEffect(() => {
       /**
        * 데이터베이스에서 프로젝트 데이터를 가져오는 비동기 함수
@@ -38,11 +35,15 @@ export default function Data() {
           // setData(data); // 가져온 데이터를 상태에 설정
           setFadeOut(true); // 데이터 로드 완료 시 페이드 아웃 시작
           setData(dataWithAnimate);
-
-          setTimeout(() => {
-            setLoad(false); // 2초 후 로딩 상태 해제
-
-          }, 2000); // 2000ms = 2초
+      
+          if (!localStorage.getItem('hasLoaded')) {  // localStorage 체크
+            setTimeout(() => {
+              setLoad(false); // 2초 후 로딩 상태 해제
+              localStorage.setItem('hasLoaded', 'true');  // localStorage에 저장
+            }, 2000); // 2000ms = 2초
+          } else {
+            setLoad(false);
+          }
         }
         dbCome();
         
@@ -67,6 +68,8 @@ export default function Data() {
           supabase.removeChannel(channel);
         };
     }, []);
+
+
 
   return (
     <>

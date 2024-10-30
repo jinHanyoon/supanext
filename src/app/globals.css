@@ -56,3 +56,29 @@ to{
 
 }
 }
+/* styles.css 또는 해당 컴포넌트의 CSS 파일에 추가 */
+.loading-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 999; /* 다른 요소 위에 표시되도록 설정 */
+}
+
+.loading-animation.show {
+  opacity: 1; /* 애니메이션 시작 시 불투명하게 설정 */
+  animation: slide-up 0.5s forwards; /* 아래에서 위로 올라가는 애니메이션 */
+}
+
+@keyframes slide-up {
+  from {
+      transform: translateY(100%); /* 아래에서 시작 */
+  }
+  to {
+      transform: translateY(0); /* 원래 위치로 이동 */
+  }
+}

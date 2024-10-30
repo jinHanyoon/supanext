@@ -30,13 +30,9 @@ export default function RootLayout({ children }) {
 
 
         <body  className=" bg-stone-100">
-  {/* <BackVideo/>       */}
       <Header/>
       <Sidebar/>         
-
   {children}
-      
-      {/* <Footer/> */}
 
       </body>
     </html>
