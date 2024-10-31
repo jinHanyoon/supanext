@@ -4,6 +4,8 @@ import supabase from '../api/supabaseaApi';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import {signInWithkakao} from '../login/actions'
+import {signInWithGoogle} from '../login/actions'
+
 import Loading from '../loading';
 
 
@@ -106,6 +108,20 @@ export default function SignUpPage() {
               className="mr-2"
             />
             <span className="text-sm font-semibold text-gray-900">카카오로 시작하기</span>
+          </button>
+
+          <button 
+            onClick={signInWithGoogle} 
+            className="w-full flex items-center justify-center py-3 px-4 rounded-lg bg-white hover:bg-gray-50 border border-gray-300 transition duration-200 mt-2"
+          >
+            <Image 
+              alt="google" 
+              src="/img/google.svg" 
+              width={24} 
+              height={24} 
+              className="mr-2"
+            />
+            <span className="text-sm font-semibold text-gray-700">Google로 시작하기</span>
           </button>
         </div>
       </div>

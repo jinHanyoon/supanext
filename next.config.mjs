@@ -1,13 +1,20 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-    
-    images: {
-        domains: ['vwaofeoshpnacnpicind.supabase.co', 'k.kakaocdn.net'], // 여기서 your-project-ref는 Supabase의 고유한 URL
-      },
-
-}
-;
-
-
+  images: {
+      remotePatterns: [
+          {
+              protocol: 'https',
+              hostname: 'vwaofeoshpnacnpicind.supabase.co'
+          },
+          {
+              protocol: 'https',
+              hostname: 'k.kakaocdn.net'
+          },
+          {
+              protocol: 'https',
+              hostname: 'lh3.googleusercontent.com'
+          }
+      ]
+  }
+};
 
 export default nextConfig;

@@ -68,7 +68,7 @@ const useUserSession = () => {
         subscription.unsubscribe();
       }
     };
-  }, [router]);
+  }, []);
 
 
   return { loggedIn, userName, userUUID, userAvatar };
