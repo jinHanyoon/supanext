@@ -46,6 +46,10 @@ export default function SignUpPage() {
     }
   };
 
+ const handleClose = ()=>{
+    router.push('/')
+ }
+
 
 
 
@@ -57,7 +61,10 @@ export default function SignUpPage() {
   <div className="fixed inset-0 backdrop-blur-xl flex items-center justify-center p-4 z-50">
     <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
       <div className="p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">회원가입</h1>
+        <div  className='flex justify-center '>
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center w-11/12">회원가입</h1>
+        <p className='text-right font-bold text-2xl' onClick={handleClose}>X</p>
+        </div>
         <form onSubmit={handleSignUp} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">이메일</label>

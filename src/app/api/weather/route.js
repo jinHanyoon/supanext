@@ -1,12 +1,23 @@
 import { NextResponse } from 'next/server';
 // GET 요청을 처리하는 함수
-
+const coordinates = {
+    부산: { nx: 98, ny: 76 },
+    창원: { nx: 90, ny: 77 },
+    명지: { nx: 97, ny: 74 },
+    연산: { nx: 99, ny: 75 }, // 부산 연산동의 정확한 좌표
+    서면: { nx: 97, ny: 75 },
+    남포: { nx: 97, ny: 74 },
+    서울: { nx: 60, ny: 127 }, // 서울 좌표 추가
+    강원도: { nx: 73, ny: 134 } // 강원도 좌표 추가 (춘천 기준)
+};
 function getBaseDateTime() {
     const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" });
     const koreaTime = new Date(now);
     let hours = koreaTime.getHours();
     let minutes = koreaTime.getMinutes();
-    
+    const start = Date.now();
+    const end = Date.now();
+console.log(`API 요청 처리 시간: ${end - start}ms`);
     if (minutes < 35) {
         minutes = "00";
     } else {
@@ -46,16 +57,7 @@ export async function GET(request) {
 
     const { baseDate, baseTime } = getBaseDateTime();
     // 도시별 좌표를 설정
-    const coordinates = {
-        부산: { nx: 98, ny: 76 },
-        창원: { nx: 90, ny: 77 },
-        명지: { nx: 97, ny: 74 },
-        연산: { nx: 99, ny: 75 }, // 부산 연산동의 정확한 좌표
-        서면: { nx: 97, ny: 75 },
-        남포: { nx: 97, ny: 74 },
-        서울: { nx: 60, ny: 127 }, // 서울 좌표 추가
-        강원도: { nx: 73, ny: 134 } // 강원도 좌표 추가 (춘천 기준)
-    };
+
     // 선택한 도시의 좌표를 가져오고, 없으면 기본값으로 부산의 좌표 사용
     const { nx, ny } = coordinates[city] || coordinates['부산'];
 

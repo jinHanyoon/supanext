@@ -3,11 +3,13 @@ import { useState } from 'react';
 import Link from "next/link";
 import {login, logout} from "./actions"
 import { useRouter } from 'next/navigation'
-
+import Image from 'next/image';
+import { signInWithkakao } from './actions';
+import { signInWithGoogle } from './actions';
 
 export default function LoginForm({sideHidden}) {
   const router = useRouter()
-
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -78,7 +80,7 @@ export default function LoginForm({sideHidden}) {
           <p className="text-sm text-red-600 text-center">{error}</p>
         )}
 
-        <button
+<button
           type="submit"
           className={`w-full py-3 px-4 rounded-lg text-sm font-semibold text-center text-white transition duration-200 ease-in-out ${
             isFormComplete 
@@ -91,6 +93,37 @@ export default function LoginForm({sideHidden}) {
         </button>
       </form>
       
+      <div className="mt-8 space-y-3">
+        <div className="flex gap-3 justify-center">
+          <button 
+            onClick={signInWithkakao} 
+            className="flex items-center justify-center p-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 transition duration-200 w-[120px]"
+          >
+            <Image 
+              alt="kakao" 
+              src="/img/kakao.png" 
+              width={20} 
+              height={20} 
+              className="mr-1"
+            />
+            <span className="text-xs font-semibold text-gray-900">카카오</span>
+          </button>
+
+          <button 
+            onClick={signInWithGoogle} 
+            className="flex items-center justify-center p-2 rounded-lg bg-white hover:bg-gray-50 border border-gray-300 transition duration-200 w-[120px]"
+          >
+            <Image 
+              alt="google" 
+              src="/img/google.svg" 
+              width={20} 
+              height={20} 
+              className="mr-1"
+            />
+            <span className="text-xs font-semibold text-gray-700">Google</span>
+          </button>
+          </div>
+          </div>
       <div className="mt-6 text-center">
         <Link 
           href="/signUp" 
