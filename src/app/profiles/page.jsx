@@ -83,7 +83,43 @@ export default function Profiles() {
       alert(`${newName} 어서와 `);
     } 
 
+    const handleDeleteAccount = async () => {
 
+      if (userUUID === '258609e2-b70f-4989-9b3d-8326cb42c2bd') {
+        alert('이 계정은 삭제할 수 없습니다.');
+        return;
+      }
+
+      const userConfirmed = window.confirm("정말로 계정을 삭제하시겠습니까?.");
+      
+      if (!userConfirmed) return;
+    
+      setLoading(true);
+      
+      try {
+        // Supabase RPC 호출 방식 수정
+        const { data, error } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('id', userUUID);
+
+        if (error) throw error;
+
+        const { error: rpcError } = await supabase
+          .rpc('delete_user');
+
+        if (rpcError) throw rpcError;
+        const { error: signOutError } = await supabase.auth.signOut();
+        if (signOutError) throw signOutError;
+        alert('계정이 성공적으로 삭제되었습니다.');
+        router.push('/');
+      } catch (error) {
+        console.error('Error:', error);
+        alert('계정 삭제 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
 
 
@@ -149,6 +185,13 @@ export default function Profiles() {
     <MyComment userUUID={userUUID}/>
             </div>
   </div>
+  <button 
+  className="w-full mt-4 sm:mt-6 py-3 sm:py-4 px-6 sm:px-8 rounded-lg sm:rounded-xl font-semibold text-base sm:text-lg bg-red-500 text-white hover:bg-red-600"
+  onClick={handleDeleteAccount}
+>
+  회원 탈퇴
+</button>
+
 </section>
   )
 }

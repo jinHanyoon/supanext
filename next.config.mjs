@@ -6,6 +6,10 @@ const nextConfig = {
               hostname: 'vwaofeoshpnacnpicind.supabase.co'
           },
           {
+            protocol: 'http',  // http도 추가
+            hostname: 'k.kakaocdn.net'
+        },
+          {
               protocol: 'https',
               hostname: 'k.kakaocdn.net'
           },

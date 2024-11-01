@@ -29,11 +29,13 @@ export default function RootLayout({ children }) {
       </head>
 
 
-        <body  className=" bg-stone-100">
+        <body className="bg-stone-100 relative min-h-screen pb-[60px]">
       <Header/>
       <Sidebar/>         
-  {children}
-
+      <main className="pb-24"> {/* 푸터 높이만큼 패딩 추가 */}
+          {children}
+        </main>
+<Footer/>
       </body>
     </html>
   );

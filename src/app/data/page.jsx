@@ -35,15 +35,18 @@ export default function Data() {
           // setData(data); // 가져온 데이터를 상태에 설정
           setFadeOut(true); // 데이터 로드 완료 시 페이드 아웃 시작
           setData(dataWithAnimate);
-      
-          if (!localStorage.getItem('hasLoaded')) {  // localStorage 체크
-            setTimeout(() => {
-              setLoad(false); // 2초 후 로딩 상태 해제
-              localStorage.setItem('hasLoaded', 'true');  // localStorage에 저장
-            }, 2000); // 2000ms = 2초
-          } else {
-            setLoad(false);
+          setLoad(false);
+          if (!localStorage.getItem('hasLoaded')) {
+            localStorage.setItem('hasLoaded', 'true');
           }
+          // if (!localStorage.getItem('hasLoaded')) {  // localStorage 체크
+          //   setTimeout(() => {
+          //     setLoad(false); // 2초 후 로딩 상태 해제
+          //     localStorage.setItem('hasLoaded', 'true');  // localStorage에 저장
+          //   }, 2000); // 2000ms = 2초
+          // } else {
+          //   setLoad(false);
+          // }
         }
         dbCome();
         
