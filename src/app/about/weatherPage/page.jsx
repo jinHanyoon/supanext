@@ -50,6 +50,7 @@ export default function WeatherPage() {
             } finally {
                 if (isMounted) {
                     setLoading(false);
+
                 }
             }
         };
@@ -149,7 +150,9 @@ export default function WeatherPage() {
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4 min-h-[200px] flex items-center justify-center transition-all duration-1000">
                     {error ? (
-                        <p className="text-red-500 text-center font-medium">잠시 후 다시 시도해주세요!</p>
+                        <p className="text-red-500 text-center font-medium">날씨 정보가 업데이트 되고있어요! <br>잠시만 기다려주세요!</br>
+                        
+                        </p>
                     ) : loading ? (
                         <div className="flex items-center justify-center">
                             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
