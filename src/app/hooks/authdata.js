@@ -11,7 +11,6 @@ const useUserSession = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // 세션 체크 함수
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -36,8 +35,7 @@ const useUserSession = () => {
 
     checkSession();
 
-    // 세션 상태 변화 감지 구독
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
         setLoggedIn(true);
         const user = session.user;
@@ -58,18 +56,13 @@ const useUserSession = () => {
         setLoggedIn(false);
         setUserName('');
         setAvatar('');
-        // router.push('/'); // 로그인 상태가 아니면 리다이렉트
       }
     });
 
-
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      subscription?.unsubscribe();
     };
   }, []);
-
 
   return { loggedIn, userName, userUUID, userAvatar };
 };

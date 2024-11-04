@@ -62,7 +62,7 @@ const handleMyPageClick = (e) => {
             <Link href="/about" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               Weather
             </Link>
-            <Link href="/" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
+            <Link href="/calendar" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               Calendar
             </Link>
           </div>
@@ -136,7 +136,7 @@ const handleMyPageClick = (e) => {
           <Link href="/about" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
             Project
           </Link>
-          <Link href="/" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
+          <Link href="/calendar" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
             Calendar
           </Link>
           {loggedIn ? (
