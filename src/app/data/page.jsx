@@ -15,13 +15,10 @@ import { useRouter } from 'next/navigation';
 export default function Data() {
     // 상태 변수들
     const [pro, setData] = useState([]); // 프로젝트 데이터를 저장하는 상태
-    const [dataShow, ShowData] = useState(false); // 데이터 표시 여부를 결정하는 상태
     const [Load, setLoad] = useState(true); // 로딩 상태를 나타내는 상태
     const [isGridView, setIsGridView] = useState(true); // 그리드 뷰 여부를 결정하는 상태
     const [fadeOut, setFadeOut] = useState(false); // 페이드 아웃 애니메이션 상태
     const defaultAvatar = '/img/img04.jpg'; // 기본 아바타 이미지 경로
-    const [loading, setLoading] = useState(false); // 로딩 상태 추가
-    const router = useRouter(); // useRouter 훅 사
     useEffect(() => {
       /**
        * 데이터베이스에서 프로젝트 데이터를 가져오는 비동기 함수
