@@ -7,104 +7,111 @@ import supabase from '../../api/supabaseaApi';
 import useUserSession from '../../hooks/authdata';
 import Loading from '../../loading';
 
-
-
 export default function Writing({writing_hidden}) {
   const { userName, userUUID, userAvatar } = useUserSession();
 
-    const [pro, setData] = useState([]);
-    const [message, setMessage] = useState('');
-    const [titleValue, setTitleValue] = useState('');
-    const [bodyValue, setBodyValue] = useState('');
-
-    const [newImg, setNewImg] = useState(null); // 이미지 파일을 저장할 state
-      const [imgPreview, setImgPreview] = useState(''); // 이미지 미리보기를 위한 state
-      const [loading, setLoading] = useState(false);
-
-
+  const [pro, setData] = useState([]);
+  const [message, setMessage] = useState('');
+  const [titleValue, setTitleValue] = useState('');
+  const [bodyValue, setBodyValue] = useState('');
+  const [newImg, setNewImg] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [isAdminPost, setIsAdminPost] = useState(false);
 
   useEffect(()=>{},
-[userName, userUUID, userAvatar])
+    [userName, userUUID, userAvatar])
 
-    const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        setNewImg(file);
-        const fileURL = URL.createObjectURL(file);
-        setImgPreview(fileURL); // 파일 URL을 상태에 저장
-      }
-    };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewImg(file);
+      const fileURL = URL.createObjectURL(file);
+      setImgPreview(fileURL);
+    }
+  };
 
-    const ImgIcon = '/img/img_icon.png'; 
+  const ImgIcon = '/img/img_icon.png'; 
 
+  const writingSubmit = async () => {
+    if (!window.confirm("게시글을 올리겠습니까?")) return;
 
-    const writingSubmit = async () => {
-      // 사용자 확인
-      if (!window.confirm("게시글을 올리겠습니까?")) return;
+    setLoading(true);
 
-      setLoading(true);
+    try {
+      let imgUrl = null;
 
-      try {
-        let imgUrl = null;
+      if (newImg) {
+        const fileExt = newImg.name.split('.').pop();
+        const fileName = `${userUUID}-${Date.now()}.${fileExt}`;
+        const storageBucket = isAdminPost ? 'admin_storage' : 'test_img';
+        const filePath = `${storageBucket}/${userUUID}/${fileName}`;
 
-        // 이미지가 선택된 경우 업로드 처리
-        if (newImg) {
-          const fileExt = newImg.name.split('.').pop();
-          const fileName = `${userUUID}-${Date.now()}.${fileExt}`;
-          const filePath = `test_img/${userUUID}/${fileName}`;
+        const { error: imgError } = await supabase.storage
+          .from(storageBucket)
+          .upload(filePath, newImg);
 
-          const { error: imgError } = await supabase.storage
-            .from('test_img')
-            .upload(filePath, newImg);
-
-          if (imgError) {
-            console.error("이미지 업로드 오류:", imgError);
-            alert('이미지 업로드에 실패했습니다.');
-            return;
-          }
-
-          const { publicUrl } = supabase.storage.from('test_img').getPublicUrl(filePath).data;
-          imgUrl = publicUrl;
-        }
-
-        // 게시글 데이터 삽입
-        const { data, error } = await supabase.from('pro').insert({
-          title: titleValue,
-          body: bodyValue,
-          username: userName,
-          avatar: userAvatar,
-          imgUrl,
-        });
-
-        // 상태 업데이트 및 초기화
-        setData([...pro]);
-    
-        if (error) {
-          console.error("데이터 삽입 오류:", error.message);
-          alert('오류가 발생했습니다. 다시 시도해주세요.');
+        if (imgError) {
+          console.error("이미지 업로드 오류:", imgError);
+          alert('이미지 업로드에 실패했습니다.');
           return;
         }
 
-        setTitleValue('');
-        setBodyValue('');
-        writing_hidden();
-        alert('생성완료');
-      } catch (error) {
-        console.error("예상치 못한 오류:", error.message);
-        alert('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
-      } finally {
-        setLoading(false);
+        const { publicUrl } = supabase.storage.from(storageBucket).getPublicUrl(filePath).data;
+        imgUrl = publicUrl;
       }
-    };
-    return (
-      <>
+
+      const tableName = isAdminPost ? 'mypost' : 'pro';
+      const { data, error } = await supabase.from(tableName).insert({
+        title: titleValue,
+        body: bodyValue,
+        username: userName,
+        avatar: userAvatar,
+        imgUrl,
+      });
+
+      setData([...pro]);
+  
+      if (error) {
+        console.error("데이터 삽입 오류:", error.message);
+        alert('오류가 발생했습니다. 다시 시도해주세요.');
+        return;
+      }
+
+      setTitleValue('');
+      setBodyValue('');
+      writing_hidden();
+      alert('생성완료');
+    } catch (error) {
+      console.error("예상치 못한 오류:", error.message);
+      alert('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
       {loading && <Loading />}
       
-      <div className='fixed  inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full z-40'>
+      <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full z-40'>
         <div className='container max-w-2xl mx-auto px-4 py-16 pt-36'>
           <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden'>
             <div className='p-8'>
               <h3 className='text-2xl font-semibold text-gray-900 dark:text-white mb-6'>새 글 작성</h3>
+              
+              <div className="flex items-center mb-4">
+                <input
+                  type="checkbox"
+                  id="admin-post"
+                  checked={isAdminPost}
+                  onChange={(e) => setIsAdminPost(e.target.checked)}
+                  className="mr-2"
+                />
+                <label htmlFor="admin-post" className="text-sm text-gray-600 dark:text-gray-300">
+                  관리자 게시판에 저장
+                </label>
+              </div>
               
               <input
                 className="w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
