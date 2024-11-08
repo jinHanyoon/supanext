@@ -119,12 +119,12 @@ export default function WeatherPage({ selectedLocation }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
             </button>
-
-            <div className={`fixed md:absolute md:left-0 bottom-0 md:bottom-auto z-30 w-full md:w-96 h-[80vh] md:h-screen transform transition-transform duration-300 ease-in-out ${
-                isOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-0'
-            }`}>
-                <div className="h-full flex items-center justify-center p-4">
-                    <div className="bg-slate-200 rounded-3xl p-6 md:p-8 shadow-2xl w-full max-w-md transition-all duration-1000 relative">
+            <div className={`fixed md:absolute md:left-0 bottom-[2vh] md:bottom-auto z-30 w-full md:w-96 h-[95vh] md:h-screen transform transition-transform duration-300 ease-in-out ${
+    isOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-0'
+}`}>
+                <div className="h-full flex items-center justify-center p-4 overflow-y-auto">
+         
+                    <div className="bg-slate-50 rounded-3xl p-6 md:p-8 shadow-2xl w-full max-w-md transition-all duration-1000 relative">
                         <button
                             onClick={() => setIsOpen(false)}
                             className="absolute top-2 right-2 text-gray-500 md:hidden"
