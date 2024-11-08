@@ -42,29 +42,18 @@ export default function AdetailsPage() {
 
     try {
       if (Post.imgUrl) {
-        try {
-          const storageBucket = 'admin_storage';
-          const decodedUrl = decodeURIComponent(Post.imgUrl);
-          const fullFileName = decodedUrl.split('/').pop();
-          
-          // 파일 경로에 storageBucket 포함
-          const filePath = `${storageBucket}/${Post.user_id}/${fullFileName}`;
-          
-          console.log('삭제할 파일 경로:', filePath);
-          
-          const { data, error: storageError } = await supabase.storage
-            .from(storageBucket)
-            .remove([filePath]);
-          
-          if (storageError) {
-            console.error('스토리지 삭제 에러:', storageError);
-            throw storageError;
-          }
-          
-          console.log('삭제 응답:', data);
-        } catch (error) {
-          console.error('에러 발생:', error);
-          throw error;
+        const filePath = Post.imgUrl.split('/public/')[1];
+        console.log('삭제할 파일 경로:', filePath);
+        
+        const { data, error: storageError } = await supabase
+          .storage
+          .from('admin_storage')
+          .remove([filePath]);
+
+        console.log('삭제 요청 결과:', data);
+        if (storageError) {
+          console.error('스토리지 삭제 에러:', storageError);
+          throw storageError;
         }
       }
 
