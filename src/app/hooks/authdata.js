@@ -11,9 +11,11 @@ const useUserSession = () => {
   const router = useRouter();
 
   useEffect(() => {
+    let mounted = true;
+
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      if (session && mounted) {
         setLoggedIn(true);
         const user = session.user;
         const { data, error } = await supabase
@@ -21,12 +23,12 @@ const useUserSession = () => {
           .select('id, username, avatar_url')
           .eq('id', user.id)
           .single();
-        if (!error && data) {
+        if (!error && data && mounted) {
           setUserName(data.username);
           setAvatar(data.avatar_url);
           setUUID(data.id);
         }
-      } else {
+      } else if (mounted) {
         setLoggedIn(false);
         setUserName('');
         setAvatar('');
@@ -35,24 +37,21 @@ const useUserSession = () => {
 
     checkSession();
 
-    const { subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session && mounted) {
         setLoggedIn(true);
         const user = session.user;
-        const fetchUsername = async () => {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('id, username, avatar_url')
-            .eq('id', user.id)
-            .single();
-          if (!error && data) {
-            setUserName(data.username);
-            setAvatar(data.avatar_url);
-            setUUID(data.id);
-          }
-        };
-        fetchUsername();
-      } else {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, username, avatar_url')
+          .eq('id', user.id)
+          .single();
+        if (!error && data && mounted) {
+          setUserName(data.username);
+          setAvatar(data.avatar_url);
+          setUUID(data.id);
+        }
+      } else if (mounted) {
         setLoggedIn(false);
         setUserName('');
         setAvatar('');
@@ -60,6 +59,7 @@ const useUserSession = () => {
     });
 
     return () => {
+      mounted = false;
       subscription?.unsubscribe();
     };
   }, []);

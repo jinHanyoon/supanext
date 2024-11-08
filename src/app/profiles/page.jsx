@@ -21,10 +21,10 @@ export default function Profiles() {
 
 
 
- useEffect(() => {
+//  useEffect(() => {
 
-// userUUID 를 받고 있으니 의존성 배열에 추가
-  },[loggedIn,userUUID,userAvatar,userName]);
+// // userUUID 를 받고 있으니 의존성 배열에 추가
+//   },[loggedIn,userUUID,userAvatar,userName]);
 
 
 

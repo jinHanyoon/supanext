@@ -10,10 +10,12 @@ export default function NaverMap({onLocationSelect}) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          // 현재 위치
           const currentLoc = [position.coords.longitude, position.coords.latitude];
           console.log("Current location obtained: ", position.coords);
 
           setLoc([
+            // 현재위치 + 추가한 위치
             currentLoc,
             [129.0756, 35.1796], // 부산
             [128.6811, 35.2271], // 창원
