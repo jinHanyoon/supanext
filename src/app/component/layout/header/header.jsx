@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import useUserSession from '../../hooks/authdata'
-import {logout as logoutAction} from "../../login/actions"
-import LoginPage from '../../login/page'
+import useUserSession from '@/app/hooks/authdata'
+import {logout as logoutAction} from "../../../(auth)/login/actions"
+import LoginPage from '../../../(auth)/login/page'
 import Image from 'next/image';
 
 
@@ -46,17 +46,17 @@ const handleMyPageClick = (e) => {
   <nav className="fixed z-50 w-full top-0 bg-white/90 backdrop-blur-xl shadow-md">
     <div className="container max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-16">
-        <Link href="/" className="flex-shrink-0">
+        <Link href="/data" className="flex-shrink-0">
           <span className="text-2xl font-extrabold text-gray-800">SPACE</span>
         </Link>
         
         <div className="hidden md:flex items-center justify-center flex-grow">
           {/* 태블릿 이하에서 간격 조정 */}
           <div className="flex space-x-4 lg:space-x-8 lg:gap-16">
-            <Link href="/" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
+            <Link href="/data" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               Main
             </Link>
-            <Link href="/profiles" onClick={handleMyPageClick} className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
+            <Link  href="/profiles"   onClick={handleMyPageClick} className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               MY Page
             </Link>
             <Link href="/about" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
@@ -75,7 +75,7 @@ const handleMyPageClick = (e) => {
             </button>
           ) : (
             <div className="flex items-center space-x-6">
-              <Link href="/profiles" className="flex items-center space-x-3 group transition-all duration-300 ease-in-out hover:bg-gray-100 rounded-full py-1 px-3">
+              <Link  href="/profiles"   className="flex items-center space-x-3 group transition-all duration-300 ease-in-out hover:bg-gray-100 rounded-full py-1 px-3">
                 <div className="relative">
                   <Image 
                     alt="avatar" 
@@ -127,7 +127,7 @@ const handleMyPageClick = (e) => {
               </div>
             </Link>
           )}
-          <Link href="/" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
+          <Link href="/data" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
             Main
           </Link>
           <Link href="/profiles" onClick={handleMyPageClick} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">

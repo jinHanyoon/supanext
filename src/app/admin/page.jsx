@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import List from '../admin/list/page';
-import useUserSession from '../hooks/authdata';
 import { useRouter } from 'next/navigation';
 
 export default function Admin() {

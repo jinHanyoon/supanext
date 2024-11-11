@@ -1,9 +1,8 @@
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import Header from "./component/header/header";
-import Footer from "./component/footer/footer";
-import Sidebar from "./component/sidebar/page";
-import BackVideo from "./bg/bg";
+import Header from "./component/layout/header/header";
+import Footer from "./component/layout/footer/footer";
+import Sidebar from "./component/layout/sidebar/page";
 
 
 import css from "./globals.css";

@@ -3,9 +3,9 @@ import React from 'react'
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import supabase from '../api/supabaseaApi';
-import useUserSession from '../hooks/authdata'
-import Loading from '../loading';
+import supabase from '@/app/api/supabaseaApi'
+import useUserSession from '../../hooks/authdata'
+import Loading from '../../loading';
 import Link from 'next/link';
 import MyList from './mylist/page'
 import MyComment from './mycomment/page'

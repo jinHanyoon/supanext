@@ -1,8 +1,5 @@
 import Image from "next/image";
-import Data from "./data/page"
-import Singup from'./signUp/signup'
-import LoginForm from './login/page'
-import Sidebar from './component/sidebar/page'
+import Data from "./(main)/data/page"
 
 
 export default function Home() {

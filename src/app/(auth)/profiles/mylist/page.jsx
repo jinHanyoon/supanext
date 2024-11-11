@@ -2,7 +2,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import supabase from '../../api/supabaseaApi';
+import supabase from '@/app/api/supabaseaApi'
+
 
 export default function MyList({userUUID}) {
     const [MyWrite, setMyWrite] = useState([])

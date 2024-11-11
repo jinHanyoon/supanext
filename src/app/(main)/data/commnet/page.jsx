@@ -3,8 +3,9 @@ import supabase from '@/app/api/supabaseaApi'
 import React from 'react'
 import { useState,useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import useUserSession from '../../hooks/authdata';
-import '../../globals.css'; // CSS 파일을 임포트합니다.
+import useUserSession from '@/app/hooks/authdata';
+import '../../../globals.css'; // CSS 파일을 임포트합니다.
+
 // 게시물 url 불러오기 
 // 게시물 url id값으로 사용 
 // 게시물 url num && id 값으로 댓글추가 

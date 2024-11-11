@@ -1,9 +1,8 @@
 'use client'
 import React from 'react'
 import { useState, useEffect } from 'react'
-import LoginPage from '../../login/page'
-import WritingView from '../writing/page'
-import useUserSession from '../../hooks/authdata'
+import WritingView from '../../writing/page'
+import useUserSession from '@/app/hooks/authdata'
 
 export default function SideContents() {
   // 로그인 버튼

@@ -2,9 +2,8 @@
 import Image from "next/image";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-import LoginForm from "../../login/loginForm";
-import supabase from '../../api/supabaseaApi';
-import useUserSession from '../../hooks/authdata';
+import supabase from '@/app/api/supabaseaApi';
+import useUserSession from '@/app/hooks/authdata';
 import Loading from '../../loading';
 
 export default function Writing({writing_hidden}) {

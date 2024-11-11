@@ -1,5 +1,5 @@
 'use client'
-import supabase from "../api/supabaseaApi";
+import supabase from "../../api/supabaseaApi";
 
 export const login = async (email, password) => {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -16,7 +16,7 @@ export const signInWithkakao =async() =>{
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "kakao",
     options: {
-      redirectTo: "https://devjinhan.vercel.app/",
+      redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
 }
@@ -24,7 +24,7 @@ export const signInWithGoogle = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: "https://devjinhan.vercel.app/",
+      redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
 
