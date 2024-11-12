@@ -3,7 +3,7 @@ import Image from "next/image";
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi';
-import useUserSession from '@/app/hooks/authdata';
+import { useUserSession } from '@/app/hooks/authdata';
 import Loading from '../../loading';
 
 export default function Writing({writing_hidden}) {

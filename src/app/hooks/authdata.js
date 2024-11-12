@@ -1,70 +1,102 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import supabase from '../api/supabaseaApi';
-import { useRouter } from 'next/navigation';
 
-const useUserSession = () => {
-  const [userName, setUserName] = useState('');
-  const [userAvatar, setAvatar] = useState('');
-  const [userUUID, setUUID] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const router = useRouter();
+export function useUserSession() {
+  const [userState, setUserState] = useState({
+    loggedIn: false,
+    userName: '',
+    userAvatar: '',
+    userUUID: '',
+    isLoading: true,
+    error: null
+  });
+
+  const updateUserState = useCallback(async (session) => {
+    try {
+      if (session?.user) {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('id, username, avatar_url')
+          .eq('id', session.user.id)
+          .single();
+
+        if (error) throw error;
+
+        setUserState({
+          loggedIn: true,
+          userName: profile?.username || '',
+          userAvatar: profile?.avatar_url || '',
+          userUUID: profile?.id || '',
+          isLoading: false,
+          error: null
+        });
+      } else {
+        setUserState({
+          loggedIn: false,
+          userName: '',
+          userAvatar: '',
+          userUUID: '',
+          isLoading: false,
+          error: null
+        });
+      }
+    } catch (error) {
+      console.error('상태 업데이트 실패:', error);
+      setUserState(prev => ({
+        ...prev,
+        isLoading: false,
+        error: error.message
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     let mounted = true;
 
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session && mounted) {
-        setLoggedIn(true);
-        const user = session.user;
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id, username, avatar_url')
-          .eq('id', user.id)
-          .single();
-        if (!error && data && mounted) {
-          setUserName(data.username);
-          setAvatar(data.avatar_url);
-          setUUID(data.id);
+    const initSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (mounted) {
+          await updateUserState(session);
         }
-      } else if (mounted) {
-        setLoggedIn(false);
-        setUserName('');
-        setAvatar('');
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          async (_event, session) => {
+            if (mounted) {
+              await updateUserState(session);
+            }
+          }
+        );
+
+        return () => {
+          subscription.unsubscribe();
+        };
+
+      } catch (error) {
+        console.error('세션 초기화 실패:', error);
+        if (mounted) {
+          setUserState(prev => ({
+            ...prev,
+            isLoading: false,
+            error: error.message
+          }));
+        }
       }
     };
 
-    checkSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session && mounted) {
-        setLoggedIn(true);
-        const user = session.user;
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id, username, avatar_url')
-          .eq('id', user.id)
-          .single();
-        if (!error && data && mounted) {
-          setUserName(data.username);
-          setAvatar(data.avatar_url);
-          setUUID(data.id);
-        }
-      } else if (mounted) {
-        setLoggedIn(false);
-        setUserName('');
-        setAvatar('');
-      }
-    });
+    const { cleanup } = initSession() || {};
 
     return () => {
       mounted = false;
-      subscription?.unsubscribe();
+      cleanup?.();
     };
-  }, []);
+  }, [updateUserState]);
 
-  return { loggedIn, userName, userUUID, userAvatar };
-};
+  const refreshSession = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    await updateUserState(session);
+  }, [updateUserState]);
 
-export default useUserSession;
+  return { ...userState, refreshSession };
+}

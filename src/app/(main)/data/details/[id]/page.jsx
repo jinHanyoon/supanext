@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Loading from '../../../../loading'
 import supabase from '@/app/api/supabaseaApi';
-import UserUUID from '../../../../hooks/authdata'
+import { useUserSession } from '@/app/hooks/authdata';
 import Comment from '../../commnet/page';
 
 export default function DetailsPage() {
@@ -16,7 +16,7 @@ export default function DetailsPage() {
   const defaultAvatar = '/img/img04.jpg'; 
   const UndefineText = "-"
   const router = useRouter()
-  const {userUUID} =UserUUID()
+  const { userUUID, loggedIn } = useUserSession();
   const [Modal, setModal] = useState(false);
 
   const handleImageClick = () => {
@@ -52,6 +52,11 @@ export default function DetailsPage() {
 
   useEffect(() => {
     if (TargetData && userUUID) {
+      console.log('권한 체크:', {
+        userUUID,
+        targetUserId: TargetData.user_id,
+        isMatch: userUUID === TargetData.user_id
+      });
       setComplete(userUUID === TargetData.user_id);
     }
   }, [TargetData, userUUID]);

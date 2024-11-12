@@ -24,7 +24,7 @@ useEffect(() => {
       }
       MyCommentGet()
   }
-}, [userUUID]) // userUUID가 변경될 때만 실행
+}, [isDataLoaded,userUUID]) 
   return (
     <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg">
     <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">내가 쓴 댓글</h3>

@@ -23,7 +23,7 @@ export default function MyList({userUUID}) {
             };
             MyData();
         }
-    }, [userUUID]); // userUUID가 변경될 때만 실행
+    }, [isDataLoaded,userUUID]); // userUUID가 변경될 때만 실행
 
     return (
         <>

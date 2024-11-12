@@ -12,51 +12,76 @@ import '../../globals.css'; // CSS 파일을 임포트합니다.
  */
 export default function Data() {
     // 상태 변수들
-    const [pro, setData] = useState([]); // 프로젝트 데이터를 저장하는 상태
+    const [pro, setData] = useState(null); // 프로젝트 데이터를 저장하는 상태
     const [Load, setLoad] = useState(true); // 로딩 상태를 나타내는 상태
     const [isGridView, setIsGridView] = useState(true); // 그리드 뷰 여부를 결정하는 상태
     const [fadeOut, setFadeOut] = useState(false); // 페이드 아웃 애니메이션 상태
     const defaultAvatar = '/img/img04.jpg'; // 기본 아바타 이미지 경로
     useEffect(() => {
-      /**
-       * 데이터베이스에서 프로젝트 데이터를 가져오는 비동기 함수
-       */
-      async function dbCome() { 
-          const { data, error } = await supabase
-            .from('pro')
-            .select('*')
-            .order('create_at', { ascending: false });
-            const dataWithAnimate = data.map(item => ({ ...item, fadeIn: true }));
-          // setData(data); // 가져온 데이터를 상태에 설정
-          setData(dataWithAnimate);
-          setLoad(false);
-          if (!localStorage.getItem('hasLoaded')) {
-            localStorage.setItem('hasLoaded', 'true');
+      let mounted = true;
+      let channel = null;
+  
+      // 이미 존재하는 채널 확인
+      const existingChannel = supabase.getChannels().find(ch => ch.topic === 'realtime:pro');
+      
+      async function dbCome() {
+          if (!mounted) return;
+          try {
+              const { data, error } = await supabase
+                  .from('pro')
+                  .select('*')
+                  .order('create_at', { ascending: false });
+  
+              if (error) throw error;
+              if (mounted) {
+                  setData(data.map(item => ({ ...item, fadeIn: true })));
+                  setLoad(false);
+              }
+          } catch (error) {
+              console.error('데이터 로딩 실패:', error);
+              if (mounted) setLoad(false);
           }
-        }
-        dbCome();
-        
-        // Supabase 실시간 구독 설정
-        const channel = supabase.channel('pro')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'pro' }, payload => {
-        // 새로운 데이터를 기존 데이터 배열의 맨 앞에 추가하고, animate 속성을 true로 설정하여 애니메이션 효과.
-            setData(prevData => [{ ...payload.new, animate: true }, ...prevData]);
-          })
-          .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pro' }, payload => {
-            // 업데이트된 데이터의 ID와 일치하는 항목을 찾아 새로운 데이터로 교체
-            setData(prevData => prevData.map(item => item.id === payload.new.id ? payload.new : item));
-          })
-          .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'pro' }, payload => {
-           // 삭제된 데이터의 ID와 일치하는 항목을 필터링하여 제거.
-            setData(prevData => prevData.filter(item => item.id !== payload.old.id));
-          })
-          .subscribe();
-
-        // 컴포넌트 언마운트 시 구독 해제
-        return () => {
-          supabase.removeChannel(channel);
-        };
-    }, []);
+      }
+  
+      dbCome();
+  
+      // 채널이 없을 때만 새로 생성
+      if (!existingChannel) {
+          console.log('새로운 채널 생성...');
+          channel = supabase.channel('pro')
+              .on('postgres_changes', { event: '*', schema: 'public', table: 'pro' }, payload => {
+                  if (!mounted) return;
+                  
+                  switch (payload.eventType) {
+                      case 'INSERT':
+                          setData(prevData => prevData ? [{ ...payload.new, animate: true }, ...prevData] : [{ ...payload.new, animate: true }]);
+                          break;
+                      case 'UPDATE':
+                          setData(prevData => prevData ? prevData.map(item => item.id === payload.new.id ? payload.new : item) : []);
+                          break;
+                      case 'DELETE':
+                          setData(prevData => prevData ? prevData.filter(item => item.id !== payload.old.id) : []);
+                          break;
+                  }
+              })
+              .subscribe((status) => {
+                  console.log('새 채널 상태:', status);
+              });
+      } else {
+          console.log('기존 채널 사용 중...');
+          channel = existingChannel;
+      }
+  
+      return () => {
+          mounted = false;
+          // 다른 컴포넌트에서도 채널을 사용중일 수 있으므로, 
+          // 완전히 새로 만든 채널일 때만 정리
+          if (channel && !existingChannel) {
+              console.log('새로 만든 채널 정리...');
+              supabase.removeChannel(channel);
+          }
+      };
+  }, []);
 
 
 
@@ -97,7 +122,7 @@ export default function Data() {
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
               : 'grid-cols-1'
           } gap-4 sm:gap-6 md:gap-8 ${fadeOut ? 'fade-out' : ''}`}>
-            {[...Array(pro.length)].map((_, index) => (
+            {[...Array(8)].map((_, index) => (
               <SkeletonCard key={index} isGridView={isGridView} />
             ))}
           </div>

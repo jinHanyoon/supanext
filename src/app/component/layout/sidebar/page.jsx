@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import WritingView from '../../writing/page'
-import useUserSession from '@/app/hooks/authdata'
+import { useUserSession } from '@/app/hooks/authdata';
 
 export default function SideContents() {
   // 로그인 버튼

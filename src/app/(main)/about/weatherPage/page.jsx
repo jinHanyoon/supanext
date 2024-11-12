@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import useUserSession from '../../../hooks/authdata';
+import { useUserSession } from '@/app/hooks/authdata';
+
 
 export default function WeatherPage({ selectedLocation }) {
     const [city, setCity] = useState(selectedLocation || '부산');

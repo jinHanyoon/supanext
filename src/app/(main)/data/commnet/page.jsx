@@ -3,7 +3,8 @@ import supabase from '@/app/api/supabaseaApi'
 import React from 'react'
 import { useState,useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import useUserSession from '@/app/hooks/authdata';
+import { useUserSession } from '@/app/hooks/authdata';
+
 import '../../../globals.css'; // CSS 파일을 임포트합니다.
 
 // 게시물 url 불러오기 
@@ -15,7 +16,8 @@ import '../../../globals.css'; // CSS 파일을 임포트합니다.
 export default function Comment() {
 const [bodyValue, setBody]=useState('')
 const [Comment, setComment] =useState([])
-const {userName, userUUID} =  useUserSession();
+const { userName, userUUID, loggedIn } = useUserSession();
+
 
 const params = useParams()
 const postId = params.id;
