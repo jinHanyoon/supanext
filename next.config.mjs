@@ -1,4 +1,7 @@
 const nextConfig = {
+    experimental: {
+        runtime: 'nodejs',  // 여기 추가
+    },
   images: {
       remotePatterns: [
           {
