@@ -9,7 +9,6 @@ import Loading from '../../loading';
 export default function Writing({writing_hidden}) {
   const { userName, userUUID, userAvatar } = useUserSession();
 
-  const [pro, setData] = useState([]);
   const [message, setMessage] = useState('');
   const [titleValue, setTitleValue] = useState('');
   const [bodyValue, setBodyValue] = useState('');
@@ -69,7 +68,7 @@ export default function Writing({writing_hidden}) {
         imgUrl,
       });
 
-      setData([...pro]);
+
   
       if (error) {
         console.error("데이터 삽입 오류:", error.message);

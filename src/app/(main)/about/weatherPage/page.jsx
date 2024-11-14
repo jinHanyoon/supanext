@@ -17,47 +17,37 @@ export default function WeatherPage({ selectedLocation }) {
     useEffect(() => {
         let isMounted = true;
 
-        const fetchWeather = async (selectedCity) => {
-            if (
-                cachedWeatherData[selectedCity] && Date.now() - cachedWeatherData[selectedCity].timestamp < 600000
-            ) {
-                if (isMounted) {
-                    setWeatherData(cachedWeatherData[selectedCity].data);
-                }
+        const fetchWeather = async () => {
+            // 클라이언트 캐시 체크
+            if (cachedWeatherData.ALL_CITIES && 
+                Date.now() - cachedWeatherData.timestamp < 600000) {
+                console.log('클라이언트 캐시 히트! ⚡');
+                setWeatherData(cachedWeatherData.ALL_CITIES[city]);
                 return;
             }
 
-            if (isMounted) {
-                setLoading(true);
-                setError(null);
-            }
-
             try {
-                const response = await axios.get(`/api/weather?city=${encodeURIComponent(selectedCity)}`);
+                setLoading(true);
+                const response = await axios.get('/api/weather');
                 if (isMounted) {
-                    setWeatherData(response.data);
-                    setCachedWeatherData((prev) => ({
-                        ...prev,
-                        [selectedCity]: { data: response.data, timestamp: Date.now() },
-                    }));
+                    // 모든 도시 데이터 캐시
+                    setCachedWeatherData({
+                        ALL_CITIES: response.data,
+                        timestamp: Date.now()
+                    });
+                    setWeatherData(response.data[city]);
                 }
             } catch (err) {
-                if (isMounted) {
-                    setError(err.message || '서버 응답 오류');
-                }
+                if (isMounted) setError(err.message);
             } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             }
         };
 
-        fetchWeather(city);
-
-        return () => {
-            isMounted = false;
-        };
-    }, [city, cachedWeatherData, selectedLocation]);
+        fetchWeather();
+        
+        return () => { isMounted = false; };
+    }, [city]);
 
     useEffect(() => {
         if (selectedLocation) {
