@@ -26,6 +26,9 @@ export default function Data() {
       
       async function dbCome() {
           if (!mounted) return;
+        // 컴포넌트 생명주기 X 일 경우 함수 중단
+        // if (!mounted) return; 밑에 코드 실행 X
+
           try {
               const { data, error } = await supabase
                   .from('pro')
@@ -72,6 +75,10 @@ export default function Data() {
           channel = existingChannel;
       }
   
+
+      // 클린업 함수 
+      // 페이지 이동하면 mounted false 로 변환 
+      // ==> 위에 함수 실행 X
       return () => {
           mounted = false;
           // 다른 컴포넌트에서도 채널을 사용중일 수 있으므로, 
