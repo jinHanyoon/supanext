@@ -18,77 +18,72 @@ export default function Data() {
     const [fadeOut, setFadeOut] = useState(false); // 페이드 아웃 애니메이션 상태
     const defaultAvatar = '/img/img04.jpg'; // 기본 아바타 이미지 경로
     useEffect(() => {
-      let mounted = true;
-      let channel = null;
-  
-      // 이미 존재하는 채널 확인
-      const existingChannel = supabase.getChannels().find(ch => ch.topic === 'realtime:pro');
-      
-      async function dbCome() {
-          if (!mounted) return;
-        // 컴포넌트 생명주기 X 일 경우 함수 중단
-        // if (!mounted) return; 밑에 코드 실행 X
+        let mounted = true;
+        let channel = null;
 
-          try {
-              const { data, error } = await supabase
-                  .from('pro')
-                  .select('*')
-                  .order('create_at', { ascending: false });
-  
-              if (error) throw error;
-              if (mounted) {
-                  setData(data.map(item => ({ ...item, fadeIn: true })));
-                  setLoad(false);
-              }
-          } catch (error) {
-              console.error('데이터 로딩 실패:', error);
-              if (mounted) setLoad(false);
-          }
-      }
-  
-      dbCome();
-  
-      // 채널이 없을 때만 새로 생성
-      if (!existingChannel) {
-          console.log('새로운 채널 생성...');
-          channel = supabase.channel('pro')
-              .on('postgres_changes', { event: '*', schema: 'public', table: 'pro' }, payload => {
-                  if (!mounted) return;
-                  
-                  switch (payload.eventType) {
-                      case 'INSERT':
-                          setData(prevData => prevData ? [{ ...payload.new, animate: true }, ...prevData] : [{ ...payload.new, animate: true }]);
-                          break;
-                      case 'UPDATE':
-                          setData(prevData => prevData ? prevData.map(item => item.id === payload.new.id ? payload.new : item) : []);
-                          break;
-                      case 'DELETE':
-                          setData(prevData => prevData ? prevData.filter(item => item.id !== payload.old.id) : []);
-                          break;
-                  }
-              })
-              .subscribe((status) => {
-                  console.log('새 채널 상태:', status);
-              });
-      } else {
-          console.log('기존 채널 사용 중...');
-          channel = existingChannel;
-      }
-  
+        async function dbCome() {
+            if (!mounted) return;
 
-      // 클린업 함수 
-      // 페이지 이동하면 mounted false 로 변환 
-      // ==> 위에 함수 실행 X
-      return () => {
-          mounted = false;
-          // 다른 컴포넌트에서도 채널을 사용중일 수 있으므로, 
-          // 완전히 새로 만든 채널일 때만 정리
-          if (channel && !existingChannel) {
-              console.log('새로 만든 채널 정리...');
-              supabase.removeChannel(channel);
-          }
-      };
-  }, []);
+            try {
+                const { data, error } = await supabase
+                    .from('pro')
+                    .select('*')
+                    .order('create_at', { ascending: false });
+
+                if (error) throw error;
+                if (mounted) {
+                    setData(data.map(item => ({ ...item, fadeIn: true })));
+                    setLoad(false);
+                }
+            } catch (error) {
+                console.error(' 데이터 못가져옴:', error);
+                if (mounted) {
+                    setLoad(false);
+                    // 에러나면 3초 후에 한번 더 시도
+                    setTimeout(() => mounted && dbCome(), 3000);
+                }
+            }
+        }
+        dbCome() 
+        // 실시간 구독 설정
+        channel = supabase.channel('realtime-pro')
+            .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'pro' }, 
+                payload => {
+                    if (!mounted) return;
+                    
+                    console.log('실시간 업데이트 받음:', payload.eventType);
+                    
+                    switch (payload.eventType) {
+                        case 'INSERT':
+                            setData(prevData => prevData ? [{ ...payload.new, animate: true }, ...prevData] : [{ ...payload.new, animate: true }]);
+                            break;
+                        case 'UPDATE':
+                            setData(prevData => prevData ? prevData.map(item => item.id === payload.new.id ? payload.new : item) : []);
+                            break;
+                        case 'DELETE':
+                            setData(prevData => prevData ? prevData.filter(item => item.id !== payload.old.id) : []);
+                            break;
+                    }
+                }
+            )
+            .subscribe((status) => {
+                console.log('채널 상태:', status);
+                if (status === 'SUBSCRIBED') {
+                    console.log('구독 성공');
+                    dbCome();
+                }
+            });
+
+        // 클린업: 컴포넌트 나가면 다 정리
+        return () => {
+            mounted = false;
+            if (channel) {
+                console.log('채널 정리함');
+                supabase.removeChannel(channel);
+            }
+        };
+    }, []);
 
 
 

@@ -22,58 +22,84 @@ const { userName, userUUID, loggedIn } = useUserSession();
 const params = useParams()
 const postId = params.id;
 
-useEffect(()=> {
-  async function CommentGet() {
-    const { data, error } = await supabase
-      .from('comment')
-      .select('*')
-      .eq('page_num', postId)
-      setComment(data)
 
-      if (error) {
-        console.error('댓글 가져오기 오류:', error)
-        return
+  
+  useEffect(() => {
+    let mounted = true;
+    
+    async function CommentGet() {
+      try {
+        const { data, error } = await supabase
+          .from('comment')
+          .select('*')
+          .eq('page_num', postId);
+        
+        if (error) throw error;
+        if (mounted) setComment(data);
+      } catch (error) {
       }
     }
-    CommentGet()
- 
-      const channel = supabase.channel('comment-db')
-      .on('postgres_changes',{event: 'INSERT', schema: 'public', table: 'comment'},payload =>{
-        setComment(prevComment => [...prevComment, { ...payload.new, animate: true }]);
+  
+    // // 실시간 구독 한번만 하게 수정
+    const channel = supabase.channel('comment-db')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'comment', filter: `page_num=eq.${postId}` },
+        payload => {
+          if (!mounted) return;
+          
+          switch(payload.eventType) {
+            case 'INSERT':
+              setComment(prev => [...prev, { ...payload.new, animate: true }]);
+              break;
+            case 'UPDATE':
+              setComment(prev => prev.map(item => 
+                item.id === payload.new.id ? payload.new : item
+              ));
+              break;
+            case 'DELETE':
+              setComment(prev => prev.filter(item => item.id !== payload.old.id));
+              break;
+          }
       })
-      .on('postgres_changes', {event:'UPDATE',schema:'public',table:'comment'},payload=>{
-        setComment(prevComment => prevComment.map(item => item.id ===payload.new.id ? payload.new : item))
-      })
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'comment' }, payload => {
-        setComment(prevComment => prevComment.filter(item => item.id !== payload.old.id));
-    })
-    .subscribe()
+      .subscribe();
+  
+    CommentGet();
+  
     return () => {
+      mounted = false;
       supabase.removeChannel(channel);
     };
+  }, [postId]); // userName, userUUID 의존성 제거
 
- 
-}, [postId,userName,userUUID])
-
-const CommentHandle = async (e) =>{
+const CommentHandle = async (e) => {
   e.preventDefault();
   if (!userName) {
     alert('로그인 후 이용해 주세요.');
     return;
   }
-try{
-  const {data, error} = await supabase.from('comment').insert({body:bodyValue, page_num:postId, user_name:userName}).select();
-  // const newComment = {...data[0]};
-  // 구독 안할시 새로추가 된 데이터는 기존 데이터 보다 아래쪽에 배치 
-  // setComment([...Comment, ...newComment])
-  setBody('');
-  setComment([...Comment]) 
-  alert('댓글 작성 완료')
-}
-catch(error){
-  alert(error)
-}
-}
+  if (!bodyValue.trim()) {
+    alert('댓글 내용을 입력해주세요.');
+    return;
+  }
+
+  try {
+    const { error } = await supabase
+      .from('comment')
+      .insert({
+        body: bodyValue,
+        page_num: postId,
+        user_name: userName
+      });
+
+    if (error) throw error;
+    
+    setBody('');
+    // setComment는 실시간 구독에서 처리할거라 여기선 제거
+    alert('댓글 작성 완료');
+  } catch (error) {
+    alert('댓글 작성 실패했습니다. 다시 시도해주세요.');
+  }
+};
 
 const CommentDelete = async(id) =>{
   try{

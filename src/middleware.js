@@ -4,42 +4,41 @@ import { NextResponse } from 'next/server';
 
 // 미들웨어 함수 정의 (모든 페이지 요청 전에 실행됨)
 export async function middleware(req) {
+  // 먼저 response 객체 생성
+  const res = NextResponse.next();
+  
   // 특정 페이지 접근 시도하는지 체크
   if (req.nextUrl.pathname.startsWith('/calendar') || 
-    req.nextUrl.pathname.startsWith('/profile')) {
-    // 다음 단계로 진행하기 위한 응답 객체 생성
-    const res = NextResponse.next();
+    req.nextUrl.pathname.startsWith('/profiles')) {
+    
     // Supabase 미들웨어 클라이언트 생성 (인증 체크용)
     const supabase = createMiddlewareClient({ req, res });
+    
     try {
-      // 현재 로그인한 유저 정보 가져오기
-      // data: { user } 구조분해할당으로 user 정보만 추출
       const { data: { user } } = await supabase.auth.getUser();
       console.log('미들웨어 유저 체크:', !!user);
-      // 로그인 안 한 경우
+      console.log('현재 경로:', req.nextUrl.pathname);
+      
+      // 로그인 안 한 경우만 리다이렉트
       if (!user) {
-        // 로그인 페이지로 강제 이동
-        // new URL()로 전체 URL 생성 (현재 도메인 기준)
+        console.log('유저 없음 - 리다이렉트');
         return NextResponse.redirect(new URL('/login', req.url));
       }
-
-      // 로그인 했으면 통과
+      
+      console.log('유저 있음 - 통과');
+      // 로그인 했으면 원래 response 리턴
       return res;
+      
     } catch (error) {
-      // 에러 발생시 (세션 만료 등)
       console.error('미들웨어 에러:', error);
-      // 로그인 페이지로 이동
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
-  // 보호된 페이지가 아니면 그냥 통과
-  return NextResponse.next();
+  
+  // 보호된 페이지 아닌 경우 원래 response 리턴
+  return res;
 }
-// 미들웨어  경로 
+
 export const config = {
-    matcher: [
-      '/calendar/:path*',  
-      '/profile/:path*'    
-      // :path* 는 모든 하위 경로를 포함한다는 의미
-    ]
+  matcher: ['/calendar/:path*', '/profiles/:path*']
 }
