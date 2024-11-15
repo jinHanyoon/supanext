@@ -6,7 +6,6 @@ import { NextResponse } from 'next/server';
 export async function middleware(req) {
   // 특정 페이지 접근 시도하는지 체크
   if (req.nextUrl.pathname.startsWith('/calendar') || 
-    req.nextUrl.pathname.startsWith('/admin') ||    
     req.nextUrl.pathname.startsWith('/profile')) {
     // 다음 단계로 진행하기 위한 응답 객체 생성
     const res = NextResponse.next();
@@ -40,7 +39,6 @@ export async function middleware(req) {
 export const config = {
     matcher: [
       '/calendar/:path*',  
-      '/admin/:path*',    
       '/profile/:path*'    
       // :path* 는 모든 하위 경로를 포함한다는 의미
     ]

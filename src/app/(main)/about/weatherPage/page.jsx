@@ -47,7 +47,7 @@ export default function WeatherPage({ selectedLocation }) {
         fetchWeather();
         
         return () => { isMounted = false; };
-    }, [city]);
+    }, );
 
     useEffect(() => {
         if (selectedLocation) {

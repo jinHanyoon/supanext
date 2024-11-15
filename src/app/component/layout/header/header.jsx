@@ -60,8 +60,8 @@ const handleMyPageClick = (e) => {
             <Link href="/about" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
               Weather
             </Link>
-            <Link href="/calendar" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
-              Calendar
+            <Link href="/admin" className="text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b-2 border-transparent focus:border-blue-600">
+              Study
             </Link>
           </div>
         </div>
@@ -132,10 +132,10 @@ const handleMyPageClick = (e) => {
             MY Page
           </Link>
           <Link href="/about" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
-            Project
+          Weather
           </Link>
           <Link href="/calendar" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
-            Calendar
+          Study
           </Link>
           {loggedIn ? (
             <button onClick={handleLogout} className="block w-full text-left text-red-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out py-2">
