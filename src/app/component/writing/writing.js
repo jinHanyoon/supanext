@@ -8,8 +8,6 @@ import Loading from '../../loading';
 
 export default function Writing({writing_hidden}) {
   const { userName, userUUID, userAvatar } = useUserSession();
-
-  const [message, setMessage] = useState('');
   const [titleValue, setTitleValue] = useState('');
   const [bodyValue, setBodyValue] = useState('');
   const [newImg, setNewImg] = useState(null);
@@ -22,7 +20,7 @@ export default function Writing({writing_hidden}) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file) { 
       setNewImg(file);
       const fileURL = URL.createObjectURL(file);
       setImgPreview(fileURL);

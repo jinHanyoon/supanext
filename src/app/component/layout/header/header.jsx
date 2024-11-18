@@ -134,7 +134,7 @@ const handleMyPageClick = (e) => {
           <Link href="/about" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
           Weather
           </Link>
-          <Link href="/calendar" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
+          <Link href="/admin" onClick={closeMenu} className="block text-gray-800 font-semibold text-sm uppercase tracking-wide transition-colors duration-300 ease-in-out border-b border-transparent focus:border-blue-600 py-2">
           Study
           </Link>
           {loggedIn ? (

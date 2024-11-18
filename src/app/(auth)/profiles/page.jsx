@@ -6,13 +6,12 @@ import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi'
 import { useUserSession } from '@/app/hooks/authdata';
 import Loading from '../../loading';
-import Link from 'next/link';
 import MyList from './mylist/page'
 import MyComment from './mycomment/page'
 
 export default function Profiles() {
  const router = useRouter()
- const {userUUID, loggedIn, userName, userAvatar} = useUserSession();
+ const {userUUID, userName, userAvatar} = useUserSession();
 
  const [newName, setNewName] = useState(userName);
  const [newAvatarUrl, setNewAvatarUrl] = useState(userAvatar)
