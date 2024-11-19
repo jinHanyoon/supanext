@@ -29,7 +29,10 @@ export default function SessionProvider({ children, serverSession }) {
     });
 
     useEffect(() => {
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+
+        
+        // 로그아웃 이벤트만 구독
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
             if (event === 'SIGNED_OUT') {
                 setSession({
                     userUUID: null,
@@ -38,28 +41,9 @@ export default function SessionProvider({ children, serverSession }) {
                     showLogin: false,
                     loggedIn: false
                 });
-            } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('username, avatar_url, id')
-                        .eq('id', user.id)
-                        .single();
-                    
-                    if (profile) {
-                        setSession({
-                            userUUID: profile.id,
-                            userName: profile.username,
-                            userAvatar: profile.avatar_url,
-                            showLogin: false,
-                            loggedIn: true
-                        });
-                    }
-                }
-            }
+            } 
         });
-    
+
         return () => {
             subscription?.unsubscribe();
         };

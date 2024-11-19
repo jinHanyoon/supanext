@@ -20,7 +20,6 @@ export default function LoginForm({sideHidden}) {
     event.preventDefault();
     try {
       await login(email, password);
-      router.push('/data')
       sideHidden()
     } catch (error) {
       alert('뭐가 틀렸는데?')
