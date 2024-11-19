@@ -39,16 +39,23 @@ export default function SessionProvider({ children, serverSession }) {
                     loggedIn: false
                 });
             } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                // 사용자 정보 업데이트
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
-                    setSession({
-                        userUUID: user.id,
-                        userName: user.user_metadata?.full_name || '',
-                        userAvatar: user.user_metadata?.avatar_url || '',
-                        showLogin: false,
-                        loggedIn: true
-                    });
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('username, avatar_url, id')
+                        .eq('id', user.id)
+                        .single();
+                    
+                    if (profile) {
+                        setSession({
+                            userUUID: profile.id,
+                            userName: profile.username,
+                            userAvatar: profile.avatar_url,
+                            showLogin: false,
+                            loggedIn: true
+                        });
+                    }
                 }
             }
         });
