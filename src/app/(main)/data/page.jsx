@@ -36,7 +36,6 @@ export default function Data() {
                     setLoad(false);
                 }
             } catch (error) {
-                console.error(' 데이터 못가져옴:', error);
                 if (mounted) {
                     setLoad(false);
                     // 에러나면 3초 후에 한번 더 시도
@@ -68,9 +67,7 @@ export default function Data() {
                 }
             )
             .subscribe((status) => {
-                console.log('채널 상태:', status);
                 if (status === 'SUBSCRIBED') {
-                    console.log('구독 성공');
                     dbCome();
                 }
             });
@@ -79,7 +76,6 @@ export default function Data() {
         return () => {
             mounted = false;
             if (channel) {
-                console.log('채널 정리함');
                 supabase.removeChannel(channel);
             }
         };

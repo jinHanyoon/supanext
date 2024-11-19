@@ -6,17 +6,18 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Loading from '../../../../loading'
 import supabase from '@/app/api/supabaseaApi';
-import { useUserSession } from '@/app/hooks/authdata';
+import { useSession } from '@/app/providers/SessionProvider';
 import Comment from '../../commnet/page';
 
 export default function DetailsPage() {
+  const session = useSession();
   const [TargetData, setProData] = useState([])
   const [loading, setLoading] = useState(false);
   const [fixComplete, setComplete] = useState(false)
   const defaultAvatar = '/img/img04.jpg'; 
   const UndefineText = "-"
   const router = useRouter()
-  const { userUUID, loggedIn } = useUserSession();
+  const { userUUID, loggedIn } = session;
   const [Modal, setModal] = useState(false);
 
   const handleImageClick = () => {

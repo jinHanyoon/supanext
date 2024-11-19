@@ -1,15 +1,18 @@
 'use client'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useUserSession } from '@/app/hooks/authdata';
+import { useSession } from '@/app/providers/SessionProvider';
+
 
 
 export default function WeatherPage({ selectedLocation }) {
+  const session = useSession();
+
     const [city, setCity] = useState(selectedLocation || '부산');
     const [weatherData, setWeatherData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { userUUID } = useUserSession();
+    const { userUUID } = session;
     const [cachedWeatherData, setCachedWeatherData] = useState({});
     const [vip] = useState('87136bc1-763b-4aae-b250-10f214d3c885');
     const [isOpen, setIsOpen] = useState(false);

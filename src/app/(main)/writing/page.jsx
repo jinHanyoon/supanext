@@ -1,13 +1,18 @@
 'use client';
 import Image from "next/image";
-import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi';
-import { useUserSession } from '@/app/hooks/authdata';
+import { useSession } from '@/app/providers/SessionProvider';
 import Loading from '../../loading';
+import { useRouter } from 'next/navigation'
 
-export default function Writing({writing_hidden}) {
-  const { userName, userUUID, userAvatar } = useUserSession();
+export default function Writing() {
+  
+  const router = useRouter()
+
+
+  const session = useSession();
+  const { userName, userUUID, userAvatar } = session || {};
   const [titleValue, setTitleValue] = useState('');
   const [bodyValue, setBodyValue] = useState('');
   const [newImg, setNewImg] = useState(null);
@@ -15,8 +20,11 @@ export default function Writing({writing_hidden}) {
   const [loading, setLoading] = useState(false);
   const [isAdminPost, setIsAdminPost] = useState(false);
 
-  useEffect(()=>{},
-    [userName, userUUID, userAvatar])
+  useEffect(() => {
+    if (!session) {
+      console.log('세션 없음');
+    }
+  }, [session]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -66,8 +74,6 @@ export default function Writing({writing_hidden}) {
         imgUrl,
       });
 
-
-  
       if (error) {
         console.error("데이터 삽입 오류:", error.message);
         alert('오류가 발생했습니다. 다시 시도해주세요.');
@@ -76,8 +82,9 @@ export default function Writing({writing_hidden}) {
 
       setTitleValue('');
       setBodyValue('');
-      writing_hidden();
       alert('생성완료');
+      router.push('/data')
+
     } catch (error) {
       console.error("예상치 못한 오류:", error.message);
       alert('예상치 못한 오류가 발생했습니다. 다시 시도해주세요.');
@@ -153,7 +160,6 @@ export default function Writing({writing_hidden}) {
   
               <div className='flex justify-end space-x-4'>
                 <button
-                  onClick={writing_hidden}
                   className='px-6 py-3 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300'
                 >
                   취소

@@ -1,37 +1,45 @@
 'use client'
-import supabase from "../../api/supabaseaApi";
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
+const supabase = createClientComponentClient();
 
 export const login = async (email, password) => {
-  const {data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ 
+    email, 
+    password 
+  });
 
-
+  if (!error) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      window.location.reload();
+    }
+  }
 
   return data;
 };
 
-
 export const logout = async () => {
   const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  if (!error) {
+    window.location.reload();
+  }
 };
 
-
-export const signInWithkakao =async() =>{
-  const { data, error } = await supabase.auth.signInWithOAuth({
+export const signInWithkakao = async () => {
+  await supabase.auth.signInWithOAuth({
     provider: "kakao",
     options: {
       redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
-}
+};
+
 export const signInWithGoogle = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
-
-  if (error) throw error;
-  return data;
-}
+};

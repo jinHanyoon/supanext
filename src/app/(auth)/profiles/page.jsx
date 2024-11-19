@@ -4,14 +4,15 @@ import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi'
-import { useUserSession } from '@/app/hooks/authdata';
+import { useSession } from '@/app/providers/SessionProvider';
 import Loading from '../../loading';
 import MyList from './mylist/page'
 import MyComment from './mycomment/page'
 
 export default function Profiles() {
  const router = useRouter()
- const {userUUID, userName, userAvatar} = useUserSession();
+ const session = useSession();
+ const { userUUID, userName, userAvatar } = session;
 
  const [newName, setNewName] = useState(userName);
  const [newAvatarUrl, setNewAvatarUrl] = useState(userAvatar)
