@@ -29,8 +29,7 @@ export default function SessionProvider({ children, serverSession }) {
     });
 
     useEffect(() => {
-        // 로그아웃 이벤트만 구독
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_OUT') {
                 setSession({
                     userUUID: null,
@@ -39,9 +38,21 @@ export default function SessionProvider({ children, serverSession }) {
                     showLogin: false,
                     loggedIn: false
                 });
+            } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                // 사용자 정보 업데이트
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    setSession({
+                        userUUID: user.id,
+                        userName: user.user_metadata?.full_name || '',
+                        userAvatar: user.user_metadata?.avatar_url || '',
+                        showLogin: false,
+                        loggedIn: true
+                    });
+                }
             }
         });
-
+    
         return () => {
             subscription?.unsubscribe();
         };

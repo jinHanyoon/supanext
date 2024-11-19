@@ -33,6 +33,12 @@ export const signInWithkakao = async () => {
       redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
+  if (!error) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      window.location.reload();
+    }
+  }
 };
 
 export const signInWithGoogle = async () => {
@@ -42,4 +48,5 @@ export const signInWithGoogle = async () => {
       redirectTo: "https://devjinhan.vercel.app/data",
     },
   });
+  
 };
