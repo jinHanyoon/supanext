@@ -7,6 +7,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation';
 import DetailSkeleton from '../../../../component/ui/detailSkleton/page';
 import Comment from '../../commnet/page';
+
 export default function AdetailsPage() {
     const { id } = useParams();
     const [Post, setPost] = useState([]);
@@ -20,6 +21,8 @@ export default function AdetailsPage() {
     const closeModal = () => setModal(false);
 
     useEffect(() => {
+        let mounted = true;
+        
         if (id) {
             const fetchData = async () => {
                 try {
@@ -29,21 +32,31 @@ export default function AdetailsPage() {
                         .select('*')
                         .eq('id', id)
                         .single();
-
+    
                     if (error) throw error;
-
-                    setSkeOut(true);
-                    setTimeout(() => {
-                        setPost(data || []);
-                        setLoading(false);
-                        setSkeOut(false);
-                    }, 300);
+    
+                    if (mounted) {
+                        setSkeOut(true);
+                        setTimeout(() => {
+                            if (mounted) {  // setTimeout 내부에서도 mounted 체크
+                                setPost(data || []);
+                                setLoading(false);
+                                setSkeOut(false);
+                            }
+                        }, 300);
+                    }
                 } catch (error) {
                     console.error('데이터 로딩 중 에러:', error);
-                    setLoading(false);
+                    if (mounted) {
+                        setLoading(false);
+                    }
                 }
             };
             fetchData();
+            
+            return () => {
+                mounted = false;
+            }
         }
     }, [id]);
 
@@ -93,7 +106,7 @@ export default function AdetailsPage() {
                         <DetailSkeleton />
                     </div>
                 ) : (
-                    <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-admin_fade">
+                    <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-detail_opacity">
                         <div className="p-6 md:p-8">
                             <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
                                 <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{Post.title || '제목없음'}</h1>

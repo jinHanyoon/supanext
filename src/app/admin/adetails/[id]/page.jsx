@@ -11,6 +11,8 @@ export default function AdetailsPage() {
   const { id } = useParams();
   const [Post, setPost]= useState([])
   const [Modal, setModal] = useState(false);
+  const [skeOut, setSkeOut] = useState(false);
+
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const defaultAvatar = '/img/img04.jpg'; 
   const router =useRouter()
@@ -25,18 +27,44 @@ export default function AdetailsPage() {
 
 
   useEffect(() => {
+    let mounted = true;
+
     if (id) {
       const fetchData = async () => {
-        setLoading(true); // 데이터 불러오기 전에 로딩 시작
-        const { data, error } = await supabase
-          .from('mypost')
-          .select('*')
-          .eq('id', id)
-          .single();
-        setPost(data || []);
-        setLoading(false); // 데이터 로드 완료
-      };
+        try {
+          setLoading(true);
+          const { data, error } = await supabase
+              .from('mypost')
+              .select('*')
+              .eq('id', id)
+              .single();
+
+          if (error) throw error;
+
+          if (mounted) {
+              setSkeOut(true);
+              setTimeout(() => {
+                  if (mounted) {  // setTimeout 내부에서도 mounted 체크
+                      setPost(data || []);
+                      setLoading(false);
+                      setSkeOut(false);
+                  }
+              }, 300);
+          }
+      } catch (error) {
+          console.error('데이터 로딩 중 에러:', error);
+          if (mounted) {
+              setLoading(false);
+          }
+      }
+
+    }
+
+
       fetchData();
+      return () => {
+        mounted = false;
+    }
     }
   }, [id]);
 
@@ -82,9 +110,13 @@ export default function AdetailsPage() {
     <>
       <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
         {loading ? (
-          <DetailSkeleton />
+            <div className={`transition-opacity duration-300 ${
+              skeOut ? 'opacity-0' : 'opacity-100'
+          }`}>
+              <DetailSkeleton />
+          </div>
         ) : (
-          <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-admin_fade">
+          <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-detail_opacity">
             {/* 기존 내용 */}
             <div className="p-6 md:p-8">
               <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>

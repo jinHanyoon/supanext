@@ -110,7 +110,12 @@ export default function List() {
                   opacity: 0
                 }}
               >
-                <Link href={`admin/adetails/${item.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
+                <Link
+                 prefetch={true} 
+                 onClick={(e) => {
+                  e.stopPropagation();  // 이벤트 전파 중단
+              }}
+                href={`admin/adetails/${item.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
                   <div className={`relative ${
                     isGridView 
                       ? 'aspect-[4/3]' 
@@ -139,19 +144,25 @@ export default function List() {
                     </>
                   )}
                   <div className={`flex items-center ${isGridView ? 'mt-2' : 'mt-auto'}`}>
-                    <div className="w-8 h-8 relative mr-3">
+                    <div className="w-11 h-11 relative mr-3">
                       <Image 
                         alt="avatar" 
                         src={item.avatar || defaultAvatar}
                         loading="eager"
                         fill
-                        sizes="150px"
+                        sizes="100%"
                         className="rounded-full object-cover border-2 border-emerald-400"
                       />
                     </div>
                     <div>
-                      <p className="text-gray-500 text-sm mt-1">
-                        {new Date(item.created_at).toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'})}
+                    <span className="text-gray-700 text-sm font-black">{item.username}</span>
+                      <p className="text-gray-500 text-sm">
+                        {new Date(item.created_at).toLocaleDateString('ko-KR', {
+                          timeZone: 'Asia/Seoul',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
                       </p>
                     </div>
                   </div>

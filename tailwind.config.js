@@ -22,11 +22,21 @@ module.exports = {
           '50%': { transform: 'translateX(0)',  },
           '100%': { opacity: '1',  }
         },
+
+        detail_opacity: {
+          '0%': { opacity: '0'  },
+          '50%': { },
+          '100%': { opacity: '1',  }
+        },
+        
       },
       animation: {
         wave: 'wave 4s linear infinite',
         admin_fade: 'admin_fade 1.5s ease-out forwards',
-        admin_posX: 'admin_posX 1.5s ease-out forwards'
+        admin_posX: 'admin_posX 1.5s ease-out forwards',
+        detail_opacity: 'detail_opacity 1s ease forwards'
+      
+      
       },
       backgroundSize: {
         'wave-background': '200% 200%'
