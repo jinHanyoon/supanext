@@ -26,20 +26,31 @@ export const logout = async () => {
   }
 };
 
+// ... existing code ...
 export const signInWithkakao = async () => {
-  await supabase.auth.signInWithOAuth({
-    provider: "kakao",
-    options: {
-      redirectTo: `${window.location.origin}/data`  // 현재 도메인 기준으로 리다이렉트
-    },
-  });
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      options: {
+        redirectTo: `${window.location.origin}/callback`,
+      },
+    });
+    if (error) throw error;
+  } catch (error) {
+    console.error('카카오 로그인 에러:', error);
+  }
 };
 
 export const signInWithGoogle = async () => {
-  await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/data`
-    },
-  });
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/callback`,
+      },
+    });
+    if (error) throw error;
+  } catch (error) {
+    console.error('구글 로그인 에러:', error);
+  }
 };

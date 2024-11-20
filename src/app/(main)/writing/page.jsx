@@ -24,6 +24,7 @@ export default function Writing() {
     if (!session) {
       console.log('세션 없음');
     }
+    console.log('session 값 변경됨:', session);
   }, [session]);
 
   const handleFileChange = (e) => {
