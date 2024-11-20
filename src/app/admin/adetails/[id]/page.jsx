@@ -5,11 +5,13 @@ import supabase from '@/app/api/supabaseaApi';
 import Image from "next/image";
 import React from 'react'
 import { useRouter } from 'next/navigation';
+import DetailSkeleton from '@/app/component/ui/adDetailskeleton/page';
 
 export default function AdetailsPage() {
   const { id } = useParams();
   const [Post, setPost]= useState([])
   const [Modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const defaultAvatar = '/img/img04.jpg'; 
   const router =useRouter()
   
@@ -21,15 +23,18 @@ export default function AdetailsPage() {
     setModal(false);
   };
 
+
   useEffect(() => {
     if (id) {
       const fetchData = async () => {
+        setLoading(true); // 데이터 불러오기 전에 로딩 시작
         const { data, error } = await supabase
           .from('mypost')
           .select('*')
-          .eq('id', id)  // id에 해당하는 데이터를 가져옴
+          .eq('id', id)
           .single();
-          setPost(data ||[])
+        setPost(data || []);
+        setLoading(false); // 데이터 로드 완료
       };
       fetchData();
     }
@@ -74,36 +79,38 @@ export default function AdetailsPage() {
   };
 
   return (
-< >
-
-  <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10 ">
-    <div className=" rounded-xl shadow-lg overflow-hidden border border-gray-200">
-      <div className="p-6 md:p-8">
-        <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
-          <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{Post.title || '제목없음'}</h1>
-
-        </div>
-        <div className='space-y-6'>
-          <div>
-            <Image 
-              alt="DataImg" 
-              src={Post.imgUrl || defaultAvatar}
-              className="w-full h-auto rounded-lg shadow-md"
-              width={600} 
-              height={400}
-              onClick={handleImageClick}
-            />
+    <>
+      <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
+        {loading ? (
+          <DetailSkeleton />
+        ) : (
+          <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-admin_fade">
+            {/* 기존 내용 */}
+            <div className="p-6 md:p-8">
+              <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
+                <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{Post.title || '제목없음'}</h1>
+              </div>
+              <div className='space-y-6'>
+                <div className="relative aspect-[3/2] w-full">
+                  <Image 
+                    alt="DataImg" 
+                    src={Post.imgUrl || defaultAvatar}
+                    className="w-full h-auto rounded-lg shadow-md"
+                    loading="eager"
+                    priority
+                    fill
+                    sizes="(max-width: 1200px) 100vw, 1200px"
+                    onClick={handleImageClick}
+                  />
+                </div>
+                <div className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap'>
+                  {Post.body}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap'>
-            {Post.body}
-          </div>
-        </div>
+        )}
       </div>
-    </div>
-
-    <div className="mt-10">
-    </div>
-  </div>
 
   {Modal && (
   <div 
