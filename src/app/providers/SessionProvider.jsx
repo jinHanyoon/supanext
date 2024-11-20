@@ -6,7 +6,6 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 const SessionContext = createContext();
 const supabase = createClientComponentClient();
 
-let renderCount = 0;
 
 export function useSession() {
   return useContext(SessionContext);

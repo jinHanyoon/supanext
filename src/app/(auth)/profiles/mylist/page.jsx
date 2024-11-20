@@ -33,7 +33,7 @@ export default function MyList({userUUID}) {
                     <div className="h-[300px] sm:h-[400px] overflow-y-auto space-y-3 sm:space-y-4">
                         {MyWrite.map(Write => (
                             <div key={Write.id} className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-                                <Link href={`/details/${Write.id}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
+                                <Link href={`data/details/${Write.id}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
                                     {Write.title}
                                 </Link>
                             </div>

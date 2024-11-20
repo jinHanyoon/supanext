@@ -31,7 +31,7 @@ useEffect(() => {
     <div className="h-[300px] sm:h-[400px] overflow-y-auto space-y-3 sm:space-y-4">
       {MyWriteComment.map(Comment => (
         <div key={Comment.id} className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-          <Link href={`/details/${Comment.page_num}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
+          <Link href={`data/details/${Comment.page_num}`} className="text-base sm:text-lg text-emerald-600 hover:underline">
             {Comment.body}
           </Link>
         </div>

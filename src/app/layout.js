@@ -15,10 +15,14 @@ export default async  function RootLayout({ children }) {
       <head>
         <title>Dev JinHan</title>
         <meta name="description" content="Yoon Jin Han" />
-        <meta property="og:title" content="Space world" />
+        <meta property="og:title" content="Yoon Jin Han" />
         <meta property="og:description" content="Start" />
         <meta property="og:image" content="/main_img.jpg" />
-        <meta property="og:url" content="https://ext005552.vercel.app/" />
+        <meta property="og:url" content="https://devjinhan.vercel.app/" />
+        <meta name="keywords" content="개발자 윤진한, 프론트엔드, React, Next.js, supabase" />
+        <meta name="author" content="Yoon Jin Han" />
+        
+
         <link rel="icon" href="/favicon.ico" />
       </head>
 
