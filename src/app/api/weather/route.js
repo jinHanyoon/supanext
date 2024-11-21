@@ -26,12 +26,11 @@ const CITY_COORDINATES = {
 //         baseTime: `${String(hours).padStart(2, '0')}${minutes}`
 //     };
 // }
-
 function getCurrentTime() {
-    // 한국 시간으로 변환
+    // UTC 시간을 직접 계산해서 한국 시간으로 변환
     const now = new Date();
-    // 테스트용 날짜 대신 실제 현재 날짜 사용
-    const koreaTime = new Date(now);
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+    const koreaTime = new Date(utc + (9 * 60 * 60 * 1000));
     
     let hours = koreaTime.getHours();
     let baseDate = koreaTime.toISOString().slice(0, 10).replace(/-/g, '');
