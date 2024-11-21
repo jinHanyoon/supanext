@@ -169,7 +169,7 @@ let weatherCache = {
 };
 
 // const CACHE_DURATION = 40 * 60 * 1000;
-
+     
 // // 캐시된 데이터 확인
 // function getCachedData(city) {
 //     const now = Date.now();

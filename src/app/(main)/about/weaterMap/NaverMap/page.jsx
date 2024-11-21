@@ -10,6 +10,8 @@ export default function Map({ loc, onLocationSelect }) {
         zoom: 16,
       });
 
+
+      
       loc.forEach(([lng, lat], index) => {
         const marker = new naver.maps.Marker({
           position: new naver.maps.LatLng(lat, lng),
@@ -23,6 +25,7 @@ export default function Map({ loc, onLocationSelect }) {
         });
 
         naver.maps.Event.addListener(marker, 'click', () => {
+          map.setCenter(new naver.maps.LatLng(lat, lng));
           handleMarkerClick(index);
         });
       });
