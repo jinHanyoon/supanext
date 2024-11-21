@@ -34,22 +34,24 @@ function getCurrentTime() {
     
     let hours = koreaTime.getHours();
     let baseDate = koreaTime.toISOString().slice(0, 10).replace(/-/g, '');
-    const minutes = koreaTime.getMinutes() < 45 ? "00" : "45";
-
-    // 자정 처리 (00시에는 전날 23시 데이터를 사용)
-    if (hours === 0 && minutes === "00") {
-        hours = 23;
-        const yesterday = new Date(koreaTime);
-        yesterday.setDate(yesterday.getDate() - 1);
-        baseDate = yesterday.toISOString().slice(0, 10).replace(/-/g, '');
+    
+    // 45분 이전이면 한 시간 전 데이터를 요청
+    if (koreaTime.getMinutes() < 45) {
+        hours = hours - 1;
+        // 자정 이전이면 전날 마지막 데이터를 요청
+        if (hours < 0) {
+            hours = 23;
+            const yesterday = new Date(koreaTime);
+            yesterday.setDate(yesterday.getDate() - 1);
+            baseDate = yesterday.toISOString().slice(0, 10).replace(/-/g, '');
+        }
     }
     
     return {
         baseDate: baseDate,
-        baseTime: `${String(hours).padStart(2, '0')}${minutes}`
+        baseTime: `${String(hours).padStart(2, '0')}00`
     };
 }
-
 // 날씨 데이터 가져오기
 async function fetchWeatherData(url) {
     for (let i = 0; i < 5; i++) {
