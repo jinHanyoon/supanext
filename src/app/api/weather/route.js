@@ -31,7 +31,7 @@ function getCurrentTime() {
     // 한국 시간으로 변환
     const now = new Date();
     // 테스트용 날짜 대신 실제 현재 날짜 사용
-    const koreaTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+    const koreaTime = new Date(now);
     
     let hours = koreaTime.getHours();
     let baseDate = koreaTime.toISOString().slice(0, 10).replace(/-/g, '');
