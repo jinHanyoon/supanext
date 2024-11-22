@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import 'react-markdown-editor-lite/lib/index.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import styles from '@/app/styles.module.css';
 
 export default function EditPage() {
     const [EditTitle, setEditTitle] = useState('')
@@ -26,11 +27,12 @@ export default function EditPage() {
         return markdownText.match(/!\[.*?\]\((.*?)\)/) !== null;
     };
 
+    
     useEffect(() => {
         if (id) {
             const fetchEditData = async () => {
                 const { data, error } = await supabase
-                    .from('mypost')  // 여기 테이블명 변경
+                    .from('mypost')
                     .select('*')
                     .eq('id', id)
                     .single();
@@ -38,6 +40,7 @@ export default function EditPage() {
                     console.error(error);
                 } else {
                     setEditTitle(data.title);
+                    // 기존 텍스트를 그대로 사용 (변환 없이)
                     setEditBody(data.body);
                     setEditImg(data.imgUrl);
                 }
@@ -47,30 +50,42 @@ export default function EditPage() {
     }, [id]);
 
     const handleEditorChange = ({ text }) => {
+        // 마크다운 형식 그대로 저장
         setEditBody(text);
     };
 
     const EditSubmit = async () => {
-        const { error } = await supabase
-            .from('mypost')  // 여기 테이블명 변경
-            .update({ 
-                title: EditTitle, 
-                body: EditBody 
-            })
-            .eq('id', id)
-            .select('*')
-
-        if (error) {
-            alert('수정에 실패하였습니다. 잠시 후 다시 시도해주세요.')
-            console.log(error)
-        } else {
-            alert("수정이 완료되었습니다.")
-            router.push(`/admin/adetails/${id}`);  // 경로 수정
+        // 유효성 검사 추가
+        if (!EditTitle.trim()) {
+            alert('제목을 입력해주세요.');
+            return;
         }
-    }
-
+        if (!EditBody.trim()) {
+            alert('내용을 입력하세요.');
+            return;
+        }
+    
+        try {
+            // MdEditor가 이미 마크다운 형식으로 제공하므로 추가 변환 없이 직접 저장
+            const { error } = await supabase
+                .from('mypost')
+                .update({ 
+                    title: EditTitle.trim(),
+                    body: EditBody  // 마크다운 형식 그대로 저장
+                })
+                .eq('id', id);
+    
+            if (error) throw error;
+    
+            alert("수정이 완료되었습니다.");
+            router.push(`/admin/adetails/${id}`);
+        } catch (error) {
+            console.error('수정 중 오류 발생:', error);
+            alert('수정에 실패하였습니다. 잠시 후 다시 시도해주세요.');
+        }
+    };
     return (
-        <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
+        <div className={`container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-30 ${styles.editorWrapper}`}>
             <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200">
                 <div className="p-6 md:p-8">
                     <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>

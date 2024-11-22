@@ -1,49 +1,59 @@
 'use client'
-import { useParams  } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi';
 import Image from "next/image";
-import React from 'react'
-import { useRouter } from 'next/navigation';
-import DetailSkeleton from '@/app/component/ui/adDetailskeleton/page';
+import DetailSkeleton from '@/app/component/ui/detailSkleton/page';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import styles from '@/app/styles.module.css';
+import { useSession } from '@/app/providers/SessionProvider';
 
 export default function AdetailsPage() {
     const { id } = useParams();
+    const router = useRouter();
+    const session = useSession();
+    const { userUUID } = session;
     const [Post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [skeOut, setSkeOut] = useState(false);
     const [Modal, setModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
-    const [currentUser, setCurrentUser] = useState(null);
     const defaultAvatar = '/img/img04.jpg';
-    const router = useRouter();
 
-    // 현재 로그인한 유저 정보 가져오기
-    useEffect(() => {
-        const getCurrentUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                setCurrentUser(session.user);
-            }
-        };
-        getCurrentUser();
-    }, []);
-  
     // 마크다운에서 이미지 URL이 있는지 확인하는 함수
     const hasMarkdownImage = (markdownText) => {
         if (!markdownText) return false;
         return markdownText.match(/!\[.*?\]\((.*?)\)/) !== null;
     };
 
+    // 이미지 존재 여부 체크 함수
+    const hasImage = (post) => {
+        if (!post) return false;
+        return post.imgUrl || hasMarkdownImage(post.body);
+    };
+
+    // 일반 텍스트를 마크다운으로 변환하는 함수
+    const convertToMarkdown = (text) => {
+        if (!text) return '';
+        
+        const isMarkdown = /[#*`[]]/g.test(text);
+        if (isMarkdown) return text;
+
+        let markdownText = text
+            .replace(/\n/g, '\n\n')
+            .replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)')
+            .replace(/(https?:\/\/[^\s]+\.(jpg|jpeg|png|gif))/gi, '![]($1)');
+
+        return markdownText;
+    };
+
     const handleImageClick = (imageUrl) => {
         setSelectedImage(imageUrl);
         setModal(true);
     };
-
+    
     const closeModal = () => {
         setModal(false);
         setSelectedImage('');
@@ -51,7 +61,7 @@ export default function AdetailsPage() {
 
     useEffect(() => {
         let mounted = true;
-
+        
         if (id) {
             const fetchData = async () => {
                 try {
@@ -68,7 +78,11 @@ export default function AdetailsPage() {
                         setSkeOut(true);
                         setTimeout(() => {
                             if (mounted) {
-                                setPost(data);
+                                const convertedData = {
+                                    ...data,
+                                    body: convertToMarkdown(data.body)
+                                };
+                                setPost(convertedData);
                                 setLoading(false);
                                 setSkeOut(false);
                             }
@@ -90,8 +104,7 @@ export default function AdetailsPage() {
     }, [id]);
 
     const handleDelete = async () => {
-        // 작성자 체크
-        if (currentUser?.id !== Post.user_id) {
+        if (userUUID !== Post?.user_id) {
             alert("작성자만 삭제할 수 있습니다.");
             return;
         }
@@ -99,16 +112,14 @@ export default function AdetailsPage() {
         if (!window.confirm("삭제하시겠습니까?")) return;
 
         try {
-            // 마크다운 본문에서 모든 이미지 URL 추출
             const imageUrls = (Post.body.match(/!\[.*?\]\((.*?)\)/g) || [])
                 .map(img => img.match(/\((.*?)\)/)[1]);
 
-            // 추출된 이미지들 삭제
             for (const url of imageUrls) {
                 const filePath = url.split('/public/')[1];
                 if (filePath) {
                     await supabase.storage
-                        .from('admin_storage')
+                        .from('test_img')
                         .remove([filePath]);
                 }
             }
@@ -138,14 +149,13 @@ export default function AdetailsPage() {
                         <DetailSkeleton />
                     </div>
                 ) : (
-                    <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-detail_opacity">
+                    <div className="animate-detail_opacity">
                         <div className="p-6 md:p-8">
                             <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
                                 <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>
                                     {Post?.title || '제목없음'}
                                 </h1>
-                                {/* 작성자일 때만 수정/삭제 버튼 표시 */}
-                                {currentUser?.id === Post?.user_id && (
+                                {userUUID === Post?.user_id && (
                                     <div className="flex space-x-4">
                                         <button 
                                             onClick={() => router.push(`/admin/adetails/${id}/Edit`)}
@@ -154,7 +164,7 @@ export default function AdetailsPage() {
                                             수정
                                         </button>
                                         <button 
-                                            onClick={handleDelete}
+                                            onClick={handleDelete} 
                                             className="text-red-500 hover:text-red-600 transition-colors duration-200"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,10 +175,10 @@ export default function AdetailsPage() {
                                 )}
                             </div>
                             <div className='space-y-6'>
-                                {!Post.imgUrl && !hasMarkdownImage(Post?.body) && (
+                                {!hasImage(Post) && (
                                     <div className="relative aspect-[3/2] w-full">
-                                        <Image 
-                                            alt="DataImg" 
+                                        <Image
+                                            alt="DataImg"
                                             src={defaultAvatar}
                                             className="w-full h-auto rounded-lg shadow-md"
                                             loading="eager"
@@ -180,10 +190,10 @@ export default function AdetailsPage() {
                                     </div>
                                 )}
                                 
-                                {Post.imgUrl && (
+                                {Post?.imgUrl && (
                                     <div className="relative aspect-[3/2] w-full">
-                                        <Image 
-                                            alt="DataImg" 
+                                        <Image
+                                            alt="DataImg"
                                             src={Post.imgUrl}
                                             className="w-full h-auto rounded-lg shadow-md"
                                             loading="eager"
@@ -222,8 +232,7 @@ export default function AdetailsPage() {
                     </div>
                 )}
             </div>
-
-            {/* 이미지 모달 */}
+            
             {Modal && selectedImage && (
                 <div
                     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50"

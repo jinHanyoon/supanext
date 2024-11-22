@@ -29,6 +29,12 @@ export default function AdetailsPage() {
         return markdownText.match(/!\[.*?\]\((.*?)\)/) !== null;
     };
 
+    // 이미지 존재 여부 체크 함수
+    const hasImage = (post) => {
+        if (!post) return false;
+        return post.imgUrl || hasMarkdownImage(post.body);
+    };
+
     const handleImageClick = (imageUrl) => {
         setSelectedImage(imageUrl);
         setModal(true);
@@ -80,7 +86,6 @@ export default function AdetailsPage() {
     }, [id]);
 
     const handleDelete = async () => {
-        // 작성자 체크
         if (userUUID !== Post?.user_id) {
             alert("작성자만 삭제할 수 있습니다.");
             return;
@@ -89,11 +94,9 @@ export default function AdetailsPage() {
         if (!window.confirm("삭제하시겠습니까?")) return;
 
         try {
-            // 마크다운 본문에서 모든 이미지 URL 추출
             const imageUrls = (Post.body.match(/!\[.*?\]\((.*?)\)/g) || [])
                 .map(img => img.match(/\((.*?)\)/)[1]);
 
-            // 추출된 이미지들 삭제
             for (const url of imageUrls) {
                 const filePath = url.split('/public/')[1];
                 if (filePath) {
@@ -134,11 +137,10 @@ export default function AdetailsPage() {
                                 <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>
                                     {Post?.title || '제목없음'}
                                 </h1>
-                                {/* 작성자일 때만 수정/삭제 버튼 표시 */}
                                 {userUUID === Post?.user_id && (
                                     <div className="flex space-x-4">
                                         <button 
-                                            onClick={() => router.push(`/data/details/${id}/Edit`)} 
+                                            onClick={() => router.push(`/data/details/${id}/Edit`)}
                                             className="px-4 py-2 bg-gray-200 text-gray-900 font-semibold rounded hover:bg-gray-300 transition-colors duration-200"
                                         >
                                             수정
@@ -155,7 +157,7 @@ export default function AdetailsPage() {
                                 )}
                             </div>
                             <div className='space-y-6'>
-                                {!hasMarkdownImage(Post?.body) && (
+                                {!hasImage(Post) && (
                                     <div className="relative aspect-[3/2] w-full">
                                         <Image
                                             alt="DataImg"
@@ -166,6 +168,21 @@ export default function AdetailsPage() {
                                             fill
                                             sizes="(max-width: 1200px) 100vw, 1200px"
                                             onClick={() => handleImageClick(defaultAvatar)}
+                                        />
+                                    </div>
+                                )}
+
+                                {Post?.imgUrl && (
+                                    <div className="relative aspect-[3/2] w-full">
+                                        <Image
+                                            alt="DataImg"
+                                            src={Post.imgUrl}
+                                            className="w-full h-auto rounded-lg shadow-md"
+                                            loading="eager"
+                                            priority
+                                            fill
+                                            sizes="(max-width: 1200px) 100vw, 1200px"
+                                            onClick={() => handleImageClick(Post.imgUrl)}
                                         />
                                     </div>
                                 )}
@@ -199,7 +216,6 @@ export default function AdetailsPage() {
             </div>
             <Comment/>
             
-            {/* 이미지 모달 */}
             {Modal && selectedImage && (
                 <div
                     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50"
