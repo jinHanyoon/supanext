@@ -5,7 +5,7 @@ import { useSession } from '@/app/providers/SessionProvider';
 
 
 
-export default function WeatherPage({ selectedLocation }) {
+export default function WeatherPage({ selectedLocation, onCitySelect }) {
   const session = useSession();
 
     const [city, setCity] = useState(selectedLocation || '부산');
@@ -23,7 +23,7 @@ export default function WeatherPage({ selectedLocation }) {
         const fetchWeather = async () => {
             // 클라이언트 캐시 체크
             if (cachedWeatherData.ALL_CITIES && 
-                Date.now() - cachedWeatherData.timestamp < 600000) {
+                Date.now() - cachedWeatherData.timestamp < 300000) {
                 console.log('클라이언트 캐시 히트! ⚡');
                 setWeatherData(cachedWeatherData.ALL_CITIES[city]);
                 return;
@@ -49,7 +49,12 @@ export default function WeatherPage({ selectedLocation }) {
 
         fetchWeather();
         
-        return () => { isMounted = false; };
+        const interval = setInterval(fetchWeather, 1000 * 60 * 5);
+
+        return () => { isMounted = false;
+            clearInterval(interval);
+
+         };
     },  [city]);
 
     useEffect(() => {
@@ -149,7 +154,14 @@ export default function WeatherPage({ selectedLocation }) {
                             {['부산', '창원', '연산', '서면', '명지', '남포', '서울', '강원도'].map((cityName) => (
                                 <button
                                     key={cityName}
-                                    onClick={() => setCity(cityName)}
+                                    onClick={() =>
+                                    {setCity(cityName);
+                                    onCitySelect(cityName)
+
+                                     }
+
+                                        
+                                    }
                                     className={`px-4 py-2 rounded-lg transition duration-300 text-sm font-medium ${
                                         city === cityName
                                             ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg transform scale-105'

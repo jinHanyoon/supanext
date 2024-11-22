@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react';
 
-export default function Map({ loc, onLocationSelect }) {
+export default function Map({ loc, onLocationSelect,selectedCity }) {
   useEffect(() => {
     // naver 스크립트 로드 완료 체크
     if (typeof window.naver !== 'undefined') {
@@ -10,6 +10,15 @@ export default function Map({ loc, onLocationSelect }) {
         zoom: 16,
       });
 
+
+      if(selectedCity){
+        const cityIndex =["현재 위치", "부산", "창원", "명지", "연산","서면", "남포", "서울","강원도"].indexOf(selectedCity);
+          if(cityIndex !== -1){
+            const position =new naver.maps.LatLng(loc[cityIndex][1],loc[cityIndex][0]);
+            map.setCenter(position)
+
+          }
+      }
 
       
       loc.forEach(([lng, lat], index) => {
@@ -30,7 +39,7 @@ export default function Map({ loc, onLocationSelect }) {
         });
       });
     }
-  }, [loc]);
+  }, [loc,selectedCity]);
 
   const handleMarkerClick = (index) => {
     const locationNames = [

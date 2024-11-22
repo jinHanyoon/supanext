@@ -15,7 +15,7 @@ const PRESET_LOCATIONS = [
   [127.7300, 37.8853, '강원도 (춘천)'],
 ];
 
-export default function NaverMap({onLocationSelect}) {
+export default function NaverMap({onLocationSelect,selectedCity}) {
   const [loc, setLoc] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,7 +59,7 @@ export default function NaverMap({onLocationSelect}) {
       {isLoading ? (
         <div>지도를 불러오는 중...</div>
       ) : (
-        loc.length > 0 && <Map loc={loc} onLocationSelect={onLocationSelect} />
+        loc.length > 0 && <Map loc={loc} onLocationSelect={onLocationSelect} selectedCity ={selectedCity}/>
       )}
     </div>
   );
