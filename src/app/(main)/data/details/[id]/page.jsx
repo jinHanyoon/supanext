@@ -1,24 +1,43 @@
 'use client'
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import supabase from '@/app/api/supabaseaApi';
 import Image from "next/image";
-import React from 'react'
-import { useRouter } from 'next/navigation';
-import DetailSkeleton from '../../../../component/ui/detailSkleton/page';
+import DetailSkeleton from '@/app/component/ui/detailSkleton/page';
 import Comment from '../../commnet/page';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import styles from '@/app/styles.module.css';
+import { useSession } from '@/app/providers/SessionProvider';
 
 export default function AdetailsPage() {
     const { id } = useParams();
-    const [Post, setPost] = useState([]);
-    const [Modal, setModal] = useState(false);
+    const router = useRouter();
+    const session = useSession();
+    const { userUUID } = session;
+    const [Post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [skeOut, setSkeOut] = useState(false);
+    const [Modal, setModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
     const defaultAvatar = '/img/img04.jpg';
-    const router = useRouter();
 
-    const handleImageClick = () => setModal(true);
-    const closeModal = () => setModal(false);
+    // 마크다운에서 이미지 URL이 있는지 확인하는 함수
+    const hasMarkdownImage = (markdownText) => {
+        if (!markdownText) return false;
+        return markdownText.match(/!\[.*?\]\((.*?)\)/) !== null;
+    };
+
+    const handleImageClick = (imageUrl) => {
+        setSelectedImage(imageUrl);
+        setModal(true);
+    };
+    
+    const closeModal = () => {
+        setModal(false);
+        setSelectedImage('');
+    };
 
     useEffect(() => {
         let mounted = true;
@@ -38,8 +57,8 @@ export default function AdetailsPage() {
                     if (mounted) {
                         setSkeOut(true);
                         setTimeout(() => {
-                            if (mounted) {  // setTimeout 내부에서도 mounted 체크
-                                setPost(data || []);
+                            if (mounted) {
+                                setPost(data);
                                 setLoading(false);
                                 setSkeOut(false);
                             }
@@ -61,23 +80,26 @@ export default function AdetailsPage() {
     }, [id]);
 
     const handleDelete = async () => {
-        const userConfirmed = window.confirm("삭제하시겠습니까?");
-        if (!userConfirmed) return;
+        // 작성자 체크
+        if (userUUID !== Post?.user_id) {
+            alert("작성자만 삭제할 수 있습니다.");
+            return;
+        }
+
+        if (!window.confirm("삭제하시겠습니까?")) return;
 
         try {
-            if (Post.imgUrl) {
-                const filePath = Post.imgUrl.split('/public/')[1];
-                console.log('삭제할 파일 경로:', filePath);
+            // 마크다운 본문에서 모든 이미지 URL 추출
+            const imageUrls = (Post.body.match(/!\[.*?\]\((.*?)\)/g) || [])
+                .map(img => img.match(/\((.*?)\)/)[1]);
 
-                const { data, error: storageError } = await supabase
-                    .storage
-                    .from('admin_storage')
-                    .remove([filePath]);
-
-                console.log('삭제 요청 결과:', data);
-                if (storageError) {
-                    console.error('스토리지 삭제 에러:', storageError);
-                    throw storageError;
+            // 추출된 이미지들 삭제
+            for (const url of imageUrls) {
+                const filePath = url.split('/public/')[1];
+                if (filePath) {
+                    await supabase.storage
+                        .from('test_img')
+                        .remove([filePath]);
                 }
             }
 
@@ -106,57 +128,86 @@ export default function AdetailsPage() {
                         <DetailSkeleton />
                     </div>
                 ) : (
-                    <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-detail_opacity">
+                    <div className="animate-detail_opacity">
                         <div className="p-6 md:p-8">
                             <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
-                                <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>{Post.title || '제목없음'}</h1>
-                                <div className="flex space-x-4">
-                                <button 
-                                     onClick={() => router.push(`/data/details/${id}/Edit`)} 
-                                    className="px-4 py-2 bg-gray-200 text-gray-900 font-semibold rounded"
-                                >
-                                    수정
-                                </button>
-                                <button 
-                                    onClick={handleDelete} 
-                                    className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
+                                <h1 className='text-2xl md:text-3xl font-bold text-gray-900'>
+                                    {Post?.title || '제목없음'}
+                                </h1>
+                                {/* 작성자일 때만 수정/삭제 버튼 표시 */}
+                                {userUUID === Post?.user_id && (
+                                    <div className="flex space-x-4">
+                                        <button 
+                                            onClick={() => router.push(`/data/details/${id}/Edit`)} 
+                                            className="px-4 py-2 bg-gray-200 text-gray-900 font-semibold rounded hover:bg-gray-300 transition-colors duration-200"
+                                        >
+                                            수정
+                                        </button>
+                                        <button 
+                                            onClick={handleDelete} 
+                                            className="text-red-500 hover:text-red-600 transition-colors duration-200"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             <div className='space-y-6'>
-                                <div className="relative aspect-[3/2] w-full">
-                                    <Image
-                                        alt="DataImg"
-                                        src={Post.imgUrl || defaultAvatar}
-                                        className="w-full h-auto rounded-lg shadow-md"
-                                        loading="eager"
-                                        priority
-                                        fill
-                                        sizes="(max-width: 1200px) 100vw, 1200px"
-                                        onClick={handleImageClick}
-                                    />
-                                </div>
-                                <div className='text-gray-700 text-lg leading-relaxed whitespace-pre-wrap'>
-                                    {Post.body}
+                                {!hasMarkdownImage(Post?.body) && (
+                                    <div className="relative aspect-[3/2] w-full">
+                                        <Image
+                                            alt="DataImg"
+                                            src={defaultAvatar}
+                                            className="w-full h-auto rounded-lg shadow-md"
+                                            loading="eager"
+                                            priority
+                                            fill
+                                            sizes="(max-width: 1200px) 100vw, 1200px"
+                                            onClick={() => handleImageClick(defaultAvatar)}
+                                        />
+                                    </div>
+                                )}
+                                
+                                <div className={`${styles.markdownContent} text-gray-700 text-lg leading-relaxed`}>
+                                    <ReactMarkdown 
+                                        remarkPlugins={[remarkGfm]}
+                                        rehypePlugins={[rehypeRaw]}
+                                        components={{
+                                            img: ({node, ...props}) => (
+                                                <div className="my-6">
+                                                    <Image 
+                                                        {...props} 
+                                                        width={800}
+                                                        height={600}
+                                                        className="w-full h-auto rounded-lg shadow-md cursor-pointer"
+                                                        alt={props.alt || "게시글 이미지"}
+                                                        onClick={() => handleImageClick(props.src)}
+                                                    />
+                                                </div>
+                                            )
+                                        }}
+                                    >
+                                        {Post?.body || ''}
+                                    </ReactMarkdown>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
-<Comment/>
-            {Modal && (
+            <Comment/>
+            
+            {/* 이미지 모달 */}
+            {Modal && selectedImage && (
                 <div
                     className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 z-50"
                     onClick={closeModal}
                 >
                     <div className="relative w-[95vw] h-[95vh] flex items-center justify-center">
                         <Image
-                            src={Post.imgUrl || defaultAvatar}
+                            src={selectedImage}
                             alt="Enlarged Image"
                             className="object-contain w-full h-full rounded-lg shadow-2xl"
                             layout="fill"

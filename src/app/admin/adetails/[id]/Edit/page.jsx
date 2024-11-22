@@ -30,7 +30,7 @@ export default function EditPage() {
         if (id) {
             const fetchEditData = async () => {
                 const { data, error } = await supabase
-                    .from('pro')
+                    .from('mypost')  // 여기 테이블명 변경
                     .select('*')
                     .eq('id', id)
                     .single();
@@ -52,7 +52,7 @@ export default function EditPage() {
 
     const EditSubmit = async () => {
         const { error } = await supabase
-            .from('pro')
+            .from('mypost')  // 여기 테이블명 변경
             .update({ 
                 title: EditTitle, 
                 body: EditBody 
@@ -65,7 +65,7 @@ export default function EditPage() {
             console.log(error)
         } else {
             alert("수정이 완료되었습니다.")
-            router.push(`/data/details/${id}`);
+            router.push(`/admin/adetails/${id}`);  // 경로 수정
         }
     }
 
@@ -107,10 +107,16 @@ export default function EditPage() {
                             value={EditBody || UndefineText}
                             placeholder="내용을 입력하세요 (마크다운 지원)"
                         />
-                        <div className="flex justify-end">
+                        <div className="flex justify-end space-x-4">
+                            <button 
+                                onClick={() => router.push(`/admin/adetails/${id}`)}
+                                className="mt-4 px-6 py-2 bg-gray-100 text-gray-700 font-semibold rounded hover:bg-gray-200"
+                            >
+                                취소
+                            </button>
                             <button 
                                 onClick={EditSubmit} 
-                                className="mt-4 px-6 py-2 bg-gray-200 text-gray-900 font-semibold rounded"
+                                className="mt-4 px-6 py-2 bg-gray-200 text-gray-900 font-semibold rounded hover:bg-gray-300"
                             >
                                 수정완료
                             </button>

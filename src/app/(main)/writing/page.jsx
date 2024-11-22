@@ -41,7 +41,7 @@ export default function Writing() {
   const writingSubmit = async () => {
     if (!window.confirm("게시글을 올리겠습니까?")) return;
 
-    setLoading(true);
+    setLoading(true)
 
     try {
       let imgUrl = null;
@@ -102,7 +102,18 @@ export default function Writing() {
         <div className='container max-w-2xl mx-auto px-4 py-16 pt-36'>
           <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden'>
             <div className='p-8'>
-              <h3 className='text-2xl font-semibold text-gray-900 dark:text-white mb-6'>새 글 작성</h3>
+            <div className="flex justify-between items-center mb-6">
+                <h3 className='text-2xl font-semibold text-gray-900 dark:text-white'>새 글 작성</h3>
+                <button
+                  onClick={() => router.push('/markdown')}
+                  className='px-4 py-2 bg-purple-500 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition duration-300 flex items-center'
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                  </svg>
+                  마크다운으로 작성
+                </button>
+              </div>
               
               <div className="flex items-center mb-4">
                 <input

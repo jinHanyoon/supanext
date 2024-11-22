@@ -26,7 +26,7 @@ export default async  function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </head>
 
-      <body className="bg-stone-100 relative min-h-screen pb-[60px]">
+      <body className="bg-white relative min-h-screen pb-[60px]">
       <Providers session={session}>
     
         <Header/>
