@@ -109,7 +109,10 @@ export default function EditPage() {
                             </div>
                         )}
                         <MdEditor
-                            style={{ height: '400px' }}
+                            style={{  height: '400px',
+                                minHeight: '200px',
+                                width: '100%',
+                                maxWidth: '100%'}}
                             renderHTML={text => (
                                 <ReactMarkdown 
                                     remarkPlugins={[remarkGfm]}
@@ -122,16 +125,17 @@ export default function EditPage() {
                             value={EditBody || UndefineText}
                             placeholder="내용을 입력하세요 (마크다운 지원)"
                         />
-                        <div className="flex justify-end space-x-4">
-                            <button 
-                                onClick={() => router.push(`/admin/adetails/${id}`)}
-                                className="mt-4 px-6 py-2 bg-gray-100 text-gray-700 font-semibold rounded hover:bg-gray-200"
+        
+                        <div className="flex justify-end gap-2">
+                        <button 
+                        onClick={()=>{router.back()}}
+                                className="mt-4 px-6 py-2 bg-red-500 text-white font-semibold rounded"
                             >
-                                취소
+                            취소
                             </button>
                             <button 
                                 onClick={EditSubmit} 
-                                className="mt-4 px-6 py-2 bg-gray-200 text-gray-900 font-semibold rounded hover:bg-gray-300"
+                                className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-gray-300"
                             >
                                 수정완료
                             </button>

@@ -4,7 +4,10 @@ import Image from "next/image";
 import supabase from '@/app/api/supabaseaApi';
 import SkeletonCard from '../../component/ui/Skeleton/page';
 import Link from 'next/link';
-
+import ReactMarkdown from 'react-markdown';
+import 'react-markdown-editor-lite/lib/index.css';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 export default function Data() {
     const [pro, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -163,7 +166,14 @@ export default function Data() {
                                     ) : (
                                         <>
                                             <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{item.title}</h3>
-                                            <p className="text-gray-600 mb-2 line-clamp-2">{item.body}</p>
+                                           
+                                            <ReactMarkdown 
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeRaw]}
+                                     className="text-gray-600 mb-2 line-clamp-2"
+                                >
+                                            {item.body}
+                                      </ReactMarkdown>
                                         </>
                                     )}
                                     <div className={`flex items-center ${isGridView ? 'mt-2' : 'mt-auto'}`}>

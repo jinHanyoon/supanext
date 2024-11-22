@@ -63,6 +63,28 @@
   z-index: 9999 !important;
   padding-top: 40px !important;
 }
+
+.editorWrapper :global(.rc-md-editor) {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .editorWrapper :global(.rc-md-editor) {
+      font-size: 14px;
+  }
+  
+  .editorWrapper :global(.rc-md-editor .rc-md-navigation) {
+      padding: 6px;
+  }
+  
+  .editorWrapper :global(.rc-md-editor .section-container) {
+      padding: 10px;
+  }
+}
+
 /* 다크모드는 :global 써야됨 */
 :global(.dark) .markdownContent blockquote {
   background-color: #374151;

@@ -171,7 +171,7 @@ export default function Writing() {
               />
   
               <div className='flex justify-end space-x-4'>
-                <button
+                <button     onClick={() => router.back()}
                   className='px-6 py-3 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300'
                 >
                   취소

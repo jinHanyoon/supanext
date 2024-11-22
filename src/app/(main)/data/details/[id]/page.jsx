@@ -187,7 +187,8 @@ export default function AdetailsPage() {
                                     </div>
                                 )}
                                 
-                                <div className={`${styles.markdownContent} text-gray-700 text-lg leading-relaxed`}>
+                                                   <div className={`${styles.markdownContent} text-gray-700 text-lg leading-relaxed`}>
+
                                     <ReactMarkdown 
                                         remarkPlugins={[remarkGfm]}
                                         rehypePlugins={[rehypeRaw]}

@@ -5,6 +5,10 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import CardSkeleton from '../../component/ui/adminCardSkeleton/AdcardSkeleton'
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import styles from '@/app/styles.module.css';
 
 export default function List() {
   const [isGridView, setIsGridView] = useState(true)
@@ -140,7 +144,13 @@ export default function List() {
                   ) : (
                     <>
                       <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{item.title}</h3>
-                      <p className="text-gray-600 mb-2 line-clamp-2">{item.body}</p>
+                      <ReactMarkdown 
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeRaw]}
+                                     className={`text-gray-600 mb-2 line-clamp-2 ${styles.markdownContent}`}
+                                >
+                                                    {String(item.body).substring(0, 50) + '...'}
+                                </ReactMarkdown>
                     </>
                   )}
                   <div className={`flex items-center ${isGridView ? 'mt-2' : 'mt-auto'}`}>

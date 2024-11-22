@@ -6,9 +6,9 @@ import Image from "next/image";
 import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import ReactMarkdown from 'react-markdown';
-import 'react-markdown-editor-lite/lib/index.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import styles from '@/app/styles.module.css';
 
 export default function EditPage() {
     const [EditTitle, setEditTitle] = useState('')
@@ -70,7 +70,7 @@ export default function EditPage() {
     }
 
     return (
-        <div className="container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-10">
+        <div className={`container px-4 pt-24 pb-16 mx-auto max-w-4xl relative z-30 ${styles.editorWrapper}`}>
             <div className="rounded-xl shadow-lg overflow-hidden border border-gray-200">
                 <div className="p-6 md:p-8">
                     <div className='flex justify-between items-center border-b border-gray-200 pb-4 mb-6'>
@@ -94,7 +94,10 @@ export default function EditPage() {
                             </div>
                         )}
                         <MdEditor
-                            style={{ height: '400px' }}
+                            style={{  height: '400px',
+                                minHeight: '200px',
+                                width: '100%',
+                                maxWidth: '100%' }}
                             renderHTML={text => (
                                 <ReactMarkdown 
                                     remarkPlugins={[remarkGfm]}
@@ -107,7 +110,13 @@ export default function EditPage() {
                             value={EditBody || UndefineText}
                             placeholder="내용을 입력하세요 (마크다운 지원)"
                         />
-                        <div className="flex justify-end">
+                        <div className="flex justify-end gap-2">
+                        <button 
+                        onClick={()=>{router.back()}}
+                                className="mt-4 px-6 py-2 bg-red-500 text-white font-semibold rounded"
+                            >
+                            취소
+                            </button>
                             <button 
                                 onClick={EditSubmit} 
                                 className="mt-4 px-6 py-2 bg-gray-200 text-gray-900 font-semibold rounded"
