@@ -20,7 +20,6 @@ export default function MarkdownWriting() {
 
   useEffect(() => {
     if (!session) {
-      console.log('ㅋㅋ 세션없음');
     }
   }, [session]);
 
@@ -90,7 +89,7 @@ export default function MarkdownWriting() {
           <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden'>
             <div className='p-8'>
               <h3 className='text-2xl font-semibold text-gray-900 dark:text-white mb-6'>
-                마크다운 에디터로 글쓰기
+                에디터로 글쓰기
               </h3>
               
               <div className="flex items-center mb-4">
@@ -122,7 +121,7 @@ export default function MarkdownWriting() {
                   value={content}
                   onImageUpload={handleImageUpload}
                   imageAccept=".jpg,.jpeg,.png,.gif"
-                  placeholder="마크다운으로 내용을 작성하세요! 이미지는 드래그앤드롭도 가능"
+                  placeholder="내용을 작성해주세요. 드래그를 이용해 이미지를 추가 할 수 있어요!"
                   className="dark:bg-gray-700" // 다크모드용
                 />
               </div>

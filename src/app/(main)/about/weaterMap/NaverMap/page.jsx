@@ -26,7 +26,7 @@ export default function Map({ loc, onLocationSelect,selectedCity }) {
           position: new naver.maps.LatLng(lat, lng),
           map: map,
           icon: index === 0 ? {
-            url: '/img/neocon.png',
+            url: '/img/nooicon.png',
             size: new naver.maps.Size(60, 60),
             anchor: new naver.maps.Point(12.5, 25),
             scaledSize: new naver.maps.Size(60, 60)

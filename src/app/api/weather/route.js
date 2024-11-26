@@ -12,20 +12,7 @@ const CITY_COORDINATES = {
     강원도: { nx: 73, ny: 134 }
 };
 
-// function getCurrentTime() {
-//     // 한국 시간으로 변환
-//     const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" });
-//     const koreaTime = new Date(now);
-    
-//     // 시간, 분 계산
-//     const hours = koreaTime.getHours();
-//     const minutes = koreaTime.getMinutes() < 45 ? "00" : "45";
-    
-//     return {
-//         baseDate: koreaTime.toISOString().slice(0, 10).replace(/-/g, ''),
-//         baseTime: `${String(hours).padStart(2, '0')}${minutes}`
-//     };
-// }
+
 function getCurrentTime() {
     // UTC 시간을 직접 계산해서 한국 시간으로 변환
     const now = new Date();
@@ -108,6 +95,8 @@ async function fetchAllWeatherData() {
             const data = await fetchWeatherData(url);
             console.log(`${city} 날씨 데이터:`, data); // 응답 데이터 확인
             
+            console.log(data, "날씨데이터 0000000000000000000000000000000000")
+
             if (!data?.response?.body?.items?.item) {
                 console.error(`API 응답 오류 (${city}):`, data);
                 return {

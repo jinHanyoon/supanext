@@ -111,7 +111,7 @@ export default function Writing() {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                   </svg>
-                  마크다운으로 작성
+                  에디터로 작성하기
                 </button>
               </div>
               
@@ -164,14 +164,14 @@ export default function Writing() {
   
               <textarea 
                 className="w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
-                placeholder="내용"
+                placeholder="여러 이미지를 업로드 할 시 오른쪽 상단 에디터로 작성해주세요!"
                 rows="6"
                 value={bodyValue} 
                 onChange={(e) => setBodyValue(e.target.value)}
               />
   
               <div className='flex justify-end space-x-4'>
-                <button     onClick={() => router.back()}
+                <button onClick={() => router.back()}
                   className='px-6 py-3 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white text-sm font-medium rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300'
                 >
                   취소
