@@ -145,7 +145,7 @@ export default function Data() {
                             >
                                 <Link  prefetch={true} 
                                    onClick={(e) => {
-                                    e.stopPropagation();  // 이벤트 전파 중단
+                                    e.stopPropagation(); 
                                 }}
                                 href={`/data/details/${item.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
                                     <div className={`relative ${
@@ -153,11 +153,12 @@ export default function Data() {
                                             ? 'aspect-[4/3]' 
                                             : 'w-full pt-[100%]'
                                     }`}>
-                                      <Image 
-                alt="DataImg" 
+        
+        <Image 
+                alt="MainImgData" 
                 src={item.imgUrl || extractFirstImageUrl(item.body) || defaultAvatar}
                 fill
-                priority={index === 0}  // 첫 번째 이미지에만 priority 적용
+                priority={index === 0} 
                 loading={index === 0 ? "eager" : "lazy"}
                 sizes={isGridView 
                     ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
@@ -174,7 +175,7 @@ export default function Data() {
                                         <>
                                             <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{item.title}</h3>
                                            
-                                            <ReactMarkdown 
+                             <ReactMarkdown 
                                     remarkPlugins={[remarkGfm]}
                                     rehypePlugins={[rehypeRaw]}
                                      className="text-gray-600 mb-2 line-clamp-2"

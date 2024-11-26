@@ -129,8 +129,8 @@ export default function List() {
                       ? 'aspect-[4/3]' 
                       : 'w-full pt-[100%]'
                   }`}>
-                                         <Image 
-                alt="DataImg" 
+        <Image 
+                alt="adminImgData" 
                 src={item.imgUrl || extractFirstImageUrl(item.body) || defaultAvatar}
                 fill
                 priority={index === 0}  // 첫 번째 이미지에만 priority 적용
