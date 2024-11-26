@@ -52,7 +52,11 @@ export default function List() {
       supabase.removeChannel(channel);
     };
   }, [])
-
+  const extractFirstImageUrl = (markdown) => {
+    const imgRegex = /!\[.*?\]\((.*?)\)/;
+    const match = markdown.match(imgRegex);
+    return match ? match[1] : null;
+};
   return (
     <>
       <div className="container px-4 py-12 mx-auto pt-24">
@@ -125,17 +129,18 @@ export default function List() {
                       ? 'aspect-[4/3]' 
                       : 'w-full pt-[100%]'
                   }`}>
-                    <Image 
-                      alt="DataImg" 
-                      src={item.imgUrl || defaultAvatar}
-                      loading="eager"
-                      fill
-                      sizes={isGridView 
-                        ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                        : "100vw"
-                      }
-                      className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
-                    />
+                                         <Image 
+                alt="DataImg" 
+                src={item.imgUrl || extractFirstImageUrl(item.body) || defaultAvatar}
+                fill
+                priority={index === 0}  // 첫 번째 이미지에만 priority 적용
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes={isGridView 
+                    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    : "100vw"
+                }
+                className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
+            />
                   </div>
                 </Link>
                 <div className={`p-4 sm:p-5 ${isGridView ? 'flex-grow' : 'flex-grow w-2/3 sm:w-3/4 flex flex-col justify-between'}`}>
