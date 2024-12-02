@@ -7,7 +7,7 @@ import 'react-markdown-editor-lite/lib/index.css';
 import supabase from '@/app/api/supabaseaApi';
 import { useSession } from '@/app/providers/SessionProvider';
 import Loading from '../../loading';
-
+import styles from '@/app/styles.module.css'
 export default function MarkdownWriting() {
   const router = useRouter();
   const session = useSession();
@@ -113,7 +113,7 @@ export default function MarkdownWriting() {
               />
 
               {/* 마크다운 에디터 */}
-              <div className="mb-6">
+              <div className={`mb-6 ${styles.editorWrapper}`}>
                 <MdEditor
                   style={{ height: '500px' }}
                   renderHTML={text => <ReactMarkdown>{text}</ReactMarkdown>}
@@ -123,6 +123,7 @@ export default function MarkdownWriting() {
                   imageAccept=".jpg,.jpeg,.png,.gif"
                   placeholder="내용을 작성해주세요. 드래그를 이용해 이미지를 추가 할 수 있어요!"
                   className="dark:bg-gray-700" // 다크모드용
+                  
                 />
               </div>
 

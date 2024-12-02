@@ -21,33 +21,41 @@ export default function AdetailsPage() {
     const [Modal, setModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const defaultAvatar = '/img/img04.jpg';
-
-    // 마크다운에서 이미지 URL이 있는지 확인하는 함수
+    
+    const extractNestedImageUrl = (text) => {
+        
+        // 첫 번째 Supabase URL만 추출 (괄호 없이)
+        const urlPattern = /https:\/\/vwaofeoshpnacnpicind\.supabase\.co\/storage\/v1\/object\/public\/test_img\/test_img\/[^)\]]+/;
+        const match = text.match(urlPattern);
+        
+        if (match) {
+            const cleanUrl = match[0].split(')')[0]; // 혹시 모를 괄호 제거
+            return cleanUrl;
+        }
+        
+        return null;
+    };
     const hasMarkdownImage = (markdownText) => {
         if (!markdownText) return false;
         return markdownText.match(/!\[.*?\]\((.*?)\)/) !== null;
     };
 
-    // 이미지 존재 여부 체크 함수
     const hasImage = (post) => {
         if (!post) return false;
         return post.imgUrl || hasMarkdownImage(post.body);
     };
 
-    // 일반 텍스트를 마크다운으로 변환하는 함수
     const convertToMarkdown = (text) => {
         if (!text) return '';
         
-        const isMarkdown = /[#*`[]]/g.test(text);
-        if (isMarkdown) return text;
-
-        let markdownText = text
-            .replace(/\n/g, '\n\n')
-            .replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)')
-            .replace(/(https?:\/\/[^\s]+\.(jpg|jpeg|png|gif))/gi, '![]($1)');
-
-        return markdownText;
+        const cleanText = text.replace(
+            /!\[([^\]]*)\]\(\[!\[\]\((.*?)\)\]\(\2\)\)/g,
+            '![$1]($2)'
+        );
+        
+        return cleanText;
     };
+    
 
     const handleImageClick = (imageUrl) => {
         setSelectedImage(imageUrl);
@@ -71,16 +79,16 @@ export default function AdetailsPage() {
                         .select('*')
                         .eq('id', id)
                         .single();
-
+    
                     if (error) throw error;
-
+    
                     if (mounted) {
                         setSkeOut(true);
                         setTimeout(() => {
                             if (mounted) {
                                 const convertedData = {
                                     ...data,
-                                    body: convertToMarkdown(data.body)
+                                    body: convertToMarkdown(data.body)  // 여기서 변환
                                 };
                                 setPost(convertedData);
                                 setLoading(false);
@@ -182,7 +190,6 @@ export default function AdetailsPage() {
                                             src={defaultAvatar}
                                             className="w-full h-auto rounded-lg shadow-md"
                                             loading="eager"
-                                            priority
                                             fill
                                             sizes="(max-width: 1200px) 100vw, 1200px"
                                             onClick={() => handleImageClick(defaultAvatar)}
@@ -197,7 +204,6 @@ export default function AdetailsPage() {
                                             src={Post.imgUrl}
                                             className="w-full h-auto rounded-lg shadow-md"
                                             loading="eager"
-                                            priority
                                             fill
                                             sizes="(max-width: 1200px) 100vw, 1200px"
                                             onClick={() => handleImageClick(Post.imgUrl)}
@@ -206,26 +212,27 @@ export default function AdetailsPage() {
                                 )}
                                 
                                 <div className={`${styles.markdownContent} text-gray-700 text-lg leading-relaxed`}>
-                                    <ReactMarkdown 
-                                        remarkPlugins={[remarkGfm]}
-                                        rehypePlugins={[rehypeRaw]}
-                                        components={{
-                                            img: ({node, ...props}) => (
-                                                <div className="my-6">
-                                                    <Image 
-                                                        {...props} 
-                                                        width={800}
-                                                        height={600}
-                                                        className="w-full h-auto rounded-lg shadow-md cursor-pointer"
-                                                        alt={props.alt || "게시글 이미지"}
-                                                        onClick={() => handleImageClick(props.src)}
-                                                    />
-                                                </div>
-                                            )
-                                        }}
-                                    >
-                                        {Post?.body || ''}
-                                    </ReactMarkdown>
+                                <ReactMarkdown 
+    remarkPlugins={[remarkGfm]}
+    rehypePlugins={[rehypeRaw]}
+    components={{
+        img: ({node, ...props}) => (  // props.src를 바로 사용!
+            <span className="block my-6">
+                <Image 
+                    {...props} 
+                    width={800}
+                    height={600}
+                    className="rounded-lg shadow-md cursor-pointer"
+                    alt={props.alt || "게시글 이미지"}
+                    onClick={() => handleImageClick(props.src)}
+                    unoptimized
+                />
+            </span>
+        )
+    }}
+>
+    {Post?.body || ''}
+</ReactMarkdown>
                                 </div>
                             </div>
                         </div>
