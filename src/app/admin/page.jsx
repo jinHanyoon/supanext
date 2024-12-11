@@ -9,14 +9,7 @@ export default function Admin() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-//  useEffect(()=>{
-//   if (userUUID === vip01 || userUUID === vip02) {
-//     setIsLoading(true);
-//     console.log(`VIP 사용자입니다: ${userUUID}`);
 
-//   }
-
-// },[userUUID,vip02,vip01])
 
   return (
     <div >
