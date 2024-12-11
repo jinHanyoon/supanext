@@ -12,7 +12,7 @@ export function useSession() {
 }
 
 export default function SessionProvider({ children, serverSession }) {
-  console.log('SessionProvider 렌더링, serverSession:', serverSession);
+  // console.log('SessionProvider 렌더링, serverSession:', serverSession);
   
   const [session, setSession] = useState(serverSession || {
     userUUID: null,
