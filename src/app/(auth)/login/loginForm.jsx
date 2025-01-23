@@ -9,8 +9,6 @@ import { signInWithGoogle } from './actions';
 
 export default function LoginForm({sideHidden}) {
   const router = useRouter()
-
-
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -18,13 +16,17 @@ export default function LoginForm({sideHidden}) {
   const [email, setEmail] =useState('')
 
   const isFormComplete = email && password;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await login(email, password);
-      sideHidden()
+      const user = await login (email, password)
+      if (user) {
+        alert('로그인에 성공하셨습니다.')
+        sideHidden(); // 로그인 성공 시에만 사이드 숨기기
+      }
     } catch (error) {
-      alert('뭐가 틀렸는데?')
+      alert('로그인에 실패하셨습니다');
     }
   };
   
@@ -127,7 +129,7 @@ export default function LoginForm({sideHidden}) {
           </div>
       <div className="mt-6 text-center">
         <Link 
-          href="/signUp" 
+          href="/signup" 
           onClick={sideHidden} 
           className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
         >

@@ -122,7 +122,6 @@ export default function Profiles() {
     };
 
 
-
   return (
 <section className="bg-gray-50 min-h-screen py-8 sm:py-16">
   {loading && <Loading />}

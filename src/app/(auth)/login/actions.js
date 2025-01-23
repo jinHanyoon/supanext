@@ -12,11 +12,15 @@ export const login = async (email, password) => {
   if (!error) {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      window.location.reload();
+      window.location.href = '/';
+      return user;
     }
+  }else{
+    throw error
   }
 
-  return data;
+  return null;
+
 };
 
 export const logout = async () => {
