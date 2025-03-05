@@ -134,40 +134,43 @@ export default function Data() {
       } gap-4 sm:gap-6 md:gap-8 min-h-[500px]`}>
                         {pro.map((item, index) => (
                             <div 
-                                key={item.id} 
-                                className={`bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 animate-admin_posX ${
-                                    isGridView ? 'flex flex-col' : 'flex flex-row h-full'
-                                }`}
-                                style={{ 
-                                    animationDelay: `${index * 0.1}s`,
-                                    opacity: 0
-                                }}
-                            >
-                                <Link  prefetch={true} 
-                                   onClick={(e) => {
-                                    e.stopPropagation(); 
-                                }}
-                                href={`/data/details/${item.id}`} className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4'}>
-                                    <div className={`relative ${
-                                        isGridView 
-                                            ? 'aspect-[4/3]' 
-                                            : 'w-full pt-[100%]'
-                                    }`}>
-        
+    key={item.id} 
+    className={`bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 animate-admin_posX ${
+        isGridView ? 'flex flex-col' : 'flex flex-row h-[200px]'
+    }`}
+    style={{ 
+        animationDelay: `${index * 0.1}s`,
+        opacity: 0
+    }}
+>
+<Link  
+    prefetch={true} 
+    onClick={(e) => {
+        e.stopPropagation(); 
+    }}
+    href={`/data/details/${item.id}`} 
+    className={isGridView ? 'block w-full relative' : 'flex-shrink-0 w-1/3 sm:w-1/4 h-[200px]'}>
+    <div className={`relative ${
+        isGridView 
+            ? 'aspect-[4/3]' 
+            : 'h-full'
+    }`}>
         <Image 
-                alt="MainImgData" 
-                src={item.imgUrl || extractFirstImageUrl(item.body) || defaultAvatar}
-                fill
-                priority={index === 0} 
-                loading={index === 0 ? "eager" : "lazy"}
-                sizes={isGridView 
-                    ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                    : "100vw"
-                }
-                className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
-            />
-                                    </div>
-                                </Link>
+            alt="MainImgData" 
+            src={item.imgUrl || extractFirstImageUrl(item.body) || defaultAvatar}
+            fill
+            priority={index === 0} 
+            loading={index === 0 ? "eager" : "lazy"}
+            sizes={isGridView 
+                ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                : "100vw"
+            }
+            className={`object-cover ${isGridView ? 'rounded-t-lg sm:rounded-t-xl' : 'rounded-l-lg sm:rounded-l-xl'}`}
+        />
+    </div>
+</Link>
+
+
                                 <div className={`p-4 sm:p-5 ${isGridView ? 'flex-grow' : 'flex-grow w-2/3 sm:w-3/4 flex flex-col justify-between'}`}>
                                     {isGridView ? (
                                         <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 sm:mb-3 line-clamp-2">{item.title}</h3>

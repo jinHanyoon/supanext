@@ -111,41 +111,6 @@ export default function AdetailsPage() {
         }
     }, [id]);
 
-    const handleDelete = async () => {
-        if (userUUID !== Post?.user_id) {
-            alert("작성자만 삭제할 수 있습니다.");
-            return;
-        }
-
-        if (!window.confirm("삭제하시겠습니까?")) return;
-
-        try {
-            const imageUrls = (Post.body.match(/!\[.*?\]\((.*?)\)/g) || [])
-                .map(img => img.match(/\((.*?)\)/)[1]);
-
-            for (const url of imageUrls) {
-                const filePath = url.split('/public/')[1];
-                if (filePath) {
-                    await supabase.storage
-                        .from('test_img')
-                        .remove([filePath]);
-                }
-            }
-
-            const { error } = await supabase
-                .from('mypost')
-                .delete()
-                .eq('id', Post.id);
-
-            if (error) throw error;
-
-            alert("삭제완료!");
-            router.push('/admin');
-        } catch (error) {
-            console.error('삭제 중 오류 발생:', error);
-            alert('삭제 중 오류가 발생했습니다.');
-        }
-    };
 
     return (
         <>
@@ -171,14 +136,7 @@ export default function AdetailsPage() {
                                         >
                                             수정
                                         </button>
-                                        <button 
-                                            onClick={handleDelete} 
-                                            className="text-red-500 hover:text-red-600 transition-colors duration-200"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
+                      
                                     </div>
                                 )}
                             </div>
