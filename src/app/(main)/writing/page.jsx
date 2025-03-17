@@ -19,13 +19,17 @@ export default function Writing() {
   const [imgPreview, setImgPreview] = useState('');
   const [loading, setLoading] = useState(false);
   const [isAdminPost, setIsAdminPost] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (!session) {
       console.log('세션 없음');
+    } else {
+      // 관리자 UUID 확인
+      setIsAdmin(userUUID === 'c48c7861-8cd0-4eae-90d4-fbd045db601d');
     }
     console.log('session 값 변경됨:', session);
-  }, [session]);
+  }, [session, userUUID]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -40,6 +44,12 @@ export default function Writing() {
 
   const writingSubmit = async () => {
     if (!window.confirm("게시글을 올리겠습니까?")) return;
+
+    // 관리자가 아닌데 관리자 게시판에 저장하려는 경우 방지
+    if (isAdminPost && !isAdmin) {
+      alert('관리자 권한이 필요합니다.');
+      return;
+    }
 
     setLoading(true)
 
@@ -114,18 +124,24 @@ export default function Writing() {
                   에디터로 작성하기
                 </button>
               </div>
-              
+            
               <div className="flex items-center mb-4">
-                <input
-                  type="checkbox"
-                  id="admin-post"
-                  checked={isAdminPost}
-                  onChange={(e) => setIsAdminPost(e.target.checked)}
-                  className="mr-2"
-                />
-                <label htmlFor="admin-post" className="text-sm text-gray-600 dark:text-gray-300">
-                  관리자 게시판에 저장
-                </label>
+                {isAdmin ? (
+                  <>
+                    <input
+                      type="checkbox"
+                      id="admin-post"
+                      checked={isAdminPost}
+                      onChange={(e) => setIsAdminPost(e.target.checked)}
+                      className="mr-2"
+                    />
+                    <label htmlFor="admin-post" className="text-sm text-gray-600 dark:text-gray-300">
+                      관리자 게시판에 저장
+                    </label>
+                  </>
+                ) : (
+                  <p className="text-sm text-gray-500">일반 게시판에 저장됩니다</p>
+                )}
               </div>
               
               <input

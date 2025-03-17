@@ -2,6 +2,7 @@
 
 import { memo, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { logout as logoutAction } from "../../../(auth)/login/actions"
 import LoginPage from '../../../(auth)/login/page'
 import Image from 'next/image';
@@ -11,11 +12,24 @@ export default memo(function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loginShow, setLoginShow] = useState(false);
   const session = useSession();
+  const pathname = usePathname();
 
   // 세션 값 추출
   const loggedIn = session?.loggedIn || false;
   const userName = session?.userName || '';
   const userAvatar = session?.userAvatar || '/img/img04.jpg';
+
+  // 활성 메뉴 확인 함수
+  const isActive = (path) => {
+    if (path === '/data' && (pathname === '/' || pathname === '/data')) {
+      return true;
+    }
+    return pathname.startsWith(path);
+  };
+
+  // 활성 메뉴 스타일
+  const activeStyle = "text-blue-600 font-bold";
+  const inactiveStyle = "text-gray-800 font-semibold";
 
   // 핸들러 함수들
   const handleLogout = async () => {
@@ -38,16 +52,38 @@ export default memo(function Header() {
           {/* 로고 */}
           <div className="flex items-center justify-between h-16">
             <Link href="/data" className="flex-shrink-0">
-              <span className="text-2xl font-extrabold text-gray-800">SPACE</span>
+              <span className="text-2xl font-extrabold text-gray-800">DevJinHan</span>
             </Link>
 
             {/* 데스크톱 메뉴 */}
             <div className="hidden md:flex items-center justify-center flex-grow">
               <div className="flex space-x-4 lg:space-x-8 lg:gap-16">
-                <Link href="/data" className="text-gray-800 font-semibold text-sm uppercase">Main</Link>
-                <Link href="/profiles" onClick={handleMyPageClick} className="text-gray-800 font-semibold text-sm uppercase">MY Page</Link>
-                <Link href="/about" className="text-gray-800 font-semibold text-sm uppercase">Weather</Link>
-                <Link href="/admin" className="text-gray-800 font-semibold text-sm uppercase">Study</Link>
+                <Link 
+                  href="/data" 
+                  className={`${isActive('/data') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  Main
+                </Link>
+                <Link 
+                  href="/admin" 
+                  className={`${isActive('/admin') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  Tech Hub
+                </Link>
+                <Link 
+                  href="/profiles" 
+                  onClick={handleMyPageClick} 
+                  className={`${isActive('/profiles') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  My Page
+                </Link>
+         
+                <Link 
+                  href="/about" 
+                  className={`${isActive('/about') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  Weather
+                </Link>
               </div>
             </div>
 
@@ -91,10 +127,35 @@ export default memo(function Header() {
         {isMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-xl">
             <div className="px-2 pt-2 pb-3 space-y-4">
-              <Link href="/data" onClick={() => setIsMenuOpen(false)} className="block text-gray-800 text-sm">Main</Link>
-              <Link href="/profiles" onClick={handleMyPageClick} className="block text-gray-800 text-sm">MY Page</Link>
-              <Link href="/about" onClick={() => setIsMenuOpen(false)} className="block text-gray-800 text-sm">Weather</Link>
-              <Link href="/admin" onClick={() => setIsMenuOpen(false)} className="block text-gray-800 text-sm">Study</Link>
+              <Link 
+                href="/data" 
+                onClick={() => setIsMenuOpen(false)} 
+                className={`block text-sm ${isActive('/data') ? activeStyle : inactiveStyle}`}
+              >
+                Main
+              </Link>
+              <Link 
+                href="/admin" 
+                onClick={() => setIsMenuOpen(false)} 
+                className={`block text-sm ${isActive('/admin') ? activeStyle : inactiveStyle}`}
+              >
+                Tech Hub
+              </Link>
+              <Link 
+                href="/profiles" 
+                onClick={handleMyPageClick} 
+                className={`block text-sm ${isActive('/profiles') ? activeStyle : inactiveStyle}`}
+              >
+                My Page
+              </Link>
+      
+              <Link 
+                href="/about" 
+                onClick={() => setIsMenuOpen(false)} 
+                className={`block text-sm ${isActive('/about') ? activeStyle : inactiveStyle}`}
+              >
+                Weather
+              </Link>
               {loggedIn ? (
                 <button onClick={handleLogout} className="block w-full text-left text-red-600 text-sm">로그아웃</button>
               ) : (

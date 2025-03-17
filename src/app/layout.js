@@ -14,9 +14,9 @@ export default async  function RootLayout({ children }) {
     <html lang="en" >
       <head>
         <title>Dev JinHan</title>
-        <meta name="description" content="Yoon Jin Han" />
-        <meta property="og:title" content="Yoon Jin Han" />
-        <meta property="og:description" content="Start" />
+        <meta name="description" content="Dev Jin Han Yoon" />
+        <meta property="og:title" content="Dev jin Han Yoon" />
+        <meta property="og:description" content="frontEnd Dev jin Han Yoon" />
         <meta property="og:image" content="/main_img.jpg" />
         <meta property="og:url" content="https://devjinhan.vercel.app/" />
         <meta name="keywords" content="개발자 윤진한, 프론트엔드, React, Next.js, supabase" />
