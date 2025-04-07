@@ -21,7 +21,7 @@ export default memo(function Header() {
 
   // 활성 메뉴 확인 함수
   const isActive = (path) => {
-    if (path === '/data' && (pathname === '/' || pathname === '/data')) {
+    if (path === '/admin' && (pathname === '/' || pathname === '/admin')) {
       return true;
     }
     return pathname.startsWith(path);
@@ -51,38 +51,44 @@ export default memo(function Header() {
         <div className="container max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* 로고 */}
           <div className="flex items-center justify-between h-16">
-            <Link href="/data" className="flex-shrink-0">
+            <Link href="/admin" className="flex-shrink-0">
               <span className="text-2xl font-extrabold text-gray-800">DevJinHan</span>
             </Link>
 
             {/* 데스크톱 메뉴 */}
             <div className="hidden md:flex items-center justify-center flex-grow">
               <div className="flex space-x-4 lg:space-x-8 lg:gap-16">
+
+              <Link 
+                  href="/admin" 
+                  className={`${isActive('/admin') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  STUDY
+                </Link>
+
                 <Link 
                   href="/data" 
                   className={`${isActive('/data') ? activeStyle : inactiveStyle} text-sm uppercase`}
                 >
                   Main
                 </Link>
-                <Link 
-                  href="/admin" 
-                  className={`${isActive('/admin') ? activeStyle : inactiveStyle} text-sm uppercase`}
-                >
-                  Tech Hub
-                </Link>
-                <Link 
-                  href="/profiles" 
-                  onClick={handleMyPageClick} 
-                  className={`${isActive('/profiles') ? activeStyle : inactiveStyle} text-sm uppercase`}
-                >
-                  My Page
-                </Link>
+
+    
          
                 <Link 
                   href="/about" 
                   className={`${isActive('/about') ? activeStyle : inactiveStyle} text-sm uppercase`}
                 >
                   Weather
+                </Link>
+
+
+                <Link 
+                  href="/profiles" 
+                  onClick={handleMyPageClick} 
+                  className={`${isActive('/profiles') ? activeStyle : inactiveStyle} text-sm uppercase`}
+                >
+                  My Page
                 </Link>
               </div>
             </div>
@@ -127,6 +133,14 @@ export default memo(function Header() {
         {isMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-xl">
             <div className="px-2 pt-2 pb-3 space-y-4">
+
+            <Link 
+                href="/admin" 
+                onClick={() => setIsMenuOpen(false)} 
+                className={`block text-sm ${isActive('/admin') ? activeStyle : inactiveStyle}`}
+              >
+              STUDY
+              </Link>
               <Link 
                 href="/data" 
                 onClick={() => setIsMenuOpen(false)} 
@@ -134,12 +148,14 @@ export default memo(function Header() {
               >
                 Main
               </Link>
+
+              
               <Link 
-                href="/admin" 
+                href="/about" 
                 onClick={() => setIsMenuOpen(false)} 
-                className={`block text-sm ${isActive('/admin') ? activeStyle : inactiveStyle}`}
+                className={`block text-sm ${isActive('/about') ? activeStyle : inactiveStyle}`}
               >
-                Tech Hub
+                Weather
               </Link>
               <Link 
                 href="/profiles" 
@@ -149,13 +165,7 @@ export default memo(function Header() {
                 My Page
               </Link>
       
-              <Link 
-                href="/about" 
-                onClick={() => setIsMenuOpen(false)} 
-                className={`block text-sm ${isActive('/about') ? activeStyle : inactiveStyle}`}
-              >
-                Weather
-              </Link>
+    
               {loggedIn ? (
                 <button onClick={handleLogout} className="block w-full text-left text-red-600 text-sm">로그아웃</button>
               ) : (

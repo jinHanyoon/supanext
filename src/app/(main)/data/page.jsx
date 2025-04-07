@@ -86,7 +86,9 @@ export default function Data() {
     };
     return (
         <>
+
             <div className="container px-4 py-12 mx-auto pt-24">
+
                 <div className="flex justify-end mb-6">
                     <div className="bg-white rounded-full p-1 shadow-md">
                         <button

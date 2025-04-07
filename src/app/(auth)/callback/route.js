@@ -12,5 +12,5 @@ export async function GET(request) {
   }
 
   // 인증 후 리다이렉트
-  return NextResponse.redirect(new URL('/data', request.url));
+  return NextResponse.redirect(new URL('/admin', request.url));
 }
