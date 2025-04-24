@@ -1,4 +1,4 @@
-# SupaBoard
+# Supanext
 
 Next.js, Supabase, Tailwind CSS로 만든 게시판 웹사이트입니다.  
 회원가입, 로그인, 글쓰기, 댓글쓰기 기능이 포함되어 있으며, 반응형 UI로 구성되어 있습니다.
@@ -28,7 +28,7 @@ Next.js, Supabase, Tailwind CSS로 만든 게시판 웹사이트입니다.
 ## 설치 방법
 
 ```bash
-git clone https://github.com/형님계정/SupaBoard.git
-cd SupaBoard
+git clone https://github.com/jinhanyoon/Supanext.git
+cd Supanext
 npm install
 npm run dev
