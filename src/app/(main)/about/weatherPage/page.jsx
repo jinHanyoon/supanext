@@ -24,7 +24,6 @@ export default function WeatherPage({ selectedLocation, onCitySelect }) {
             // 클라이언트 캐시 체크
             if (cachedWeatherData.ALL_CITIES && 
                 Date.now() - cachedWeatherData.timestamp < 300000) {
-                console.log('클라이언트 캐시 히트! ⚡');
                 setWeatherData(cachedWeatherData.ALL_CITIES[city]);
                 return;
             }
@@ -78,22 +77,22 @@ export default function WeatherPage({ selectedLocation, onCitySelect }) {
         return `${month}.${day}.(${weekdays[date.getDay()]}) ${hour}:${minute} 기준`;
     };
 
-    const getTemperatureMessage = (temperature) => {
-        if (temperature > 23) return '쪄죽을수도있는 날씨야...';
-        if (temperature > 22) return '더워... 더워...';
-        if (temperature > 21) return '특별히 쪼금 시원하게 입는걸 허용하겠다!';
-        if (temperature > 20) return '슈잉 쪼금 더울수도있어..(삐질..)';
-        if (temperature > 17) return '슈잉!날씨 너무 좋다 우리 산책하자!!';
-        if (temperature > 15) return '슈잉!  날씨 좋다 안아주기 좋은 날씨야 히히';
-        if (temperature > 14) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
-        if (temperature > 13) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
-        if (temperature > 12) return '어..조금 쌀쌀해진거같은데?';
-        if (temperature > 11) return '어어.. 추워진다... 추워져...!';
-        if (temperature > 10) return '슈잉..! 이제부터 시작이야... 안에 두어겹 입어';
-        if (temperature > 5) return '슈잉.. 추워... 너 따시게입어야혀';
-        if (temperature > 0) return '슈잉.. 꽁꽁 얼어 붙어 단단히 입어!';
-        return '슈잉... 난 얼었셔';
-    };
+    // const getTemperatureMessage = (temperature) => {
+    //     if (temperature > 23) return '쪄죽을수도있는 날씨야...';
+    //     if (temperature > 22) return '더워... 더워...';
+    //     if (temperature > 21) return '특별히 쪼금 시원하게 입는걸 허용하겠다!';
+    //     if (temperature > 20) return '슈잉 쪼금 더울수도있어..(삐질..)';
+    //     if (temperature > 17) return '슈잉!날씨 너무 좋다 우리 산책하자!!';
+    //     if (temperature > 15) return '슈잉!  날씨 좋다 안아주기 좋은 날씨야 히히';
+    //     if (temperature > 14) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
+    //     if (temperature > 13) return '슈잉! 날씨 좋다 안아주기 좋은 날씨야 히히';
+    //     if (temperature > 12) return '어..조금 쌀쌀해진거같은데?';
+    //     if (temperature > 11) return '어어.. 추워진다... 추워져...!';
+    //     if (temperature > 10) return '슈잉..! 이제부터 시작이야... 안에 두어겹 입어';
+    //     if (temperature > 5) return '슈잉.. 추워... 너 따시게입어야혀';
+    //     if (temperature > 0) return '슈잉.. 꽁꽁 얼어 붙어 단단히 입어!';
+    //     return '슈잉... 난 얼었셔';
+    // };
 
     const getTemperatureMessage02 = (temperature) => {
         if (temperature > 23) return '매우 더운 날씨입니다. 열사병에 주의하세요.';
@@ -138,11 +137,6 @@ export default function WeatherPage({ selectedLocation, onCitySelect }) {
                         )}
                         {weatherData && (
                             <>
-                                {userUUID === vip && (
-                                    <p className="text-m font-black text-indigo-700 bg-gradient-to-r from-pink-100 to-purple-100 p-4 rounded-2xl border border-gray-100 mb-6 text-center transition-all duration-1000">
-                                        {getTemperatureMessage(weatherData.temperature)}
-                                    </p>
-                                )}
                                 {userUUID !== vip && (
                                     <p className="text-s font-semibold text-indigo-700 bg-slate-100 p-4 rounded-lg shadow-md mb-6 text-center transition-all duration-1000">
                                         {getTemperatureMessage02(weatherData.temperature)}
